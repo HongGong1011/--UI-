@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多肉成长记 · 双风格对比预览</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: #F0EBE3;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .compare-container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .compare-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      position: relative;
+    }
+
+    .compare-panel:first-child {
+      border-right: 2px solid #D4C5B2;
+    }
+
+    .panel-header {
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .panel-header.warm {
+      background: linear-gradient(135deg, #F7F2E9 0%, #EFE7DB 100%);
+      border-bottom: 1px solid #D8CEC0;
+    }
+
+    .panel-header.amer {
+      background: linear-gradient(135deg, #E8DDD2 0%, #D4C8B8 100%);
+      border-bottom: 1px solid #C4B5A0;
+    }
+
+    .panel-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .panel-label.warm { color: #6A8E6A; }
+    .panel-label.amer { color: #1B365D; }
+
+    .panel-badge {
+      font-size: 10px;
+      padding: 3px 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .panel-badge.warm {
+      background: #E2F0E5;
+      color: #6A8E6A;
+    }
+
+    .panel-badge.amer {
+      background: #E8D9C4;
+      color: #1B365D;
+      font-family: 'Courier New', monospace;
+    }
+
+    .panel-iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: #F0EBE3;
+    }
+
+    /* Splitter */
+    .splitter {
+      width: 6px;
+      background: #D4C5B2;
+      cursor: col-resize;
+      flex-shrink: 0;
+      position: relative;
+      transition: background 0.15s;
+      z-index: 10;
+    }
+
+    .splitter:hover {
+      background: #B89B76;
+    }
+
+    .splitter::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 2px;
+      height: 32px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 1px;
+    }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .compare-container {
+        flex-direction: column;
+      }
+      .compare-panel:first-child {
+        border-right: none;
+        border-bottom: 2px solid #D4C5B2;
+      }
+      .splitter {
+        width: 100%;
+        height: 6px;
+        cursor: row-resize;
+      }
+      .splitter::after {
+        width: 32px;
+        height: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="compare-container">
+    <!-- 温暖手账风 -->
+    <div class="compare-panel" id="panelWarm">
+      <div class="panel-header warm">
+        <span class="panel-label warm">01 · 温暖手账拼贴风</span>
+        <span class="panel-badge warm">奶油纸感 · 手绘贴纸</span>
+      </div>
+      <iframe class="panel-iframe" src="./多肉成长记_温暖手账风.html" id="iframeWarm"></iframe>
+    </div>
+
+    <!-- 分割线 -->
+    <div class="splitter" id="splitter"></div>
+
+    <!-- 美式拼贴撕纸风 -->
+    <div class="compare-panel" id="panelAmer">
+      <div class="panel-header amer">
+        <span class="panel-label amer">02 · 美式拼贴撕纸风</span>
+        <span class="panel-badge amer">牛皮纸色 · 打字机字体</span>
+      </div>
+      <iframe class="panel-iframe" src="./多肉成长记_美式拼贴撕纸风.html" id="iframeAmer"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // 拖拽分割线调整宽度
+    const splitter = document.getElementById('splitter');
+    const panelWarm = document.getElementById('panelWarm');
+    const panelAmer = document.getElementById('panelAmer');
+    let isDragging = false;
+
+    splitter.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const container = document.querySelector('.compare-container');
+      const rect = container.getBoundingClientRect();
+      const isMobile = window.innerWidth <= 800;
+
+      if (isMobile) {
+        const pct = ((e.clientY - rect.top) / rect.height) * 100;
+        const warmPct = Math.max(20, Math.min(80, pct));
+        panelWarm.style.flex = 'none';
+        panelWarm.style.height = warmPct + '%';
+        panelAmer.style.flex = 'none';
+        panelAmer.style.height = (100 - warmPct) + '%';
+      } else {
+        const pct = ((e.clientX - rect.left) / rect.width) * 100;
+        const warmPct = Math.max(20, Math.min(80, pct));
+        panelWarm.style.flex = `0 0 ${warmPct}%`;
+        panelAmer.style.flex = `0 0 ${100 - warmPct}%`;
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      }
+    });
+
+    // 触摸支持
+    splitter.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      e.preventDefault();
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const container = document.querySelector('.compare-container');
+      const rect = container.getBoundingClientRect();
+      const isMobile = window.innerWidth <= 800;
+
+      if (isMobile) {
+        const pct = ((e.touches[0].clientY - rect.top) / rect.height) * 100;
+        const warmPct = Math.max(20, Math.min(80, pct));
+        panelWarm.style.flex = 'none';
+        panelWarm.style.height = warmPct + '%';
+        panelAmer.style.flex = 'none';
+        panelAmer.style.height = (100 - warmPct) + '%';
+      } else {
+        const pct = ((e.touches[0].clientX - rect.left) / rect.width) * 100;
+        const warmPct = Math.max(20, Math.min(80, pct));
+        panelWarm.style.flex = `0 0 ${warmPct}%`;
+        panelAmer.style.flex = `0 0 ${100 - warmPct}%`;
+      }
+    });
+
+    document.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+  </script>
+</body>
+</html>

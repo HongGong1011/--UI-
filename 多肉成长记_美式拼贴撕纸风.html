@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多肉成长记 · 美式拼贴撕纸风 UI 原型</title>
+  <style>
+    :root {
+      --kraft: #D4B896;
+      --kraft-dark: #B89B76;
+      --kraft-light: #E8D9C4;
+      --newsprint: #F4EDE0;
+      --paper: #FDFAF4;
+      --ink: #1E1B18;
+      --ink-dim: #6B5E53;
+      --red: #C41E3A;
+      --red-deep: #9B1B30;
+      --navy: #1B365D;
+      --mustard: #D4A017;
+      --olive: #5C6B3C;
+      --amber: #E8A838;
+      --teal: #2E6B62;
+      --shadow: rgba(30,27,24,0.12);
+      --water: #2E6B62;
+      --new-plant: #5C6B3C;
+      --repot: #C67C5C;
+      --pest: #D4A017;
+      --death: #8A7E76;
+      --fertilize: #C4A035;
+      --divide: #3A7D7C;
+      --merge: #8B5E8C;
+      --enclosed: #5A7A9E;
+      --outdoor: #6BA3B8;
+      --mount: #A07B5C;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Typewriter';
+      src: local('Courier New'), local('monospace');
+    }
+
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: #E8DDD2;
+      color: var(--ink);
+      line-height: 1.55;
+      padding: 40px 20px;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(212,184,150,0.35) 0%, transparent 60%),
+        radial-gradient(circle at 80% 70%, rgba(180,160,130,0.25) 0%, transparent 60%);
+    }
+
+    .prototype-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .prototype-header h1 {
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--red-deep);
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      display: inline-block;
+    }
+
+    .prototype-header h1::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: repeating-linear-gradient(90deg, var(--red) 0px, var(--red) 6px, transparent 6px, transparent 10px);
+    }
+
+    .prototype-header p {
+      color: var(--ink-dim);
+      font-size: 14px;
+      margin-top: 12px;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+    }
+
+    .phone-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .phone {
+      width: 360px;
+      height: 760px;
+      background: #3A3228;
+      border-radius: 48px;
+      padding: 14px;
+      box-shadow: 0 25px 60px rgba(30,27,24,0.25), 0 8px 20px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    .phone::after {
+      content: "";
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140px;
+      height: 5px;
+      background: #2A241E;
+      border-radius: 3px;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: var(--newsprint);
+      border-radius: 38px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 28px;
+      background: #3A3228;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      z-index: 20;
+    }
+
+    .status-bar {
+      height: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      font-family: 'Courier New', monospace;
+      position: relative;
+      z-index: 10;
+    }
+
+    .screen-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px 20px;
+      position: relative;
+    }
+
+    /* 撕纸效果 */
+    .torn-edge {
+      position: relative;
+      filter: drop-shadow(0 2px 3px var(--shadow));
+    }
+
+    .torn-edge::before {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: var(--newsprint);
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20'%3E%3Cpath d='M0,10 Q15,5 30,12 Q45,18 60,8 Q75,0 90,14 Q105,20 120,7 Q135,3 150,13 Q165,19 180,6 Q195,0 210,11 Q225,16 240,9 Q255,4 270,15 Q285,20 300,10 L300,20 L0,20 Z' fill='%23F4EDE0'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20'%3E%3Cpath d='M0,10 Q15,5 30,12 Q45,18 60,8 Q75,0 90,14 Q105,20 120,7 Q135,3 150,13 Q165,19 180,6 Q195,0 210,11 Q225,16 240,9 Q255,4 270,15 Q285,20 300,10 L300,20 L0,20 Z' fill='%23F4EDE0'/%3E%3C/svg%3E");
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    .torn-top::after {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: var(--newsprint);
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20'%3E%3Cpath d='M0,10 Q15,15 30,8 Q45,2 60,12 Q75,20 90,6 Q105,0 120,13 Q135,17 150,7 Q165,1 180,14 Q195,20 210,9 Q225,4 240,15 Q255,18 270,10 Q285,5 300,14 L300,0 L0,0 Z' fill='%23F4EDE0'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20'%3E%3Cpath d='M0,10 Q15,15 30,8 Q45,2 60,12 Q75,20 90,6 Q105,0 120,13 Q135,17 150,7 Q165,1 180,14 Q195,20 210,9 Q225,4 240,15 Q255,18 270,10 Q285,5 300,14 L300,0 L0,0 Z' fill='%23F4EDE0'/%3E%3C/svg%3E");
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    .screen-title {
+      font-size: 26px;
+      font-weight: 900;
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'Courier New', 'PingFang SC', monospace;
+    }
+
+    .screen-subtitle {
+      font-size: 12px;
+      color: var(--ink-dim);
+      margin-bottom: 20px;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    /* 首页 */
+    .home-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .greeting {
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-bottom: 3px;
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .stamp-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border: 2px solid var(--red);
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--red);
+      transform: rotate(3deg);
+      background: rgba(196,30,58,0.04);
+      font-family: 'Courier New', monospace;
+    }
+
+    /* 报纸头条 */
+    .headline-banner {
+      background: var(--paper);
+      padding: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      border: 2px solid var(--ink);
+      border-width: 3px 0;
+    }
+
+    .headline-banner::before {
+      content: "多肉时报";
+      position: absolute;
+      top: -9px;
+      left: 10px;
+      background: var(--newsprint);
+      padding: 0 8px;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--red);
+      font-family: 'Courier New', monospace;
+    }
+
+    .headline-banner h2 {
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .headline-banner p {
+      font-size: 12px;
+      color: var(--ink-dim);
+      font-family: 'Courier New', monospace;
+      line-height: 1.4;
+    }
+
+    .headline-divider {
+      border: none;
+      border-top: 1px dashed var(--ink-dim);
+      margin: 10px 0;
+      opacity: 0.4;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 14px;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--navy);
+    }
+
+    .section-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: repeating-linear-gradient(90deg, var(--navy) 0, var(--navy) 4px, transparent 4px, transparent 8px);
+      opacity: 0.3;
+    }
+
+    /* 植物卡片 */
+    .plant-card {
+      background: var(--paper);
+      margin-bottom: 16px;
+      position: relative;
+      border: 1px solid rgba(30,27,24,0.1);
+      box-shadow: 3px 3px 0 var(--kraft-dark);
+    }
+
+    .plant-card-top {
+      display: flex;
+      gap: 14px;
+      padding: 16px;
+      padding-bottom: 10px;
+    }
+
+    .plant-thumb {
+      width: 76px;
+      height: 76px;
+      border: 2px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      flex-shrink: 0;
+      background: var(--kraft-light);
+      position: relative;
+    }
+
+    .plant-thumb::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--red);
+      opacity: 0.7;
+    }
+
+    .plant-info h3 {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .plant-meta {
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-bottom: 8px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .plant-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 3px 8px;
+      font-size: 9px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Courier New', monospace;
+      border: 1.5px solid;
+    }
+
+    .tag-red { border-color: var(--red); color: var(--red); }
+    .tag-nav { border-color: var(--navy); color: var(--navy); }
+    .tag-olive { border-color: var(--olive); color: var(--olive); }
+    .tag-mustard { border-color: var(--mustard); color: var(--mustard); }
+
+    .plant-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      color: var(--ink-dim);
+      font-family: 'Courier New', monospace;
+      padding: 0 16px 14px;
+      text-transform: uppercase;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--kraft-light);
+      border: 1px solid var(--ink-dim);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--red);
+    }
+
+    .progress-fill.mustard { background: var(--mustard); }
+
+    .clip-note {
+      background: var(--kraft-light);
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      position: relative;
+      transform: rotate(-1deg);
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .clip-note::before {
+      content: "📎";
+      position: absolute;
+      top: -8px;
+      left: 12px;
+      font-size: 18px;
+      transform: rotate(-20deg);
+    }
+
+    .clip-note .date {
+      font-size: 10px;
+      font-family: 'Courier New', monospace;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .clip-note .text {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .clip-photos {
+      display: flex;
+      gap: 6px;
+    }
+
+    .clip-photo {
+      width: 48px;
+      height: 48px;
+      border: 1.5px solid var(--ink);
+      background: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    /* 详情页 */
+    /* 植物身份证 */
+    .plant-id-card {
+      background: var(--paper);
+      margin-bottom: 20px;
+      border: 2px solid var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+    .id-card-header {
+      background: var(--navy);
+      color: var(--newsprint);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 900;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+    }
+    .id-card-header .id-logo {
+      font-size: 10px;
+      letter-spacing: 2px;
+      opacity: 0.8;
+    }
+    .id-card-body {
+      display: flex;
+      padding: 16px;
+      gap: 16px;
+    }
+    .id-photo-area {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .id-photo {
+      width: 80px;
+      height: 96px;
+      border: 2px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      background: var(--kraft-light);
+      position: relative;
+    }
+    .id-photo::after {
+      content: "PHOTO";
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      font-size: 7px;
+      font-family: 'Courier New', monospace;
+      color: var(--ink-dim);
+      opacity: 0.5;
+      letter-spacing: 1px;
+    }
+    .id-photo-stamp {
+      font-size: 8px;
+      font-family: 'Courier New', monospace;
+      color: var(--ink);
+      border: 1px solid var(--ink);
+      padding: 2px 6px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    .id-fields {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+    }
+    .id-field {
+      display: flex;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(30,27,24,0.12);
+      padding-bottom: 3px;
+    }
+    .id-field-label {
+      font-size: 8px;
+      font-weight: 900;
+      font-family: 'Courier New', monospace;
+      color: var(--ink-dim);
+      letter-spacing: 1px;
+      width: 52px;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+    .id-field-value {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      color: var(--ink);
+      letter-spacing: 0.5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .id-field-value.name {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--navy);
+    }
+    .id-status-stamp {
+      position: absolute;
+      top: 42px;
+      right: 12px;
+      transform: rotate(-8deg);
+      border: 2px solid var(--red);
+      color: var(--red);
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 900;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      opacity: 0.85;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .id-card-footer {
+      border-top: 1px solid rgba(30,27,24,0.15);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Courier New', monospace;
+    }
+    .id-stats-row {
+      display: flex;
+      gap: 16px;
+    }
+    .id-stat {
+      text-align: center;
+    }
+    .id-stat-val {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--navy);
+    }
+    .id-stat-lbl {
+      font-size: 8px;
+      color: var(--ink-dim);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .id-validity {
+      font-size: 8px;
+      color: var(--ink-dim);
+      text-align: right;
+      letter-spacing: 1px;
+    }
+    .id-barcode-row {
+      padding: 0 16px 10px;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--ink-dim);
+    }
+
+    .timeline {
+      position: relative;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--ink);
+      background: var(--red);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .timeline-dot.water { background: var(--teal); }
+    .timeline-dot.fertilize { background: var(--mustard); }
+    .timeline-dot.repot { background: var(--olive); }
+    .timeline-dot.divide { background: var(--divide); }
+    .timeline-dot.merge { background: var(--merge); }
+    .timeline-dot.enclosed { background: var(--enclosed); }
+    .timeline-dot.outdoor { background: var(--outdoor); }
+    .timeline-dot.mount { background: var(--mount); }
+
+    .timeline-card {
+      flex: 1;
+      background: var(--paper);
+      padding: 12px;
+      border: 1px solid rgba(30,27,24,0.1);
+      box-shadow: 2px 2px 0 rgba(30,27,24,0.08);
+    }
+
+    .timeline-date {
+      font-size: 10px;
+      font-family: 'Courier New', monospace;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .timeline-text {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .timeline-photos {
+      display: flex;
+      gap: 6px;
+    }
+
+    .timeline-photo {
+      width: 48px;
+      height: 48px;
+      border: 1.5px solid var(--ink);
+      background: var(--kraft-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    /* 添加记录 */
+    .form-card {
+      background: var(--paper);
+      padding: 18px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(30,27,24,0.1);
+      box-shadow: 3px 3px 0 var(--kraft-dark);
+    }
+
+    .form-label {
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      display: block;
+      font-family: 'Courier New', monospace;
+      color: var(--navy);
+    }
+
+    .plant-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .plant-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border: 2px solid rgba(30,27,24,0.15);
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--paper);
+    }
+
+    .plant-option.active {
+      border-color: var(--ink);
+      background: var(--kraft-light);
+    }
+
+    .event-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .event-chip {
+      padding: 8px 12px;
+      border: 1.5px solid rgba(30,27,24,0.15);
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--paper);
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .event-chip.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .photo-slot {
+      aspect-ratio: 1;
+      border: 2px dashed rgba(30,27,24,0.2);
+      background: var(--kraft-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--ink-dim);
+    }
+
+    .note-area {
+      width: 100%;
+      min-height: 100px;
+      border: 1.5px solid rgba(30,27,24,0.2);
+      background: var(--kraft-light);
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      resize: none;
+      color: var(--ink);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      box-shadow: 4px 4px 0 var(--red);
+    }
+
+    /* 提醒页 */
+    .reminder-card {
+      background: var(--paper);
+      padding: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid rgba(30,27,24,0.1);
+      position: relative;
+      box-shadow: 2px 2px 0 rgba(30,27,24,0.06);
+    }
+
+    .reminder-icon {
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      background: var(--kraft-light);
+    }
+
+    .reminder-info h4 {
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .reminder-info p {
+      font-size: 10px;
+      color: var(--ink-dim);
+      font-family: 'Courier New', monospace;
+    }
+
+    .reminder-time {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .reminder-time .time {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--red);
+      font-family: 'Courier New', monospace;
+    }
+
+    .reminder-time .status {
+      font-size: 9px;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      font-family: 'Courier New', monospace;
+    }
+
+    .calendar-card {
+      background: var(--paper);
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(30,27,24,0.1);
+      box-shadow: 3px 3px 0 var(--kraft-dark);
+    }
+
+    .calendar-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      gap: 4px;
+      margin-bottom: 8px;
+      font-size: 9px;
+      font-weight: 900;
+      color: var(--ink-dim);
+      font-family: 'Courier New', monospace;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      gap: 4px;
+      font-size: 12px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .cal-day {
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-weight: 700;
+    }
+
+    .cal-day.active {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .cal-day.event {
+      border: 2px solid var(--red);
+      color: var(--red);
+    }
+
+    .calendar-legend {
+      display: flex;
+      gap: 14px;
+      margin-top: 12px;
+      font-size: 9px;
+      font-family: 'Courier New', monospace;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+    }
+
+    .legend-box {
+      width: 12px;
+      height: 12px;
+      display: inline-block;
+      margin-right: 4px;
+      vertical-align: middle;
+      border: 1px solid rgba(0,0,0,0.3);
+    }
+
+    /* 底部导航 */
+    .bottom-nav {
+      height: 70px;
+      background: var(--paper);
+      border-top: 2px solid var(--ink);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 12px 12px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-dim);
+      font-size: 8px;
+      text-decoration: none;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .nav-item.active {
+      color: var(--ink);
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .nav-item.active .nav-icon {
+      position: relative;
+    }
+
+    .nav-item.active .nav-icon::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 2px;
+      background: var(--red);
+    }
+
+    .nav-add {
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--ink);
+      background: var(--red);
+      color: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 300;
+      transform: translateY(-8px);
+      box-shadow: 4px 4px 0 var(--navy);
+    }
+  /* === 月历视图新增样式 === */
+
+    /* 今日卡片 */
+    .today-card {
+      background: var(--paper); padding: 18px; margin-bottom: 16px; border: 2px solid var(--ink);
+      display: flex; align-items: center; gap: 14px; position: relative;
+    }
+    .today-card::before { content: "今天"; position: absolute; top: -10px; left: 12px;
+      background: var(--newsprint); padding: 2px 8px; font-size: 9px; font-weight: 900;
+      letter-spacing: 3px; color: var(--red); font-family: 'Courier New', monospace; }
+    .today-icon { width: 60px; height: 60px; border: 2px solid var(--ink); display: flex;
+      align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0;
+      background: var(--kraft-light); }
+    .today-info { flex: 1; }
+    .today-big { font-size: 42px; font-weight: 900; color: var(--navy); line-height: 1;
+      font-family: 'Courier New', monospace; margin-bottom: 2px; }
+    .today-label { font-size: 13px; font-weight: 900; color: var(--ink);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .today-date { font-size: 10px; color: var(--ink-dim); font-family: 'Courier New', monospace; }
+
+    /* 月份导航 */
+    .month-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .month-label { font-size: 15px; font-weight: 900; text-transform: uppercase;
+      font-family: 'Courier New', monospace; letter-spacing: 2px; }
+    .month-nav { display: flex; gap: 4px; }
+    .month-nav-btn { width: 28px; height: 28px; border: 1.5px solid var(--ink-dim);
+      display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer;
+      font-family: 'Courier New', monospace; background: var(--paper); }
+
+    /* 星期行 */
+    .weekday-row { display: grid; grid-template-columns: repeat(7,1fr); text-align: center;
+      margin-bottom: 6px; font-size: 9px; font-weight: 900; color: var(--ink-dim);
+      font-family: 'Courier New', monospace; text-transform: uppercase; }
+
+    /* 日期网格 */
+    .day-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+    .day-cell { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; font-size: 12px; font-weight: 700; position: relative; cursor: pointer;
+      font-family: 'Courier New', monospace; border: 1px solid transparent; }
+    .day-cell.dim { color: #C8BFB5; }
+    .day-cell.today { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+    .day-cell.selected { border-color: var(--ink); background: var(--kraft-light); }
+    .day-dots { display: flex; gap: 2px; margin-top: 2px; }
+    .day-dot { width: 5px; height: 5px; border: 1px solid rgba(0,0,0,0.3); }
+    .dot-water { background: var(--water); }
+    .dot-plant { background: var(--new-plant); }
+    .dot-repot { background: var(--repot); }
+    .dot-pest { background: var(--pest); }
+    .dot-death { background: var(--death); }
+    .dot-fertilize { background: var(--fertilize); }
+    .dot-divide { background: var(--divide); }
+    .dot-merge { background: var(--merge); }
+    .dot-enclosed { background: var(--enclosed); }
+    .dot-outdoor { background: var(--outdoor); }
+    .dot-mount { background: var(--mount); }
+
+    /* 月历图例 */
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; padding-top: 10px;
+      border-top: 1px dashed rgba(30,27,24,0.2); }
+    .legend-item { display: flex; align-items: center; gap: 4px; font-size: 9px; color: var(--ink-dim);
+      font-family: 'Courier New', monospace; text-transform: uppercase; }
+    .legend-dot { width: 8px; height: 8px; border: 1px solid rgba(0,0,0,0.3); }
+
+    /* 事件列表 */
+    .events-title { font-size: 12px; font-weight: 900; margin-bottom: 10px;
+      text-transform: uppercase; letter-spacing: 2px; font-family: 'Courier New', monospace; color: var(--navy); }
+    .event-item { background: var(--paper); padding: 12px; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 10px; border: 1px solid rgba(30,27,24,0.1);
+      box-shadow: 2px 2px 0 rgba(30,27,24,0.06); }
+    .event-icon { width: 38px; height: 38px; border: 1.5px solid var(--ink);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+      flex-shrink: 0; background: var(--kraft-light); }
+    .event-info h4 { font-size: 13px; font-weight: 900; margin-bottom: 1px;
+      text-transform: uppercase; letter-spacing: 0.5px; }
+    .event-info p { font-size: 10px; color: var(--ink-dim); font-family: 'Courier New', monospace; }
+    .event-tag { margin-left: auto; font-size: 8px; padding: 3px 7px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 1px; font-family: 'Courier New', monospace;
+      border: 1.5px solid; }
+    .tag-water { border-color: var(--water); color: var(--water); }
+    .tag-plant { border-color: var(--new-plant); color: var(--new-plant); }
+    .tag-repot { border-color: var(--repot); color: var(--repot); }
+    .tag-pest { border-color: var(--pest); color: var(--pest); }
+    .tag-death { border-color: var(--death); color: var(--death); }
+    .tag-fertilize { border-color: var(--fertilize); color: var(--fertilize); }
+    .tag-divide { border-color: var(--divide); color: var(--divide); }
+    .tag-merge { border-color: var(--merge); color: var(--merge); }
+    .tag-enclosed { border-color: var(--enclosed); color: var(--enclosed); }
+    .tag-outdoor { border-color: var(--outdoor); color: var(--outdoor); }
+    .tag-mount { border-color: var(--mount); color: var(--mount); }
+
+    .empty-events { text-align: center; padding: 30px; color: var(--ink-dim); font-size: 12px;
+      font-family: 'Courier New', monospace; }
+
+    /* 小票周期选择器 */
+    .period-tabs {
+      display: flex; gap: 8px; margin-bottom: 16px; justify-content: center;
+    }
+    .period-tab {
+      padding: 7px 14px; font-size: 11px; font-weight: 900; font-family: 'Courier New', monospace;
+      border: 2px solid var(--ink); background: var(--newsprint); color: var(--ink);
+      cursor: pointer; letter-spacing: 1px; transition: all 0.15s;
+    }
+    .period-tab:hover { background: var(--ink); color: var(--newsprint); }
+    .period-tab.active { background: var(--navy); color: var(--newsprint); border-color: var(--navy); }
+
+    /* 小票样式 */
+    .receipt-wrapper { padding: 16px 14px; display: flex; justify-content: center; }
+    .receipt-paper {
+      background: var(--paper); width: 100%; max-width: 300px; padding: 20px 16px 16px;
+      border: 1px solid rgba(30,27,24,0.15); position: relative; font-size: 12px;
+      font-family: 'Courier New', monospace; line-height: 1.6;
+      box-shadow: 3px 3px 0 rgba(30,27,24,0.08);
+    }
+    .receipt-dots { border: none; border-top: 1px dashed rgba(30,27,24,0.3); margin: 8px 0; }
+    .receipt-header { text-align: center; margin-bottom: 10px; }
+    .receipt-header .store-name { font-size: 16px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: var(--navy); }
+    .receipt-header .store-sub { font-size: 8px; color: var(--ink-dim); margin-top: 2px; text-transform: uppercase; letter-spacing: 2px; }
+    .receipt-meta { display: flex; justify-content: space-between; font-size: 9px; color: var(--ink-dim); margin-bottom: 4px; text-transform: uppercase; }
+    .receipt-table { width: 100%; border-collapse: collapse; }
+    .receipt-table th { font-size: 8px; color: var(--ink-dim); text-align: left; padding: 3px 0; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(30,27,24,0.2); }
+    .receipt-table td { font-size: 11px; padding: 4px 0; border-bottom: 1px solid rgba(30,27,24,0.06); }
+    .receipt-table .item-name { display: flex; align-items: center; gap: 5px; }
+    .receipt-table .item-emoji { font-size: 14px; }
+    .receipt-table .col-qty { text-align: center; width: 36px; }
+    .receipt-table .col-price { text-align: right; width: 50px; }
+    .receipt-table .col-sub { text-align: right; width: 55px; font-weight: 900; }
+    .receipt-total { display: flex; justify-content: space-between; font-size: 15px; font-weight: 900; margin: 6px 0; color: var(--navy); text-transform: uppercase; }
+    .receipt-total .total-label { font-size: 12px; color: var(--ink); }
+    .receipt-footer { text-align: center; font-size: 9px; color: var(--ink-dim); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .receipt-barcode { text-align: center; margin-top: 8px; }
+    .receipt-barcode svg { width: 160px; height: 36px; }
+    .receipt-perforation { margin-top: 12px; border-top: 1px dashed rgba(30,27,24,0.3); padding-top: 6px; position: relative; }
+    .receipt-perforation::before { content: "✂"; position: absolute; top: -9px; right: 8px; font-size: 12px; color: var(--ink-dim); }
+    .receipt-stamp { position: absolute; top: 44px; right: 14px; transform: rotate(-6deg);
+      border: 2px solid var(--red); padding: 4px 8px; font-size: 8px; font-weight: 900; color: var(--red);
+      text-transform: uppercase; letter-spacing: 2px; opacity: 0.75; }
+
+  /* 天气首屏 */
+.weather-hero {
+  position: relative; height: 100%; min-height: 460px; margin-bottom: 16px; overflow: hidden;
+  border: 2px solid var(--ink); background: var(--paper);
+}
+.weather-bg { position: absolute; inset: 0; overflow: hidden; }
+.weather-bg.sunny { background: linear-gradient(180deg, #FEF5E0 0%, #F8E8C8 40%, #FDFAF4 100%); }
+.weather-bg.rainy { background: linear-gradient(180deg, #A8B5C0 0%, #BCC5CD 40%, #E0DDD5 100%); }
+.weather-bg.cloudy { background: linear-gradient(180deg, #D8D5CC 0%, #E0DDD5 40%, #F4EDE0 100%); }
+.weather-bg.snowy { background: linear-gradient(180deg, #DDE5ED 0%, #E8EDF2 40%, #F4EDE0 100%); }
+.weather-bg.thunder { background: linear-gradient(180deg, #5A5A68 0%, #7A7A88 40%, #A0A0A5 100%); }
+
+.sun { position: absolute; top: 16px; right: 26px; width: 48px; height: 48px; border-radius: 50%;
+  background: radial-gradient(circle, #FFE066 0%, #F5A623 100%); 
+  box-shadow: 0 0 30px rgba(245,166,35,0.5), 0 0 60px rgba(255,224,102,0.3); 
+  animation: sunPulse 3s ease-in-out infinite; }
+@keyframes sunPulse { 0%,100% { box-shadow: 0 0 30px rgba(245,166,35,0.5), 0 0 60px rgba(255,224,102,0.3); }
+  50% { box-shadow: 0 0 50px rgba(245,166,35,0.7), 0 0 80px rgba(255,224,102,0.5); } }
+
+.cloud { position: absolute; background: rgba(255,255,255,0.85); border-radius: 50px; border: 1px solid rgba(30,27,24,0.06); }
+.cloud::before,.cloud::after { content:""; position: absolute; background: inherit; border-radius: 50%; }
+.cloud-1 { width: 80px; height: 28px; top: 22px; left: 16px; animation: cloudFloat 8s ease-in-out infinite; }
+.cloud-1::before { width: 40px; height: 40px; top: -20px; left: 14px; }
+.cloud-1::after { width: 30px; height: 30px; top: -14px; right: 10px; }
+.cloud-2 { width: 60px; height: 22px; top: 48px; right: 76px; animation: cloudFloat 10s ease-in-out infinite 2s; }
+.cloud-2::before { width: 32px; height: 32px; top: -16px; left: 10px; }
+.cloud-2::after { width: 24px; height: 24px; top: -10px; right: 8px; }
+.cloud-dark { background: rgba(150,155,165,0.7); border-color: rgba(30,27,24,0.1); }
+@keyframes cloudFloat { 0%,100% { transform: translateX(0); } 50% { transform: translateX(12px); } }
+
+.raindrop { position: absolute; width: 2px; background: rgba(100,120,140,0.5); border-radius: 0 0 3px 3px;
+  animation: rainFall linear infinite; }
+@keyframes rainFall { 0% { transform: translateY(-20px); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; }
+  100% { transform: translateY(480px); opacity: 0; } }
+
+.snowflake { position: absolute; width: 6px; height: 6px; background: rgba(255,255,255,0.9); border-radius: 50%;
+  border: 1px solid rgba(200,210,220,0.5); animation: snowFall linear infinite; }
+@keyframes snowFall { 0% { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; } 90% { opacity: 1; }
+  100% { transform: translateY(480px) translateX(30px) rotate(360deg); opacity: 0; } }
+
+.lightning { position: absolute; top: 8px; right: 76px; width: 3px; height: 55px;
+  background: #FFE066; border-radius: 2px; opacity: 0; animation: flash 3s ease-in-out infinite; }
+.lightning::after { content:""; position: absolute; top: 28px; left: 7px; width: 2px; height: 28px;
+  background: #FFE066; border-radius: 2px; transform: rotate(15deg); }
+@keyframes flash { 0%,90%,100% { opacity: 0; } 91%,93% { opacity: 0.9; } 92% { opacity: 0.3; } }
+
+.plant-stand { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; z-index: 5; }
+.stand-shelf { width: 100px; height: 8px; background: #8B7355; border: 1px solid #5A4020; }
+.stand-leg { width: 3px; height: 28px; background: #6B5335; border: 1px solid #4A3010; }
+.stand-legs { display: flex; justify-content: space-between; width: 70px; }
+.stand-pot { width: 56px; height: 56px; background: linear-gradient(135deg, #D4A878 0%, #B8845C 100%);
+  border-radius: 50% 50% 45% 45%; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; justify-content: center; font-size: 32px; border: 1.5px solid #5A4020;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
+.stand-pot::before { content:""; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+  width: 44px; height: 10px; background: #B8845C; border-radius: 6px; border: 1px solid #5A4020; }
+.stand-shadow { width: 80px; height: 6px; background: rgba(0,0,0,0.1); margin-top: 4px; }
+
+.weather-info { position: absolute; top: 12px; left: 14px; z-index: 6; display: flex; align-items: center; gap: 8px; }
+.weather-temp { font-size: 26px; font-weight: 900; font-family: 'Courier New', monospace; line-height: 1; color: var(--navy); }
+.weather-desc { font-size: 10px; color: var(--ink-dim); font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 1px; }
+.weather-icon-big { font-size: 34px; }
+
+.plant-name-tag { position: absolute; bottom: 8px; right: 12px; z-index: 6;
+  background: var(--paper); padding: 3px 9px; font-size: 9px; font-weight: 900; border: 1px solid var(--ink);
+  font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* 花架界面 */
+.shelf-hero {
+  position: relative; height: 100%; min-height: 460px; margin-bottom: 16px; overflow: hidden;
+  border: 2px solid var(--ink); background: var(--newsprint);
+  display: flex; flex-direction: column;
+}
+.shelf-selector {
+  display: flex; gap: 0; padding: 8px 8px 0; z-index: 6; flex-shrink: 0;
+}
+.shelf-style-btn {
+  flex: 1; padding: 6px 4px; font-size: 9px; font-weight: 900; font-family: 'Courier New', monospace;
+  text-align: center; cursor: pointer; border: 1px solid var(--ink-dim); background: var(--kraft-light);
+  color: var(--ink-dim); letter-spacing: 1px; transition: all 0.15s;
+  border-right: none;
+}
+.shelf-style-btn:last-child { border-right: 1px solid var(--ink-dim); }
+.shelf-style-btn:hover { background: var(--kraft); }
+.shelf-style-btn.active { background: var(--navy); color: var(--newsprint); border-color: var(--navy); }
+
+.shelf-area {
+  flex: 1; position: relative; overflow: hidden; min-height: 250px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 木质三层架 */
+.shelf-wooden { display: flex; flex-direction: column; gap: 26px; padding: 20px 16px; width: 100%; max-width: 280px; }
+.shelf-tier {
+  display: flex; align-items: flex-end; justify-content: space-around; gap: 12px;
+  position: relative; padding-bottom: 8px;
+}
+.shelf-tier::after {
+  content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(180deg, #B8956A 0%, #8B6B3D 100%);
+  border: 1px solid #5A4020; border-radius: 2px;
+}
+.shelf-slot {
+  width: 52px; height: 52px; border: 2px dashed rgba(30,27,24,0.2); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.03); cursor: grab; position: relative; z-index: 2;
+  transition: all 0.15s; font-size: 26px;
+}
+.shelf-slot.occupied { border-style: solid; border-color: var(--kraft); background: var(--kraft-light); cursor: grab; }
+.shelf-slot.drag-over { border-color: var(--navy); background: rgba(27,54,93,0.08); transform: scale(1.08); }
+.shelf-slot.dragging { opacity: 0.4; }
+.shelf-slot .slot-plant { pointer-events: none; }
+.shelf-slot .slot-number { position: absolute; bottom: 2px; right: 4px;
+  font-size: 7px; color: var(--ink-dim); font-family: 'Courier New', monospace; opacity: 0.3; }
+
+/* 铁艺网格架 */
+.shelf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 20px 28px; width: 100%; max-width: 260px; }
+.shelf-grid .shelf-slot {
+  width: 60px; height: 60px; border-radius: 50%; border: 2px dashed rgba(30,27,24,0.25);
+  background: rgba(0,0,0,0.02);
+}
+.shelf-grid .shelf-slot.occupied { border-style: solid; border-color: #6B5E53; background: var(--kraft-light); }
+
+/* 阶梯架 */
+.shelf-ladder { display: flex; flex-direction: column; gap: 10px; padding: 20px 16px; width: 100%; max-width: 280px; }
+.shelf-step {
+  display: flex; align-items: flex-end; gap: 14px; position: relative; padding-bottom: 8px;
+  padding-left: 0; transition: padding-left 0.2s;
+}
+.shelf-step:nth-child(1) { padding-left: 0; }
+.shelf-step:nth-child(2) { padding-left: 28px; }
+.shelf-step:nth-child(3) { padding-left: 56px; }
+.shelf-step::after {
+  content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 5px;
+  background: #A07B5C; border: 1px solid #6B4E30; border-radius: 2px;
+}
+.shelf-ladder .shelf-slot { width: 50px; height: 50px; }
+
+/* 壁挂架 */
+.shelf-wall { position: relative; width: 100%; max-width: 280px; height: 240px; padding: 20px; }
+.shelf-wall::before {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(180,160,140,0.15) 28px, rgba(180,160,140,0.15) 29px);
+}
+.shelf-wall-shelf {
+  position: absolute; display: flex; gap: 18px; justify-content: center;
+}
+.shelf-wall-shelf::after {
+  content: ""; position: absolute; bottom: -2px; left: -10px; right: -10px; height: 4px;
+  background: #C4A882; border: 1px solid #8B7355; border-radius: 1px;
+}
+.shelf-wall-shelf:nth-child(1) { top: 30px; left: 20px; right: 20px; }
+.shelf-wall-shelf:nth-child(2) { top: 110px; left: 20px; right: 20px; }
+.shelf-wall-shelf:nth-child(3) { top: 190px; left: 20px; right: 20px; }
+.shelf-wall .shelf-slot { width: 48px; height: 48px; }
+
+/* 植物托盘 */
+.plant-tray {
+  padding: 10px 12px; border-top: 1px solid rgba(30,27,24,0.08); background: rgba(0,0,0,0.02);
+  z-index: 6; flex-shrink: 0;
+}
+.tray-label {
+  font-size: 8px; font-weight: 900; font-family: 'Courier New', monospace;
+  color: var(--ink-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+}
+.tray-plants {
+  display: flex; gap: 8px; flex-wrap: wrap; min-height: 44px; align-items: center;
+}
+.tray-plant {
+  width: 44px; height: 44px; border: 2px dashed var(--ink-dim); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; cursor: grab; background: var(--kraft-light);
+  transition: all 0.15s; position: relative;
+}
+.tray-plant:hover { border-color: var(--navy); transform: scale(1.05); }
+.tray-plant.dragging { opacity: 0.3; }
+.tray-plant .tray-plant-name {
+  position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%);
+  font-size: 6px; font-family: 'Courier New', monospace; color: var(--ink-dim);
+  white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.tray-empty {
+  font-size: 10px; color: var(--ink-dim); font-family: 'Courier New', monospace;
+  font-style: italic; padding: 10px 0;
+}
+
+.shelf-label-tag {
+  position: absolute; top: 46px; right: 10px; z-index: 7;
+  background: var(--paper); padding: 2px 8px; font-size: 9px; font-weight: 900;
+  border: 1px solid var(--ink); font-family: 'Courier New', monospace;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+/* 纪念碑样式 */
+.memorial-hero {
+  background: var(--paper); border: 2px solid var(--ink); margin-bottom: 16px;
+  padding: 16px; text-align: center; position: relative;
+  box-shadow: 3px 3px 0 rgba(30,27,24,0.08);
+}
+.memorial-title { font-size: 10px; color: var(--ink-dim); font-family: 'Courier New', monospace;
+  text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
+.memorial-count { font-size: 26px; font-weight: 900; color: var(--navy);
+  font-family: 'Courier New', monospace; margin-bottom: 4px; }
+.memorial-motto { font-size: 10px; color: var(--ink-dim); font-family: 'Courier New', monospace;
+  font-style: italic; margin-bottom: 12px; }
+.memorial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 300px; overflow-y: auto; }
+.memorial-card {
+  background: var(--kraft-light); border: 1px solid rgba(30,27,24,0.12); padding: 12px;
+  text-align: center; position: relative; opacity: 0.85;
+}
+.memorial-card .mem-emoji { font-size: 36px; margin-bottom: 4px; filter: grayscale(0.3); }
+.memorial-card .mem-name { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.memorial-card .mem-dates { font-size: 8px; color: var(--ink-dim); font-family: 'Courier New', monospace; }
+.memorial-card .mem-cause { font-size: 8px; color: var(--red); margin-top: 3px; text-transform: uppercase; font-family: 'Courier New', monospace; }
+.memorial-card .mem-candle { position: absolute; top: 4px; right: 8px; font-size: 12px; }
+.memorial-card .mem-ribbon { position: absolute; top: -3px; left: 6px; font-size: 10px; }
+.mem-empty { text-align: center; padding: 30px; color: var(--ink-dim); font-size: 11px; font-family: 'Courier New', monospace; }
+  </style>
+</head>
+<body>
+  <div class="prototype-header">
+    <h1>多肉成长记 · 美式拼贴撕纸风</h1>
+    <p>牛皮纸底 · 报纸头条 · 撕纸边缘 · 邮票印章 · 打字机字体 · 粗粝手工感</p>
+  </div>
+
+  <div class="phone-container">
+    <!-- 首页 -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>09:41</span>
+          <span>7月8日 · 周三</span>
+        </div>
+        <div class="screen-content">
+          <div class="home-header">
+            <div>
+              <div class="greeting">早安，小园丁</div>
+              <div class="screen-title">肉肉花园</div>
+            </div>
+            <div class="stamp-badge">2024年7月</div>
+          </div>
+
+          <!-- 天气首屏 -->
+          <div class="weather-hero" id="weatherHeroAmer">
+            <div class="weather-bg" id="weatherBgAmer">
+              <div id="weatherParticlesAmer"></div>
+            </div>
+            <div class="weather-info" id="weatherInfoAmer"></div>
+            <div class="plant-stand">
+              <div class="stand-pot" id="standPotAmer">🌵</div>
+              <div class="stand-shelf"></div>
+              <div class="stand-legs"><div class="stand-leg"></div><div class="stand-leg"></div></div>
+              <div class="stand-shadow"></div>
+            </div>
+            <div class="plant-name-tag" id="plantTagAmer"></div>
+          </div>
+
+          <div class="headline-banner">
+            <h2>今日 2 盆肉肉<br>等待浇水</h2>
+            <hr class="headline-divider">
+            <p>桃蛋小丸子已 7 天未浇水，叶片微微发皱，建议今日傍晚施加 100ml 清水。</p>
+          </div>
+
+          <div class="section-label">我的肉肉藏品</div>
+
+          <div class="plant-card torn-edge">
+            <div class="plant-card-top">
+              <div class="plant-thumb">🌵</div>
+              <div class="plant-info">
+                <h3>桃蛋小丸子</h3>
+                <div class="plant-meta">景天科 · 128 天</div>
+                <div class="plant-tags">
+                  <span class="tag tag-red">今日浇水</span>
+                  <span class="tag tag-nav">状态健康</span>
+                </div>
+              </div>
+            </div>
+            <div class="plant-progress">
+              <span>成长值</span>
+              <div class="progress-bar"><div class="progress-fill" style="width: 72%"></div></div>
+              <span>72%</span>
+            </div>
+          </div>
+
+          <div class="plant-card torn-edge">
+            <div class="plant-card-top">
+              <div class="plant-thumb">🪴</div>
+              <div class="plant-info">
+                <h3>吉娃娃莲</h3>
+                <div class="plant-meta">拟石莲花属 · 86 天</div>
+                <div class="plant-tags">
+                  <span class="tag tag-mustard">待施肥</span>
+                </div>
+              </div>
+            </div>
+            <div class="plant-progress">
+              <span>成长值</span>
+              <div class="progress-bar"><div class="progress-fill mustard" style="width: 55%"></div></div>
+              <span>55%</span>
+            </div>
+          </div>
+
+          <div class="section-label">最新快讯</div>
+          <div class="clip-note">
+            <div class="date">昨天 · 18:32</div>
+            <div class="text">给桃蛋小丸子浇了水，叶片更饱满啦 ✨</div>
+            <div class="clip-photos">
+              <div class="clip-photo">🌸</div>
+              <div class="clip-photo">💧</div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <a href="#" class="nav-item active"><span class="nav-icon">🏠</span><span>花园</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 详情页 -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>09:41</span>
+          <span>7月8日 · 周三</span>
+        </div>
+        <div class="screen-content">
+          <div class="screen-subtitle" style="margin-bottom: 14px;">← 返回花园</div>
+
+          <!-- 植物身份证 -->
+          <div class="plant-id-card">
+            <div class="id-card-header">
+              <span>植物身份证</span>
+              <span class="id-logo">SUCCULENT ID</span>
+            </div>
+            <div class="id-card-body">
+              <div class="id-photo-area">
+                <div class="id-photo">🌵</div>
+                <div class="id-photo-stamp">已验证</div>
+              </div>
+              <div class="id-fields">
+                <div class="id-field">
+                  <span class="id-field-label">姓名</span>
+                  <span class="id-field-value name">桃蛋小丸子</span>
+                </div>
+                <div class="id-field">
+                  <span class="id-field-label">编号</span>
+                  <span class="id-field-value">SG-2024-0302</span>
+                </div>
+                <div class="id-field">
+                  <span class="id-field-label">科属</span>
+                  <span class="id-field-value">景天科 · 风车草属</span>
+                </div>
+                <div class="id-field">
+                  <span class="id-field-label">别名</span>
+                  <span class="id-field-value">桃之卵 · 桃蛋</span>
+                </div>
+                <div class="id-field">
+                  <span class="id-field-label">领养日</span>
+                  <span class="id-field-value">2024.03.02</span>
+                </div>
+                <div class="id-field">
+                  <span class="id-field-label">原产地</span>
+                  <span class="id-field-value">墨西哥</span>
+                </div>
+                <div class="id-field">
+                  <span class="id-field-label">浇水</span>
+                  <span class="id-field-value">每 7-10 天 / 100ml</span>
+                </div>
+              </div>
+            </div>
+            <div class="id-status-stamp">健康</div>
+            <div class="id-card-footer">
+              <div class="id-stats-row">
+                <div class="id-stat"><div class="id-stat-val">128</div><div class="id-stat-lbl">天</div></div>
+                <div class="id-stat"><div class="id-stat-val">32</div><div class="id-stat-lbl">记录</div></div>
+                <div class="id-stat"><div class="id-stat-val">5</div><div class="id-stat-lbl">照片</div></div>
+                <div class="id-stat"><div class="id-stat-val">3</div><div class="id-stat-lbl">换盆</div></div>
+              </div>
+              <div class="id-validity">
+                发证: 2024.03.02<br>
+                有效期: 永久
+              </div>
+            </div>
+            <div class="id-barcode-row">
+              ||||||||||||||||||||||||||||||||||||||||||||||| SG0302
+            </div>
+          </div>
+
+          <div class="section-label">成长时间轴</div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot water"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">2024.07.06 · 18:32</div>
+                <div class="timeline-text">浇水 💧 叶片饱满有光泽</div>
+                <div class="timeline-photos">
+                  <div class="timeline-photo">📷</div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot fertilize"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">2024.06.28 · 10:15</div>
+                <div class="timeline-text">施肥 🌿 稀释多肉专用肥</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot repot"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">2024.06.15 · 16:40</div>
+                <div class="timeline-text">换盆 🪴 塑料盆 → 陶土盆</div>
+                <div class="timeline-photos">
+                  <div class="timeline-photo">📷</div>
+                  <div class="timeline-photo">📷</div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot divide"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">2024.05.20 · 14:30</div>
+                <div class="timeline-text">分苗 ✂️ 侧芽分离 · 3株</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot" style="background: var(--navy);"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">2024.03.02 · 09:00</div>
+                <div class="timeline-text">领养 🏠 欢迎回家，小丸子</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 添加记录 -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>09:41</span>
+          <span>7月8日 · 周三</span>
+        </div>
+        <div class="screen-content">
+          <div class="screen-title">记录成长</div>
+          <div class="screen-subtitle">每日养护记录</div>
+
+          <div class="form-card torn-edge">
+            <label class="form-label">选择肉肉</label>
+            <div class="plant-selector">
+              <div class="plant-option active">
+                <span style="font-size: 18px;">🌵</span>
+                <span style="font-weight: 900;">桃蛋小丸子</span>
+              </div>
+              <div class="plant-option">
+                <span style="font-size: 18px;">🪴</span>
+                <span>吉娃娃莲</span>
+              </div>
+            </div>
+
+            <label class="form-label">事件类型</label>
+            <div class="event-chips">
+              <span class="event-chip active">💧 浇水</span>
+              <span class="event-chip">🌱 施肥</span>
+              <span class="event-chip">🐛 杀虫</span>
+              <span class="event-chip">🪴 换盆</span>
+              <span class="event-chip">✂️ 分苗</span>
+              <span class="event-chip">🧩 合盆</span>
+              <span class="event-chip">🏠 闷养</span>
+              <span class="event-chip">☀️ 露养</span>
+              <span class="event-chip">🪵 上板</span>
+            </div>
+
+            <label class="form-label">添加照片</label>
+            <div class="photo-grid">
+              <div class="photo-slot">＋</div>
+              <div class="photo-slot">＋</div>
+              <div class="photo-slot">＋</div>
+            </div>
+
+            <label class="form-label">养护笔记</label>
+            <textarea class="note-area" placeholder="记录今天的养护心得..."></textarea>
+          </div>
+
+          <button class="btn-primary">保存记录</button>
+        </div>
+        <div class="bottom-nav">
+          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+          <a href="#" class="nav-item active"><span class="nav-add">＋</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 提醒页 -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>09:41</span>
+          <span>7月8日 · 周三</span>
+        </div>
+        <div class="screen-content">
+          <div class="screen-title">养护提醒</div>
+          <div class="screen-subtitle">养护计划</div>
+
+          <div class="reminder-card">
+            <div class="reminder-icon">💧</div>
+            <div class="reminder-info">
+              <h4>桃蛋小丸子 · 浇水</h4>
+              <p>上次：7 天前</p>
+            </div>
+            <div class="reminder-time">
+              <div class="time">今天</div>
+              <div class="status">18:00</div>
+            </div>
+          </div>
+
+          <div class="reminder-card">
+            <div class="reminder-icon">🌱</div>
+            <div class="reminder-info">
+              <h4>吉娃娃莲 · 施肥</h4>
+              <p>每 30 天一次</p>
+            </div>
+            <div class="reminder-time">
+              <div class="time">周三</div>
+              <div class="status">10:00</div>
+            </div>
+          </div>
+
+          <div class="reminder-card">
+            <div class="reminder-icon">☀️</div>
+            <div class="reminder-info">
+              <h4>生石花 · 转露养</h4>
+              <p>适应期结束 · 可搬出</p>
+            </div>
+            <div class="reminder-time">
+              <div class="time">周五</div>
+              <div class="status">08:00</div>
+            </div>
+          </div>
+
+          <div class="reminder-card">
+            <div class="reminder-icon">🐛</div>
+            <div class="reminder-info">
+              <h4>全体肉肉 · 巡检</h4>
+              <p>病虫害检查</p>
+            </div>
+            <div class="reminder-time">
+              <div class="time">周六</div>
+              <div class="status">09:30</div>
+            </div>
+          </div>
+
+          <div class="section-label" style="margin-top: 22px;">7 月养护日历</div>
+          <div class="calendar-card">
+            <div class="calendar-header">
+              <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+            </div>
+            <div class="calendar-grid">
+              <span style="color: #ccc;">30</span>
+              <span class="cal-day">1</span>
+              <span class="cal-day">2</span>
+              <span class="cal-day active event">3</span>
+              <span class="cal-day">4</span>
+              <span class="cal-day event">5</span>
+              <span class="cal-day">6</span>
+            </div>
+            <div class="calendar-legend">
+              <span><span class="legend-box" style="background: #1E1B18;"></span> 今天</span>
+              <span><span class="legend-box" style="background: none; border-color: #C41E3A;"></span> 浇水</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+          <a href="#" class="nav-item active"><span class="nav-icon">🔔</span><span>提醒</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 月历视图 -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+        <div class="screen-content">
+          <div class="stamp-badge">月历</div>
+          <div class="screen-title">养护月历</div>
+          <div class="screen-subtitle">7 月 · 2024 · 全景视图</div>
+
+          <div class="today-card">
+            <div class="today-icon">📅</div>
+            <div class="today-info">
+              <div class="today-big">8</div>
+              <div class="today-label">3 项养护任务</div>
+              <div class="today-date">2024年7月8日 · 周一</div>
+            </div>
+          </div>
+
+          <div class="calendar-card">
+            <div class="month-header">
+              <span class="month-label">2024 / 7</span>
+              <div class="month-nav">
+                <div class="month-nav-btn">◀</div>
+                <div class="month-nav-btn">▶</div>
+              </div>
+            </div>
+            <div class="weekday-row">
+              <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+            </div>
+            <div class="day-grid" id="calGrid"></div>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:var(--new-plant)"></span>新买</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--water)"></span>浇水</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--fertilize)"></span>施肥</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--pest)"></span>杀虫</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--repot)"></span>换盆</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--divide)"></span>分苗</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--merge)"></span>合盆</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--enclosed)"></span>闷养</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--outdoor)"></span>露养</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--mount)"></span>上板</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--death)"></span>死亡</div>
+            </div>
+          </div>
+
+          <div class="events-title" id="eventsTitle">7月8日 · 事件</div>
+          <div id="eventsList"></div>
+        </div>
+        <div class="bottom-nav">
+          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+          <a href="#" class="nav-item active"><span class="nav-icon">📅</span><span>月历</span></a>
+          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 事件列表 -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+        <div class="screen-content">
+          <div class="screen-title">7月养护记录</div>
+          <div class="screen-subtitle">本月共 15 次养护</div>
+
+          <div class="events-title">7月8日 · 今天</div>
+          <div class="event-item">
+            <div class="event-icon">💧</div>
+            <div class="event-info"><h4>桃蛋小丸子 · 浇水</h4><p>07:30 · 100ml</p></div>
+            <span class="event-tag tag-water">浇水</span>
+          </div>
+          <div class="event-item">
+            <div class="event-icon">🌱</div>
+            <div class="event-info"><h4>新买 · 熊童子</h4><p>花市购入 · ￥38</p></div>
+            <span class="event-tag tag-plant">新买</span>
+          </div>
+          <div class="event-item">
+            <div class="event-icon">🐛</div>
+            <div class="event-info"><h4>吉娃娃莲 · 杀虫</h4><p>蚧壳虫处理</p></div>
+            <span class="event-tag tag-pest">杀虫</span>
+          </div>
+
+          <div class="events-title" style="margin-top: 18px;">7月6日</div>
+          <div class="event-item">
+            <div class="event-icon">💧</div>
+            <div class="event-info"><h4>吉娃娃莲 · 浇水</h4><p>18:00 · 80ml</p></div>
+            <span class="event-tag tag-water">浇水</span>
+          </div>
+          <div class="event-item">
+            <div class="event-icon">✂️</div>
+            <div class="event-info"><h4>玉露 · 分苗</h4><p>侧芽分离 · 3株</p></div>
+            <span class="event-tag tag-divide">分苗</span>
+          </div>
+
+          <div class="events-title" style="margin-top: 18px;">7月3日</div>
+          <div class="event-item">
+            <div class="event-icon">🪴</div>
+            <div class="event-info"><h4>玉露 · 换盆</h4><p>塑料盆 → 陶土盆</p></div>
+            <span class="event-tag tag-repot">换盆</span>
+          </div>
+          <div class="event-item">
+            <div class="event-icon">💧</div>
+            <div class="event-info"><h4>桃蛋小丸子 · 浇水</h4><p>08:00 · 100ml</p></div>
+            <span class="event-tag tag-water">浇水</span>
+          </div>
+
+          <div class="events-title" style="margin-top: 18px;">7月1日</div>
+          <div class="event-item">
+            <div class="event-icon">💀</div>
+            <div class="event-info"><h4>静夜 · 已死亡</h4><p>黑腐病 · 纪念碑</p></div>
+            <span class="event-tag tag-death">死亡</span>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+          <a href="#" class="nav-item active"><span class="nav-icon">📅</span><span>月历</span></a>
+          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 纪念碑页面 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">植物纪念碑</div>
+        <div class="screen-subtitle">那些曾经陪伴过我的肉肉</div>
+        <div class="memorial-hero">
+          <div class="memorial-title">累计纪念</div>
+          <div class="memorial-count" id="memCountAmer">4</div>
+          <div class="memorial-motto">"每一株植物都曾向阳而生"</div>
+        </div>
+        <div class="memorial-grid" id="memGridAmer"></div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">🕯️</span><span>纪念碑</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 小票页面 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title" id="receiptScreenTitle">本月账单</div>
+        <div class="screen-subtitle" id="receiptScreenSub">7月购入 · ¥307</div>
+
+        <div class="period-tabs">
+          <div class="period-tab" onclick="switchPeriod('day')">当日</div>
+          <div class="period-tab" onclick="switchPeriod('month')">月度</div>
+          <div class="period-tab" onclick="switchPeriod('quarter')">季度</div>
+          <div class="period-tab" onclick="switchPeriod('year')">年度</div>
+        </div>
+
+        <div class="receipt-wrapper">
+          <div class="receipt-paper" id="receiptAmer">
+            <div class="receipt-stamp" id="receiptStamp">已结清</div>
+            <div class="receipt-header">
+              <div class="store-name">多肉植物园</div>
+              <div class="store-sub">多肉植物园 · 自然之美</div>
+            </div>
+            <hr class="receipt-dots">
+            <div class="receipt-meta">
+              <span id="receiptOrderNo">订单: SG-20240708-001</span><span id="receiptDate">日期: 2024/07/08</span>
+            </div>
+            <div class="receipt-meta">
+              <span>园丁: 小园丁</span><span id="receiptPeriodLabel">周期: 当日</span>
+            </div>
+            <hr class="receipt-dots">
+            <table class="receipt-table">
+              <thead><tr><th>品名</th><th class="col-qty">数量</th><th class="col-price">单价</th><th class="col-sub">小计</th></tr></thead>
+              <tbody id="receiptBodyAmer"></tbody>
+            </table>
+            <hr class="receipt-dots">
+            <div class="receipt-total">
+              <span class="total-label">合计</span><span id="receiptTotalAmer">¥0</span>
+            </div>
+            <div class="receipt-footer">
+              <strong id="receiptCountAmer">0</strong> <span id="receiptFooterLabel">本月</span>共购入<br>
+              感谢您对肉肉的喜爱
+            </div>
+            <div class="receipt-barcode">
+              <svg viewBox="0 0 160 36"><rect x="2" y="2" width="2" height="32" fill="#1E1B18"/><rect x="6" y="2" width="1" height="32" fill="#1E1B18"/><rect x="9" y="2" width="3" height="32" fill="#1E1B18"/><rect x="14" y="2" width="1" height="32" fill="#1E1B18"/><rect x="17" y="2" width="2" height="32" fill="#1E1B18"/><rect x="21" y="2" width="4" height="32" fill="#1E1B18"/><rect x="27" y="2" width="1" height="32" fill="#1E1B18"/><rect x="30" y="2" width="2" height="32" fill="#1E1B18"/><rect x="34" y="2" width="3" height="32" fill="#1E1B18"/><rect x="39" y="2" width="1" height="32" fill="#1E1B18"/><rect x="42" y="2" width="2" height="32" fill="#1E1B18"/><rect x="46" y="2" width="4" height="32" fill="#1E1B18"/><rect x="52" y="2" width="1" height="32" fill="#1E1B18"/><rect x="55" y="2" width="2" height="32" fill="#1E1B18"/><rect x="59" y="2" width="3" height="32" fill="#1E1B18"/><rect x="64" y="2" width="1" height="32" fill="#1E1B18"/><rect x="67" y="2" width="2" height="32" fill="#1E1B18"/><rect x="71" y="2" width="4" height="32" fill="#1E1B18"/><rect x="77" y="2" width="1" height="32" fill="#1E1B18"/><rect x="80" y="2" width="2" height="32" fill="#1E1B18"/><rect x="84" y="2" width="3" height="32" fill="#1E1B18"/><rect x="89" y="2" width="1" height="32" fill="#1E1B18"/><rect x="92" y="2" width="4" height="32" fill="#1E1B18"/><rect x="98" y="2" width="2" height="32" fill="#1E1B18"/><rect x="102" y="2" width="1" height="32" fill="#1E1B18"/><rect x="105" y="2" width="3" height="32" fill="#1E1B18"/><rect x="110" y="2" width="2" height="32" fill="#1E1B18"/><rect x="114" y="2" width="1" height="32" fill="#1E1B18"/><rect x="117" y="2" width="2" height="32" fill="#1E1B18"/><rect x="121" y="2" width="4" height="32" fill="#1E1B18"/><rect x="127" y="2" width="1" height="32" fill="#1E1B18"/><rect x="130" y="2" width="3" height="32" fill="#1E1B18"/><rect x="135" y="2" width="2" height="32" fill="#1E1B18"/><rect x="139" y="2" width="1" height="32" fill="#1E1B18"/><rect x="142" y="2" width="3" height="32" fill="#1E1B18"/><rect x="147" y="2" width="1" height="32" fill="#1E1B18"/><rect x="150" y="2" width="2" height="32" fill="#1E1B18"/><rect x="154" y="2" width="4" height="32" fill="#1E1B18"/></svg>
+            </div>
+            <div class="receipt-perforation">
+              <div class="receipt-footer" style="margin-top: 4px;">
+                <span id="receiptSerialNo">小票编号: SG240708-001</span><br>
+                多肉植物园 · 让每一株都被温柔以待
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">🧾</span><span>小票</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 花架摆放页面 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">花架摆放</div>
+        <div class="screen-subtitle">拖拽植物到花架 · 与现实同步</div>
+
+        <div class="shelf-hero" id="shelfHeroAmer">
+          <div class="shelf-selector">
+            <div class="shelf-style-btn active" onclick="selectShelfStyle('wooden', this)">三层架</div>
+            <div class="shelf-style-btn" onclick="selectShelfStyle('grid', this)">网格架</div>
+            <div class="shelf-style-btn" onclick="selectShelfStyle('ladder', this)">阶梯架</div>
+            <div class="shelf-style-btn" onclick="selectShelfStyle('wall', this)">壁挂架</div>
+          </div>
+          <div class="shelf-area" id="shelfAreaAmer"></div>
+          <div class="shelf-label-tag" id="shelfLabelAmer">木质三层</div>
+          <div class="plant-tray">
+            <div class="tray-label">待放置植物 · 拖拽到花架</div>
+            <div class="tray-plants" id="trayPlantsAmer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">🪴</span><span>花架</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    const events = {
+      1: [{type:'death',plant:'静夜',note:'黑腐病'}],
+      3: [{type:'repot',plant:'玉露',note:'换陶土盆'},{type:'water',plant:'桃蛋小丸子',note:'100ml'}],
+      5: [{type:'fertilize',plant:'吉娃娃莲',note:'稀释多肉专用肥'}],
+      6: [{type:'water',plant:'吉娃娃莲',note:'80ml'},{type:'divide',plant:'玉露',note:'侧芽分离·3株'}],
+      8: [{type:'water',plant:'桃蛋小丸子',note:'100ml'},{type:'plant',plant:'熊童子',note:'新购入'},{type:'pest',plant:'吉娃娃莲',note:'蚧壳虫处理'}],
+      10: [{type:'water',plant:'桃蛋小丸子',note:'100ml'}],
+      12: [{type:'enclosed',plant:'熊童子',note:'转为闷养'}],
+      13: [{type:'water',plant:'吉娃娃莲',note:'80ml'},{type:'repot',plant:'熊童子',note:'换大盆'}],
+      15: [{type:'pest',plant:'玉露',note:'预防喷药'}],
+      18: [{type:'outdoor',plant:'生石花',note:'转露养·适应期'}],
+      20: [{type:'water',plant:'桃蛋小丸子',note:'100ml'},{type:'water',plant:'吉娃娃莲',note:'80ml'}],
+      22: [{type:'mount',plant:'碧光环',note:'上板·水苔固定'}],
+      25: [{type:'plant',plant:'生石花',note:'新购入·￥45'},{type:'merge',plant:'桃蛋小丸子',note:'与桃蛋B合盆'}],
+      28: [{type:'water',plant:'桃蛋小丸子',note:'100ml'}],
+    };
+    const typeDot = { water:'dot-water', plant:'dot-plant', repot:'dot-repot', pest:'dot-pest', death:'dot-death', fertilize:'dot-fertilize', divide:'dot-divide', merge:'dot-merge', enclosed:'dot-enclosed', outdoor:'dot-outdoor', mount:'dot-mount' };
+    const typeLabel = { water:'浇水', plant:'新买', repot:'换盆', pest:'杀虫', death:'死亡', fertilize:'施肥', divide:'分苗', merge:'合盆', enclosed:'闷养', outdoor:'露养', mount:'上板' };
+    const typeLabelEN = { water:'浇水', plant:'新买', repot:'换盆', pest:'杀虫', death:'死亡', fertilize:'施肥', divide:'分苗', merge:'合盆', enclosed:'闷养', outdoor:'露养', mount:'上板' };
+    const typeEmoji = { water:'💧', plant:'🌱', repot:'🪴', pest:'🐛', death:'💀', fertilize:'🌿', divide:'✂️', merge:'🧩', enclosed:'🏠', outdoor:'☀️', mount:'🪵' };
+    const typeTag = { water:'tag-water', plant:'tag-plant', repot:'tag-repot', pest:'tag-pest', death:'tag-death', fertilize:'tag-fertilize', divide:'tag-divide', merge:'tag-merge', enclosed:'tag-enclosed', outdoor:'tag-outdoor', mount:'tag-mount' };
+    let selected = 8;
+
+    function renderCalendar() {
+      const grid = document.getElementById('calGrid');
+      let html = '<div class="day-cell dim">30</div>';
+      for (let d = 1; d <= 31; d++) {
+        let cls = 'day-cell';
+        if (d === 8) cls += ' today';
+        if (d === selected && d !== 8) cls += ' selected';
+        let dots = '';
+        if (events[d]) {
+          const types = [...new Set(events[d].map(e=>e.type))];
+          dots = '<div class="day-dots">' + types.map(t => `<span class="day-dot ${typeDot[t]}"></span>`).join('') + '</div>';
+        }
+        html += `<div class="${cls}" onclick="selectDay(${d})">${d}${dots}</div>`;
+      }
+      for (let d = 1; d <= 3; d++) html += `<div class="day-cell dim">${d}</div>`;
+      grid.innerHTML = html;
+    }
+
+    function selectDay(d) {
+      selected = d;
+      document.getElementById('eventsTitle').textContent = `7月${d}日 · 事件`;
+      const list = document.getElementById('eventsList');
+      const dayEvents = events[d];
+      if (!dayEvents) {
+        list.innerHTML = '<div class="empty-events">这天没有养护记录</div>';
+      } else {
+        list.innerHTML = dayEvents.map(e => `
+          <div class="event-item">
+            <div class="event-icon">${typeEmoji[e.type]}</div>
+            <div class="event-info"><h4>${e.plant} · ${typeLabel[e.type]}</h4><p>${e.note}</p></div>
+            <span class="event-tag ${typeTag[e.type]}">${typeLabelEN[e.type]}</span>
+          </div>`).join('');
+      }
+      renderCalendar();
+    }
+
+    renderCalendar();
+    selectDay(8);
+
+    // 纪念碑数据
+    const memorials = [
+      {emoji:'🌸',name:'静夜',adopted:'2024.02.12',parted:'2024.07.01',cause:'黑腐病',causeType:'death'},
+      {emoji:'🌿',name:'蓝石莲',adopted:'2023.11.05',parted:'2024.05.20',cause:'浇水过多',causeType:'death'},
+      {emoji:'🍃',name:'冰莓',adopted:'2024.01.18',parted:'2024.04.08',cause:'蚧壳虫',causeType:'pest'},
+      {emoji:'💐',name:'花月夜',adopted:'2023.09.22',parted:'2024.03.15',cause:'冻伤',causeType:'death'},
+    ];
+    const memGridA = document.getElementById('memGridAmer');
+    memorials.forEach(m => {
+      memGridA.innerHTML += `<div class="memorial-card">
+        <span class="mem-ribbon">🎗️</span><span class="mem-candle">🕯️</span>
+        <div class="mem-emoji">${m.emoji}</div>
+        <div class="mem-name">${m.name}</div>
+        <div class="mem-dates">${m.adopted} — ${m.parted}</div>
+        <div class="mem-cause">${m.cause}</div>
+      </div>`;
+    });
+    document.getElementById('memCountAmer').textContent = memorials.length;
+
+    // 小票数据 - 多周期
+    const receiptData = {
+      day: {
+        title: '当日账单', sub: '7月8日 · ¥63', stamp: '已结清',
+        orderNo: '订单: SG-20240708-001', date: '日期: 2024/07/08',
+        periodLabel: '周期: 当日', footerLabel: '今日', serialNo: '小票编号: SG240708-001',
+        items: [
+          {emoji:'🌵',name:'桃蛋',qty:1,price:28},
+          {emoji:'🪴',name:'吉娃娃莲',qty:1,price:35},
+        ]
+      },
+      month: {
+        title: '本月账单', sub: '7月购入 · ¥307', stamp: '已结清',
+        orderNo: '订单: SG-202407-008', date: '日期: 2024/07/08',
+        periodLabel: '周期: 7月', footerLabel: '本月', serialNo: '小票编号: SG240708-001',
+        items: [
+          {emoji:'🌵',name:'桃蛋',qty:2,price:28},
+          {emoji:'🪴',name:'吉娃娃莲',qty:1,price:35},
+          {emoji:'🌿',name:'熊童子',qty:1,price:38},
+          {emoji:'🎋',name:'生石花',qty:3,price:15},
+          {emoji:'🪷',name:'玉露',qty:1,price:45},
+          {emoji:'🌸',name:'静夜',qty:1,price:18},
+        ]
+      },
+      quarter: {
+        title: '本季账单', sub: 'Q3 购入 · ¥582', stamp: '已结清',
+        orderNo: '订单: SG-2024Q3-003', date: '日期: 2024/07/01-09/30',
+        periodLabel: '周期: 第三季度', footerLabel: '本季', serialNo: '小票编号: SG24Q3-003',
+        items: [
+          {emoji:'🌵',name:'桃蛋',qty:3,price:28},
+          {emoji:'🪴',name:'吉娃娃莲',qty:2,price:35},
+          {emoji:'🌿',name:'熊童子',qty:2,price:38},
+          {emoji:'🎋',name:'生石花',qty:5,price:15},
+          {emoji:'🪷',name:'玉露',qty:2,price:45},
+          {emoji:'🌸',name:'静夜',qty:2,price:18},
+          {emoji:'🍃',name:'碧光环',qty:1,price:22},
+          {emoji:'🪨',name:'五十铃玉',qty:1,price:30},
+        ]
+      },
+      year: {
+        title: '年度账单', sub: '2024年购入 · ¥1,128', stamp: '已结清',
+        orderNo: '订单: SG-2024-001', date: '日期: 2024/01/01-12/31',
+        periodLabel: '周期: 2024全年', footerLabel: '本年', serialNo: '小票编号: SG2024-001',
+        items: [
+          {emoji:'🌵',name:'桃蛋',qty:5,price:28},
+          {emoji:'🪴',name:'吉娃娃莲',qty:3,price:35},
+          {emoji:'🌿',name:'熊童子',qty:3,price:38},
+          {emoji:'🎋',name:'生石花',qty:8,price:15},
+          {emoji:'🪷',name:'玉露',qty:3,price:45},
+          {emoji:'🌸',name:'静夜',qty:3,price:18},
+          {emoji:'🍃',name:'碧光环',qty:2,price:22},
+          {emoji:'🪨',name:'五十铃玉',qty:2,price:30},
+          {emoji:'🌳',name:'黑法师',qty:1,price:55},
+          {emoji:'🍇',name:'虹之玉',qty:2,price:25},
+        ]
+      }
+    };
+
+    function renderReceipt(period) {
+      const d = receiptData[period];
+      document.getElementById('receiptScreenTitle').textContent = d.title;
+      document.getElementById('receiptScreenSub').textContent = d.sub;
+      document.getElementById('receiptStamp').textContent = d.stamp;
+      document.getElementById('receiptOrderNo').textContent = d.orderNo;
+      document.getElementById('receiptDate').textContent = d.date;
+      document.getElementById('receiptPeriodLabel').textContent = d.periodLabel;
+      document.getElementById('receiptFooterLabel').textContent = d.footerLabel;
+      document.getElementById('receiptSerialNo').textContent = d.serialNo;
+
+      let total = 0, count = 0;
+      const body = document.getElementById('receiptBodyAmer');
+      body.innerHTML = '';
+      d.items.forEach(p => {
+        const sub = p.qty * p.price;
+        total += sub; count += p.qty;
+        body.innerHTML += `<tr><td><span class="item-name"><span class="item-emoji">${p.emoji}</span>${p.name}</span></td><td class="col-qty">${p.qty}</td><td class="col-price">¥${p.price}</td><td class="col-sub">¥${sub}</td></tr>`;
+      });
+      document.getElementById('receiptTotalAmer').textContent = '¥' + total;
+      document.getElementById('receiptCountAmer').textContent = count;
+
+      document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.period-tab')[['day','month','quarter','year'].indexOf(period)].classList.add('active');
+    }
+
+    function switchPeriod(period) { renderReceipt(period); }
+
+    renderReceipt('month');
+
+    // 天气花架
+    const plantsAmer = [
+      {emoji:'🌵',name:'桃蛋小丸子'},{emoji:'🪴',name:'吉娃娃莲'},{emoji:'🌿',name:'熊童子'},
+      {emoji:'🎋',name:'生石花'},{emoji:'🪷',name:'玉露'},{emoji:'🍃',name:'碧光环'},
+      {emoji:'🌸',name:'长寿花'},{emoji:'🌱',name:'小苍角殿'},
+    ];
+    const weathersAmer = [
+      {type:'sunny',icon:'☀️',temp:'32°',desc:'晴朗 · 适合晒太阳'},
+      {type:'rainy',icon:'🌧️',temp:'22°',desc:'雨天 · 记得关窗'},
+      {type:'cloudy',icon:'☁️',temp:'26°',desc:'多云 · 温和舒适'},
+      {type:'snowy',icon:'❄️',temp:'-2°',desc:'小雪 · 注意保暖'},
+      {type:'thunder',icon:'⛈️',temp:'24°',desc:'雷雨 · 别放室外'},
+    ];
+    const pAmer = plantsAmer[Math.floor(Math.random()*plantsAmer.length)];
+    const wAmer = weathersAmer[Math.floor(Math.random()*weathersAmer.length)];
+    document.getElementById('weatherBgAmer').className = 'weather-bg ' + wAmer.type;
+    document.getElementById('weatherInfoAmer').innerHTML = '<span class="weather-icon-big">'+wAmer.icon+'</span><div><div class="weather-temp">'+wAmer.temp+'</div><div class="weather-desc">'+wAmer.desc+'</div></div>';
+    document.getElementById('standPotAmer').textContent = pAmer.emoji;
+    document.getElementById('plantTagAmer').textContent = pAmer.name + ' · 今日C位';
+
+    const pa = document.getElementById('weatherParticlesAmer');
+    if(wAmer.type==='rainy'||wAmer.type==='thunder'){
+      for(let i=0;i<40;i++){
+        const d=document.createElement('div');d.className='raindrop';
+        d.style.left=Math.random()*100+'%';d.style.height=(8+Math.random()*14)+'px';
+        d.style.animationDuration=(0.6+Math.random()*0.8)+'s';
+        d.style.animationDelay=(Math.random()*2)+'s';
+        pa.appendChild(d);
+      }
+      if(wAmer.type==='thunder'){
+        const l=document.createElement('div');l.className='lightning';pa.appendChild(l);
+      }
+    } else if(wAmer.type==='snowy'){
+      for(let i=0;i<30;i++){
+        const d=document.createElement('div');d.className='snowflake';
+        d.style.left=Math.random()*100+'%';d.style.width=d.style.height=(4+Math.random()*6)+'px';
+        d.style.animationDuration=(2+Math.random()*3)+'s';
+        d.style.animationDelay=(Math.random()*3)+'s';
+        pa.appendChild(d);
+      }
+    } else {
+      if(wAmer.type==='sunny'){
+        const s=document.createElement('div');s.className='sun';pa.appendChild(s);
+      }
+      const c1=document.createElement('div');c1.className='cloud cloud-1';
+      if(wAmer.type==='snowy'||wAmer.type==='rainy') c1.classList.add('cloud-dark');
+      pa.appendChild(c1);
+      if(wAmer.type!=='sunny'){
+        const c2=document.createElement('div');c2.className='cloud cloud-2';
+        if(wAmer.type==='snowy'||wAmer.type==='rainy') c2.classList.add('cloud-dark');
+        pa.appendChild(c2);
+      }
+    }
+
+    // 花架系统
+    const allPlants = [
+      {emoji:'🌵',name:'桃蛋'},{emoji:'🪴',name:'吉娃娃莲'},{emoji:'🌿',name:'熊童子'},
+      {emoji:'🎋',name:'生石花'},{emoji:'🪷',name:'玉露'},{emoji:'🍃',name:'碧光环'},
+      {emoji:'🌸',name:'长寿花'},{emoji:'🌱',name:'小苍角殿'},
+    ];
+
+    // 每个花架风格有不同数量的槽位
+    const shelfLayouts = {
+      wooden: { slots: 9, tierSizes: [3,3,3], label: '木质三层' },
+      grid: { slots: 6, tierSizes: [6], label: '铁艺网格' },
+      ladder: { slots: 6, tierSizes: [2,2,2], label: '阶梯花架' },
+      wall: { slots: 6, tierSizes: [2,2,2], label: '壁挂花架' },
+    };
+
+    let currentShelf = 'wooden';
+    let shelfSlots = {}; // {style: [null|{plantIndex}, ...]}
+    let draggedFrom = null; // {type:'shelf'|'tray', index: number}
+    let draggedPlantIdx = null;
+
+    // 初始化所有花架的槽位
+    function initShelves() {
+      for (let style in shelfLayouts) {
+        shelfSlots[style] = new Array(shelfLayouts[style].slots).fill(null);
+      }
+      // 默认在木质架上预放几盆
+      shelfSlots['wooden'][0] = 0;
+      shelfSlots['wooden'][1] = 1;
+      shelfSlots['wooden'][3] = 2;
+      shelfSlots['wooden'][4] = 3;
+      shelfSlots['wooden'][6] = 4;
+      shelfSlots['wooden'][7] = 5;
+    }
+
+    function getTrayPlants() {
+      const onShelf = new Set();
+      const slots = shelfSlots[currentShelf];
+      for (let i = 0; i < slots.length; i++) {
+        if (slots[i] !== null) onShelf.add(slots[i]);
+      }
+      return allPlants.map((p, i) => onShelf.has(i) ? null : {plant:p, idx:i}).filter(x => x !== null);
+    }
+
+    function renderShelf() {
+      const area = document.getElementById('shelfAreaAmer');
+      const layout = shelfLayouts[currentShelf];
+      const slots = shelfSlots[currentShelf];
+      let html = '';
+      let slotIdx = 0;
+
+      if (currentShelf === 'wooden') {
+        html += '<div class="shelf-wooden">';
+        for (let t = 0; t < 3; t++) {
+          html += '<div class="shelf-tier">';
+          for (let s = 0; s < 3; s++) {
+            html += renderSlot(slotIdx, slots[slotIdx]);
+            slotIdx++;
+          }
+          html += '</div>';
+        }
+        html += '</div>';
+      } else if (currentShelf === 'grid') {
+        html += '<div class="shelf-grid">';
+        for (let s = 0; s < 6; s++) {
+          html += renderSlot(slotIdx, slots[slotIdx]);
+          slotIdx++;
+        }
+        html += '</div>';
+      } else if (currentShelf === 'ladder') {
+        html += '<div class="shelf-ladder">';
+        for (let t = 0; t < 3; t++) {
+          html += '<div class="shelf-step">';
+          for (let s = 0; s < 2; s++) {
+            html += renderSlot(slotIdx, slots[slotIdx]);
+            slotIdx++;
+          }
+          html += '</div>';
+        }
+        html += '</div>';
+      } else if (currentShelf === 'wall') {
+        html += '<div class="shelf-wall">';
+        for (let t = 0; t < 3; t++) {
+          html += '<div class="shelf-wall-shelf">';
+          for (let s = 0; s < 2; s++) {
+            html += renderSlot(slotIdx, slots[slotIdx]);
+            slotIdx++;
+          }
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+      area.innerHTML = html;
+
+      // 渲染托盘
+      const tray = document.getElementById('trayPlantsAmer');
+      const trayPlants = getTrayPlants();
+      if (trayPlants.length === 0) {
+        tray.innerHTML = '<div class="tray-empty">所有植物已上架</div>';
+      } else {
+        tray.innerHTML = trayPlants.map(tp => `
+          <div class="tray-plant" draggable="true"
+               ondragstart="trayDragStart(event, ${tp.idx})"
+               ondragend="dragEnd(event)"
+               ontouchstart="touchStart(event, 'tray', ${tp.idx})"
+               ontouchmove="touchMove(event)"
+               ontouchend="touchEnd(event)">
+            ${tp.plant.emoji}
+            <span class="tray-plant-name">${tp.plant.name}</span>
+          </div>`).join('');
+      }
+
+      // 绑定货架拖拽事件
+      area.querySelectorAll('.shelf-slot').forEach(slot => {
+        slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
+        slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+        slot.addEventListener('drop', e => {
+          e.preventDefault();
+          slot.classList.remove('drag-over');
+          const idx = parseInt(slot.dataset.slotIndex);
+          handleDrop('shelf', idx);
+        });
+      });
+    }
+
+    function renderSlot(idx, plantIdx) {
+      const occupied = plantIdx !== null;
+      const inner = occupied ? `<span class="slot-plant">${allPlants[plantIdx].emoji}</span>` : '';
+      const cls = 'shelf-slot' + (occupied ? ' occupied' : '');
+      if (occupied) {
+        return `<div class="${cls}" draggable="true"
+          data-slot-index="${idx}"
+          ondragstart="shelfDragStart(event, ${idx})"
+          ondragend="dragEnd(event)"
+          ontouchstart="touchStart(event, 'shelf', ${idx})"
+          ontouchmove="touchMove(event)"
+          ontouchend="touchEnd(event)">
+          ${inner}<span class="slot-number">${idx+1}</span></div>`;
+      } else {
+        return `<div class="${cls}" data-slot-index="${idx}">${inner}<span class="slot-number">${idx+1}</span></div>`;
+      }
+    }
+
+    function trayDragStart(e, plantIdx) {
+      draggedFrom = {type:'tray', index: plantIdx};
+      draggedPlantIdx = plantIdx;
+      e.target.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', '');
+    }
+
+    function shelfDragStart(e, slotIdx) {
+      draggedFrom = {type:'shelf', index: slotIdx};
+      draggedPlantIdx = shelfSlots[currentShelf][slotIdx];
+      e.target.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', '');
+    }
+
+    function dragEnd(e) {
+      e.target.classList.remove('dragging');
+      document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+    }
+
+    function handleDrop(targetType, targetIdx) {
+      if (!draggedFrom) return;
+      const slots = shelfSlots[currentShelf];
+
+      if (draggedFrom.type === 'tray' && targetType === 'shelf') {
+        if (slots[targetIdx] !== null) return; // 槽位已占用
+        slots[targetIdx] = draggedPlantIdx;
+      } else if (draggedFrom.type === 'shelf' && targetType === 'shelf') {
+        // 交换或移动
+        const temp = slots[draggedFrom.index];
+        slots[draggedFrom.index] = slots[targetIdx];
+        slots[targetIdx] = temp;
+      } else if (draggedFrom.type === 'shelf' && targetType === 'tray') {
+        // 从花架移回托盘
+        slots[draggedFrom.index] = null;
+      }
+
+      draggedFrom = null;
+      draggedPlantIdx = null;
+      renderShelf();
+    }
+
+    // 触摸事件（移动端）
+    let touchClone = null;
+    let touchStartX, touchStartY;
+    function touchStart(e, type, idx) {
+      if (e.touches.length !== 1) return;
+      draggedFrom = {type, index: idx};
+      if (type === 'shelf') draggedPlantIdx = shelfSlots[currentShelf][idx];
+      else draggedPlantIdx = idx;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      // 创建拖拽克隆
+      const plant = allPlants[draggedPlantIdx];
+      touchClone = document.createElement('div');
+      touchClone.textContent = plant.emoji;
+      touchClone.style.cssText = 'position:fixed;z-index:9999;font-size:36px;pointer-events:none;opacity:0.85;transform:translate(-50%,-50%);';
+      touchClone.style.left = touchStartX + 'px';
+      touchClone.style.top = touchStartY + 'px';
+      document.body.appendChild(touchClone);
+      e.target.classList.add('dragging');
+      e.preventDefault();
+    }
+    function touchMove(e) {
+      if (!touchClone) return;
+      touchClone.style.left = e.touches[0].clientX + 'px';
+      touchClone.style.top = e.touches[0].clientY + 'px';
+      // 高亮触碰的槽位
+      const el = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+      document.querySelectorAll('.drag-over').forEach(e => e.classList.remove('drag-over'));
+      if (el && el.classList.contains('shelf-slot')) el.classList.add('drag-over');
+      e.preventDefault();
+    }
+    function touchEnd(e) {
+      if (touchClone) { touchClone.remove(); touchClone = null; }
+      document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+      const el = document.elementFromPoint(
+        e.changedTouches[0].clientX, e.changedTouches[0].clientY
+      );
+      document.querySelectorAll('.drag-over').forEach(e => e.classList.remove('drag-over'));
+      if (el && el.classList.contains('shelf-slot')) {
+        handleDrop('shelf', parseInt(el.dataset.slotIndex));
+      } else if (el && el.closest('.plant-tray')) {
+        handleDrop('tray', -1);
+      } else {
+        draggedFrom = null; draggedPlantIdx = null;
+      }
+    }
+
+    function selectShelfStyle(style, btn) {
+      currentShelf = style;
+      document.getElementById('shelfLabelAmer').textContent = shelfLayouts[style].label;
+      document.querySelectorAll('.shelf-style-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderShelf();
+    }
+
+    initShelves();
+    renderShelf();
+  </script>
+</body>
+</html>

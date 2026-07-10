@@ -1,0 +1,8 @@
+*.JPG
+*.HEIC
+*.jpg
+*.heic
+*.png
+.DS_Store
+node_modules/
+.server.js.un~

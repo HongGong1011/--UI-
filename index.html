@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多肉成长记 · UI 原型方案</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #F7F2E9 0%, #E8DDD2 100%);
+      color: #2D3433;
+      padding: 60px 24px;
+      min-height: 100vh;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 48px; }
+    header h1 { font-size: 34px; font-weight: 700; margin-bottom: 12px; color: #5B8C5A; }
+    header p { font-size: 16px; color: #7A8A7A; line-height: 1.7; max-width: 680px; margin: 0 auto; }
+    .summary {
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
+      border-radius: 24px; padding: 28px; margin-bottom: 40px;
+      border: 1px solid rgba(91,140,90,0.12);
+    }
+    .summary h2 { font-size: 18px; margin-bottom: 14px; color: #4A6E49; }
+    .summary ul { list-style: none; display: grid; gap: 10px; }
+    .summary li { padding-left: 22px; position: relative; color: #4A554A; font-size: 15px; line-height: 1.6; }
+    .summary li::before { content: "🌱"; position: absolute; left: 0; top: 1px; }
+    .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 720px) { .style-grid { grid-template-columns: 1fr; } }
+    .style-card {
+      background: #FFFFFF; border-radius: 28px; padding: 28px;
+      box-shadow: 0 8px 30px rgba(45,65,45,0.08); border: 1px solid rgba(91,140,90,0.1);
+      transition: transform 0.2s ease;
+    }
+    .style-card:hover { transform: translateY(-4px); }
+    .style-card h3 { font-size: 20px; margin-bottom: 8px; }
+    .style-card .tagline { font-size: 14px; color: #7A8A7A; margin-bottom: 18px; }
+    .style-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .style-meta span { font-size: 12px; padding: 6px 12px; border-radius: 12px; background: #F1F7F1; color: #5B8C5A; }
+    .btn-open {
+      display: inline-flex; align-items: center; gap: 6px; padding: 12px 22px;
+      border-radius: 20px; background: #5B8C5A; color: white; text-decoration: none;
+      font-size: 14px; font-weight: 600; box-shadow: 0 4px 14px rgba(91,140,90,0.25);
+    }
+    .page-list { margin-top: 6px; font-size: 12px; color: #9AAA9A; }
+    footer { text-align: center; margin-top: 48px; font-size: 13px; color: #9AAA9A; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>多肉成长记 · UI 原型方案</h1>
+      <p>基于 App 核心功能（成长记录、浇水/施肥/杀虫提醒、照片/语音日记、时间轴、月历养护视图）与你文件夹中的参考风格，设计了 2 套不同气质的手机端 UI 原型，每套包含 8 个核心页面。</p>
+    </header>
+
+    <div class="summary">
+      <h2>App 分析要点</h2>
+      <ul>
+        <li><strong>核心用户</strong>：多肉植物爱好者，希望用照片、语音、文字记录每一盆多肉的成长。</li>
+        <li><strong>主要场景</strong>：日常浇水/施肥/杀虫提醒、按日期整理照片、月历查看养护动态、查看成长时间轴、与朋友分享。</li>
+        <li><strong>情感诉求</strong>：陪伴感、仪式感、治愈感，让养多肉的过程像写日记一样轻松有趣。</li>
+      </ul>
+    </div>
+
+    <div class="style-grid">
+      <div class="style-card">
+        <h3>01 · 温暖手账拼贴风</h3>
+        <div class="tagline">奶油纸感底色、手绘贴纸、胶带与圆角卡片，营造成长日记的仪式感。</div>
+        <div class="style-meta">
+          <span>奶油色</span><span>手绘感</span><span>胶带贴纸</span><span>圆角卡片</span>
+        </div>
+        <div class="page-list">首页 · 详情/时间轴 · 添加记录 · 养护提醒 · 月历视图 · 事件列表 · 小票生成 · 纪念碑 · 花架摆放</div>
+        <a class="btn-open" href="./多肉成长记_温暖手账风.html" target="_blank">查看原型 →</a>
+      </div>
+
+      <div class="style-card">
+        <h3>02 · 美式拼贴撕纸风</h3>
+        <div class="tagline">牛皮纸底色、报纸头条、撕纸边缘、邮票印章、打字机字体，粗粝手工感十足。</div>
+        <div class="style-meta">
+          <span>牛皮纸色</span><span>撕纸边缘</span><span>打字机字体</span><span>报纸头条</span>
+        </div>
+        <div class="page-list">首页 · 详情/时间轴 · 添加记录 · 养护提醒 · 月历视图 · 事件列表 · 小票生成 · 纪念碑 · 花架摆放</div>
+        <a class="btn-open" href="./多肉成长记_美式拼贴撕纸风.html" target="_blank">查看原型 →</a>
+      </div>
+    </div>
+
+    <footer>
+      每个原型均包含首页、详情/时间轴、添加记录、提醒、月历、事件列表、小票生成、纪念碑、花架摆放 9 个核心页面，使用 HTML + CSS + JS 自包含实现。<br>
+      <a href="./对比预览.html" style="display:inline-block;margin-top:12px;padding:10px 20px;background:#5B8C5A;color:white;border-radius:16px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 3px 10px rgba(91,140,90,0.3);">并排对比预览 →</a>
+    </footer>
+  </div>
+</body>
+</html>
