@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>多肉成长记 · 温暖手账拼贴风 UI 原型</title>
+  <title>热带植物成长记 · 温暖手账拼贴风 UI 原型</title>
   <style>
     :root {
       --bg: #F7F2E9;
@@ -1141,12 +1141,484 @@
 .memorial-card .mem-candle { position: absolute; top: 6px; right: 10px; font-size: 14px; }
 .memorial-card .mem-ribbon { position: absolute; top: -4px; left: 8px; font-size: 12px; transform: rotate(-15deg); }
 .mem-empty { text-align: center; padding: 30px; color: var(--ink-light); font-size: 13px; }
+
+/* 植物标本馆 */
+.scan-upload-area {
+  background: var(--paper); border: 2px dashed var(--green); border-radius: 16px;
+  padding: 20px; text-align: center; margin-bottom: 12px; cursor: pointer;
+  transition: all 0.2s;
+}
+.scan-upload-area:hover { border-color: var(--green-dark); background: #E2F0E5; }
+.scan-upload-icon { font-size: 40px; margin-bottom: 6px; }
+.scan-upload-text { font-size: 12px; font-weight: 600; color: var(--ink); }
+.scan-upload-hint { font-size: 10px; color: var(--ink-light); margin-top: 4px; }
+.scan-upload-area input { display: none; }
+.scan-btn-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.scan-btn {
+  flex: 1; padding: 10px 8px; border: 2px solid var(--green); background: var(--paper);
+  font-size: 11px; font-weight: 600; border-radius: 12px; cursor: pointer;
+  text-align: center; transition: all 0.15s; color: var(--green);
+}
+.scan-btn:hover { background: var(--green); color: white; }
+.scan-btn.primary { background: var(--green); color: white; }
+.scan-canvas-wrap {
+  position: relative; background: var(--paper); border: 1px solid #E8E0D6;
+  border-radius: 12px; overflow: hidden; margin-bottom: 10px; display: none;
+}
+.scan-canvas-wrap canvas { display: block; width: 100%; height: auto; }
+.scan-processing {
+  display: none; text-align: center; padding: 16px; font-size: 12px;
+  color: var(--green); font-weight: 500;
+}
+.scan-processing .dot-pulse { display: inline-block; animation: blink 1s infinite; }
+.scan-tolerance-bar {
+  display: none; align-items: center; gap: 8px; padding: 6px 0; margin-bottom: 8px;
+}
+.scan-tolerance-bar label { font-size: 10px; color: var(--ink-light); white-space: nowrap; }
+.scan-tolerance-bar input { flex: 1; accent-color: var(--green); }
+.scan-tolerance-bar span { font-size: 10px; color: var(--ink); min-width: 20px; }
+
+/* 标本画框 */
+.specimen-frame {
+  background: #F5F0E5; border: 3px solid #C4A882; border-radius: 12px; padding: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08); position: relative; margin-bottom: 10px; display: none;
+}
+.specimen-frame .frame-inner {
+  border: 1px solid rgba(196,168,130,0.4); border-radius: 8px; padding: 6px;
+  background: #FFFEF9; text-align: center;
+}
+.specimen-frame .frame-inner img { display: block; width: 100%; height: auto; border-radius: 4px; }
+.specimen-frame .frame-label {
+  text-align: center; margin-top: 6px; font-size: 9px; color: #8B7355; font-weight: 500;
+}
+.specimen-frame .frame-pin {
+  position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px; background: #C4A060; border-radius: 50%;
+  border: 1px solid #8B7355; box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.specimen-save-row {
+  display: none; gap: 8px; margin-bottom: 12px;
+}
+.specimen-save-row .scan-btn { flex: 1; }
+
+/* 标本画廊 */
+.specimen-gallery { margin-top: 8px; }
+.specimen-gallery-title {
+  font-size: 11px; font-weight: 600; color: var(--ink);
+  margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #E8E0D6;
+}
+.specimen-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+  max-height: 260px; overflow-y: auto;
+}
+.specimen-card {
+  background: var(--paper); border: 1px solid #E8E0D6; border-radius: 12px;
+  padding: 4px; text-align: center; cursor: pointer; position: relative;
+  transition: all 0.15s;
+}
+.specimen-card:hover { border-color: var(--green); }
+.specimen-card img { width: 100%; height: auto; display: block; border-radius: 8px; }
+.specimen-card .spec-name {
+  font-size: 9px; color: var(--ink-light); margin-top: 3px;
+}
+.specimen-card .spec-delete {
+  position: absolute; top: 2px; right: 2px; width: 16px; height: 16px;
+  background: var(--terracotta); color: white; border-radius: 50%; font-size: 8px;
+  line-height: 16px; text-align: center; cursor: pointer; display: none; font-weight: 700;
+}
+.specimen-card:hover .spec-delete { display: block; }
+.specimen-empty { text-align: center; padding: 20px; color: var(--ink-light); font-size: 12px; }
+
+/* 花架换盆编辑 */
+.slot-edit-btn {
+  position: absolute; bottom: 2px; right: 2px; width: 16px; height: 16px;
+  background: var(--green); color: white; border-radius: 50%;
+  font-size: 8px; line-height: 16px; text-align: center; cursor: pointer;
+  display: none; z-index: 5; font-weight: 700;
+}
+.shelf-slot.occupied:hover .slot-edit-btn { display: block; }
+.pot-picker-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3); z-index: 1000; justify-content: center; align-items: center;
+}
+.pot-picker-overlay.show { display: flex; }
+.pot-picker-popup {
+  background: var(--paper); border-radius: 20px; padding: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15); max-width: 280px; width: 90%;
+  text-align: center;
+}
+.pot-picker-popup .picker-title {
+  font-size: 12px; font-weight: 600; margin-bottom: 14px; color: var(--ink);
+}
+.pot-picker-popup .picker-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+}
+.pot-picker-popup .picker-option {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 4px; border: 2px solid transparent; cursor: pointer; border-radius: 12px;
+  transition: all 0.15s; background: #FAF7F2;
+}
+.pot-picker-popup .picker-option:hover { border-color: var(--green); background: #E2F0E5; }
+.pot-picker-popup .picker-option .picker-pot {
+  width: 28px; height: 18px; border-radius: 3px;
+}
+.pot-picker-popup .picker-option .picker-name {
+  font-size: 9px; color: var(--ink-light);
+}
+.pot-picker-cancel {
+  margin-top: 14px; font-size: 11px; color: var(--ink-light); cursor: pointer;
+}
+
+/* 品种图鉴 */
+.family-tabs {
+  display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.family-tab {
+  padding: 6px 14px; border: 2px solid #E8E0D6; border-radius: 20px;
+  font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap;
+  background: var(--paper); color: var(--ink-light); transition: all 0.15s;
+}
+.family-tab:hover { border-color: var(--green); color: var(--green); }
+.family-tab.active { background: var(--green); color: white; border-color: var(--green); }
+.family-tab .count { font-size: 9px; opacity: 0.7; }
+
+.species-list { max-height: 380px; overflow-y: auto; }
+.species-card {
+  background: var(--paper); border: 1px solid #E8E0D6; border-radius: 16px;
+  margin-bottom: 8px; overflow: hidden; transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.species-card:hover { border-color: var(--green); }
+.species-card-header {
+  display: flex; align-items: center; gap: 12px; padding: 12px; cursor: pointer;
+}
+.species-emoji {
+  font-size: 36px; width: 48px; height: 48px; display: flex; align-items: center;
+  justify-content: center; background: #E2F0E5; border-radius: 50%;
+  flex-shrink: 0;
+}
+.species-info { flex: 1; min-width: 0; }
+.species-name {
+  font-size: 13px; font-weight: 600; color: var(--ink);
+}
+.species-sci {
+  font-size: 9px; color: var(--ink-light); font-style: italic; margin-top: 1px;
+}
+.species-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+.species-tag {
+  font-size: 8px; padding: 2px 8px; background: #E2F0E5; border-radius: 8px;
+  color: var(--green); font-weight: 500;
+}
+.species-card-body {
+  display: none; padding: 0 12px 12px; border-top: 1px solid #E8E0D6;
+}
+.species-card.expanded .species-card-body { display: block; }
+.species-detail-row {
+  display: flex; justify-content: space-between; padding: 5px 0;
+  font-size: 10px;
+}
+.species-detail-row .label { color: var(--ink-light); }
+.species-detail-row .value { color: var(--ink); font-weight: 500; }
+.species-desc {
+  font-size: 10px; color: var(--ink); line-height: 1.6; margin-top: 6px;
+}
+.species-leaf {
+  margin-top: 6px; padding: 8px; background: #FDF8F2; border-radius: 10px;
+  font-size: 10px; color: var(--ink);
+}
+.species-leaf .leaf-label { color: var(--green); font-weight: 600; }
+
+/* 拍立得相机 */
+.polaroid-camera {
+  background: linear-gradient(180deg, #F5F0E8 0%, #EDE5D8 40%, #E0D5C5 100%);
+  border-radius: 20px; padding: 16px; margin-bottom: 0; position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+.polaroid-camera::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, #C4A882, #D4B892, #C4A882);
+}
+.polaroid-top-bar {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+}
+.polaroid-brand {
+  font-size: 9px; font-weight: 600; color: #8B7355; letter-spacing: 1px;
+}
+.polaroid-flash {
+  width: 20px; height: 12px; background: linear-gradient(180deg, #D4C4A8, #C4B498);
+  border-radius: 3px; border: 1px solid #B8A888;
+}
+.polaroid-lens-area {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+}
+.polaroid-lens {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #3A4A3A, #1A2A1A 60%, #0A1A0A 100%);
+  border: 3px solid #C4A882; flex-shrink: 0; position: relative;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+}
+.polaroid-lens::after {
+  content: ""; position: absolute; top: 12px; left: 12px; width: 10px; height: 6px;
+  background: rgba(255,255,255,0.15); border-radius: 50%; transform: rotate(-20deg);
+}
+.polaroid-viewfinder {
+  flex: 1; background: #FFFEF9; border-radius: 10px; padding: 8px;
+  border: 1px solid #D8CEC0; min-height: 44px;
+}
+.polaroid-viewfinder .vf-select {
+  width: 100%; padding: 4px 6px; background: #FFFEF9; border: 1px solid #D8CEC0;
+  color: #3D5A3C; font-size: 10px; font-weight: 500; border-radius: 8px;
+}
+.polaroid-viewfinder .vf-hint {
+  font-size: 8px; color: #8B7355; margin-top: 4px; opacity: 0.7;
+}
+.polaroid-shutter-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.polaroid-shutter {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #E8A0A0, #C08080);
+  border: 3px solid #D8CEC0; cursor: pointer; flex-shrink: 0; position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.1s;
+}
+.polaroid-shutter:active { transform: scale(0.92); }
+.polaroid-shutter::after {
+  content: ""; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
+  border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+}
+.polaroid-shutter-label {
+  font-size: 10px; font-weight: 500; color: #8B7355;
+}
+.polaroid-counter {
+  margin-left: auto; font-size: 9px; font-weight: 600; color: #3D5A3C;
+  background: #FFFEF9; padding: 3px 10px; border-radius: 8px; border: 1px solid #D8CEC0;
+}
+.polaroid-slot {
+  background: #D8CEC0; border-radius: 3px; height: 6px; margin-bottom: 2px;
+  border: 1px solid #C8BEA0;
+}
+.polaroid-photo-container {
+  display: none; position: relative; margin-top: 8px;
+}
+.polaroid-photo-container.show { display: block; }
+.polaroid-photo {
+  background: #FFFEF9; padding: 14px 14px 40px 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1); position: relative;
+  animation: polaroidEject 0.6s ease-out; transform-origin: top center;
+  border-radius: 4px;
+}
+@keyframes polaroidEject {
+  0% { transform: translateY(-20px); opacity: 0; }
+  40% { transform: translateY(2px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.polaroid-photo canvas { display: block; width: 100%; height: auto; }
+.polaroid-photo-caption {
+  text-align: center; font-size: 9px; color: #8B7355; margin-top: 8px;
+}
+.polaroid-photo-actions {
+  display: flex; gap: 6px; margin-top: 8px; justify-content: center;
+}
+.polaroid-photo-actions .scan-btn { font-size: 9px; padding: 6px 12px; flex: none; }
+.polaroid-film-strip {
+  display: flex; gap: 4px; margin-bottom: 8px; overflow-x: auto; padding: 2px 0;
+  -webkit-overflow-scrolling: touch;
+}
+.polaroid-film-strip .film-frame {
+  flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px;
+  border: 1px solid #D8CEC0; display: flex; align-items: center;
+  justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.15s; position: relative; color: #8B7355;
+}
+.polaroid-film-strip .film-frame:hover { border-color: var(--green); }
+.polaroid-film-strip .film-frame .film-num {
+  position: absolute; bottom: 1px; right: 3px; font-size: 6px; color: #8B7355;
+}
+.polaroid-empty {
+  text-align: center; padding: 12px; color: #8B7355; font-size: 10px;
+}
+
+/* 病虫害图鉴 */
+.pest-tabs {
+  display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.pest-tab {
+  padding: 6px 14px; border: 2px solid #E8E0D6; border-radius: 20px;
+  font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap;
+  background: var(--paper); color: var(--ink-light); transition: all 0.15s;
+}
+.pest-tab:hover { border-color: var(--green); color: var(--green); }
+.pest-tab.active { background: var(--green); color: white; border-color: var(--green); }
+.pest-tab .count { font-size: 9px; opacity: 0.7; }
+
+.pest-list { max-height: 400px; overflow-y: auto; }
+.pest-card {
+  background: var(--paper); border: 1px solid #E8E0D6; border-radius: 16px;
+  margin-bottom: 8px; overflow: hidden; cursor: pointer; transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.pest-card:hover { border-color: var(--green); }
+.pest-card-header {
+  display: flex; align-items: center; gap: 12px; padding: 12px;
+}
+.pest-icon {
+  font-size: 32px; width: 44px; height: 44px; display: flex; align-items: center;
+  justify-content: center; background: #FDF8F2; border-radius: 50%; flex-shrink: 0;
+}
+.pest-info { flex: 1; min-width: 0; }
+.pest-name {
+  font-size: 12px; font-weight: 600; color: var(--ink);
+}
+.pest-type-tag {
+  font-size: 8px; padding: 2px 8px; border-radius: 8px; display: inline-block;
+  margin-top: 2px; font-weight: 500;
+}
+.pest-type-tag.disease { background: #FDE8E8; color: #C0392B; }
+.pest-type-tag.pest { background: #FFF3CD; color: #856404; }
+.pest-severity {
+  font-size: 8px; color: var(--ink-light); margin-top: 2px;
+}
+.pest-card-body {
+  display: none; padding: 0 12px 12px; border-top: 1px solid #E8E0D6;
+}
+.pest-card.expanded .pest-card-body { display: block; }
+.pest-symptoms {
+  font-size: 9px; color: var(--ink); line-height: 1.6; margin-top: 6px;
+}
+.pest-symptoms .symptom-label { color: var(--green); font-weight: 600; }
+.pest-treatment {
+  margin-top: 6px; padding: 8px; background: #FDF8F2; border-radius: 10px;
+  font-size: 9px; color: var(--ink); line-height: 1.6;
+}
+.pest-treatment .treat-label { color: var(--terracotta); font-weight: 600; }
+.pest-prevention {
+  margin-top: 4px; font-size: 9px; color: var(--ink-light); line-height: 1.6;
+}
+.pest-prevention .prev-label { color: var(--green); font-weight: 600; }
+.pest-plants {
+  margin-top: 4px; font-size: 8px; color: var(--ink-light);
+}
+.pest-plants .plant-label { font-weight: 600; }
+
+/* 肥料药品管理 */
+.supply-form {
+  background: var(--paper); border: 1px solid #E8E0D6; padding: 12px;
+  margin-bottom: 10px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.supply-form-row { display: flex; gap: 6px; margin-bottom: 6px; }
+.supply-form-row input, .supply-form-row select {
+  flex: 1; padding: 7px 10px; background: #FAF7F2; border: 1px solid #E8E0D6;
+  font-size: 10px; color: var(--ink); border-radius: 10px;
+}
+.supply-form-row input::placeholder { color: var(--ink-light); }
+.supply-add-btn {
+  width: 100%; padding: 8px; background: var(--green); color: white;
+  border: none; font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 12px;
+}
+.supply-add-btn:hover { opacity: 0.85; }
+
+.supply-tabs { display: flex; gap: 4px; margin-bottom: 8px; }
+.supply-tab {
+  flex: 1; padding: 5px; text-align: center; border: 2px solid #E8E0D6;
+  font-size: 10px; font-weight: 500; cursor: pointer; background: var(--paper);
+  color: var(--ink-light); border-radius: 12px; transition: all 0.15s;
+}
+.supply-tab:hover { border-color: var(--green); color: var(--green); }
+.supply-tab.active { background: var(--green); color: white; border-color: var(--green); }
+
+.supply-list { max-height: 300px; overflow-y: auto; }
+.supply-card {
+  display: flex; align-items: center; gap: 10px; padding: 10px;
+  background: var(--paper); border: 1px solid #E8E0D6; margin-bottom: 4px;
+  border-radius: 12px; transition: all 0.15s;
+}
+.supply-card:hover { border-color: var(--green); }
+.supply-icon {
+  font-size: 22px; width: 36px; height: 36px; display: flex; align-items: center;
+  justify-content: center; background: #E2F0E5; border-radius: 50%; flex-shrink: 0;
+}
+.supply-info { flex: 1; min-width: 0; }
+.supply-title {
+  font-size: 11px; font-weight: 600; color: var(--ink);
+}
+.supply-tag {
+  font-size: 8px; padding: 1px 6px; border-radius: 6px; display: inline-block;
+  margin-top: 2px; font-weight: 500;
+}
+.supply-tag.fertilizer { background: #E8F5E9; color: #2E7D32; }
+.supply-tag.pesticide { background: #FFF3E0; color: #E65100; }
+.supply-tag.tool { background: #E3F2FD; color: #1565C0; }
+.supply-meta {
+  font-size: 8px; color: var(--ink-light); margin-top: 2px;
+}
+.supply-delete {
+  width: 18px; height: 18px; background: var(--terracotta); color: white; border-radius: 50%;
+  font-size: 8px; line-height: 18px; text-align: center; cursor: pointer; flex-shrink: 0;
+  font-weight: 700; opacity: 0; transition: opacity 0.15s;
+}
+.supply-card:hover .supply-delete { opacity: 1; }
+.supply-empty { text-align: center; padding: 20px; color: var(--ink-light); font-size: 12px; }
+
+/* 心愿清单 */
+.wishlist-form {
+  background: var(--paper); border: 1px solid #E8E0D6; padding: 12px;
+  margin-bottom: 10px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.wishlist-form-row { display: flex; gap: 6px; margin-bottom: 6px; }
+.wishlist-form-row input, .wishlist-form-row select {
+  flex: 1; padding: 7px 10px; background: #FAF7F2; border: 1px solid #E8E0D6;
+  font-size: 10px; color: var(--ink); border-radius: 10px;
+}
+.wishlist-form-row input::placeholder { color: var(--ink-light); }
+.wishlist-add-btn {
+  width: 100%; padding: 8px; background: var(--green); color: white;
+  border: none; font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 12px;
+}
+.wishlist-add-btn:hover { opacity: 0.85; }
+
+.wishlist-list { max-height: 320px; overflow-y: auto; }
+.wishlist-card {
+  display: flex; align-items: center; gap: 10px; padding: 10px;
+  background: var(--paper); border: 1px solid #E8E0D6; margin-bottom: 4px;
+  border-radius: 12px; transition: all 0.15s; position: relative;
+}
+.wishlist-card:hover { border-color: var(--green); }
+.wishlist-card.owned { opacity: 0.5; }
+.wishlist-card.owned .wishlist-title { text-decoration: line-through; }
+.wishlist-photo {
+  width: 48px; height: 48px; border-radius: 10px; overflow: hidden; flex-shrink: 0;
+  background: #E2F0E5; border: 1px solid #D8CEC0;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  position: relative; font-size: 12px; color: var(--ink-light);
+}
+.wishlist-photo img { width: 100%; height: 100%; object-fit: cover; }
+.wishlist-photo-input { display: none; }
+.wishlist-info { flex: 1; min-width: 0; }
+.wishlist-title {
+  font-size: 11px; font-weight: 600; color: var(--ink);
+}
+.wishlist-check {
+  width: 20px; height: 20px; border: 2px solid #D8CEC0; border-radius: 50%;
+  cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: transparent; transition: all 0.15s;
+}
+.wishlist-check:hover { border-color: var(--green); }
+.wishlist-card.owned .wishlist-check { background: var(--green); border-color: var(--green); color: white; }
+.wishlist-delete {
+  width: 16px; height: 16px; background: var(--terracotta); color: white; border-radius: 50%;
+  font-size: 7px; line-height: 16px; text-align: center; cursor: pointer; flex-shrink: 0;
+  font-weight: 700; opacity: 0; transition: opacity 0.15s;
+}
+.wishlist-card:hover .wishlist-delete { opacity: 1; }
+.wishlist-empty { text-align: center; padding: 20px; color: var(--ink-light); font-size: 12px; }
   </style>
 </head>
 <body>
   <div class="prototype-header">
-    <h1>多肉成长记 · 温暖手账拼贴风</h1>
-    <p>奶油纸感底色 · 手绘多肉贴纸 · 胶带与圆角卡片 · 成长日记仪式感</p>
+    <h1>热带植物成长记 · 温暖手账拼贴风</h1>
+    <p>奶油纸感底色 · 手绘热带植物贴纸 · 胶带与圆角卡片 · 成长日记仪式感</p>
   </div>
 
   <div class="phone-container">
@@ -1162,7 +1634,7 @@
           <div class="home-header">
             <div>
               <div class="greeting">早安，小园丁 🌱</div>
-              <div class="screen-title">我的肉肉花园</div>
+              <div class="screen-title">我的植物花园</div>
             </div>
             <div class="weather-chip">☀️ 24°C 晴</div>
           </div>
@@ -1196,8 +1668,8 @@
             <div class="plant-card-top">
               <div class="plant-thumb">🌵</div>
               <div class="plant-info">
-                <h3>桃蛋小丸子</h3>
-                <div class="plant-meta">景天科 · 加入 128 天</div>
+                <h3>龟背竹大叶</h3>
+                <div class="plant-meta">天南星科 · 加入 128 天</div>
                 <div class="plant-tags">
                   <span class="sticker sticker-orange">今天浇水</span>
                   <span class="sticker sticker-green">状态良好</span>
@@ -1215,7 +1687,7 @@
             <div class="plant-card-top">
               <div class="plant-thumb">🪴</div>
               <div class="plant-info">
-                <h3>吉娃娃莲</h3>
+                <h3>花烛红掌</h3>
                 <div class="plant-meta">拟石莲花属 · 加入 86 天</div>
                 <div class="plant-tags">
                   <span class="sticker sticker-yellow">待施肥</span>
@@ -1232,7 +1704,7 @@
           <div class="section-label">最近动态</div>
           <div class="timeline-card" style="margin-bottom: 20px;">
             <div class="timeline-date">昨天 18:32</div>
-            <div class="timeline-text">给桃蛋小丸子浇了水，叶片更饱满啦 ✨</div>
+            <div class="timeline-text">给龟背竹大叶浇了水，叶片更饱满啦 ✨</div>
             <div class="timeline-photos">
               <div class="timeline-photo">🌸</div>
               <div class="timeline-photo">💧</div>
@@ -1274,7 +1746,7 @@
               <div class="id-fields">
                 <div class="id-field">
                   <span class="id-field-label">姓名</span>
-                  <span class="id-field-value name">桃蛋小丸子</span>
+                  <span class="id-field-value name">龟背竹大叶</span>
                 </div>
                 <div class="id-field">
                   <span class="id-field-label">编号</span>
@@ -1282,11 +1754,11 @@
                 </div>
                 <div class="id-field">
                   <span class="id-field-label">科属</span>
-                  <span class="id-field-value">景天科 · 风车草属</span>
+                  <span class="id-field-value">天南星科 · 龟背竹属</span>
                 </div>
                 <div class="id-field">
                   <span class="id-field-label">别名</span>
-                  <span class="id-field-value">桃之卵 · 桃蛋</span>
+                  <span class="id-field-value">桃之卵 · 龟背竹</span>
                 </div>
                 <div class="id-field">
                   <span class="id-field-label">领养日</span>
@@ -1336,7 +1808,7 @@
               <div class="timeline-dot" style="background: var(--mustard);"></div>
               <div class="timeline-card">
                 <div class="timeline-date">2024.06.28 10:15</div>
-                <div class="timeline-text">施肥 🌿 使用了稀释的多肉专用肥</div>
+                <div class="timeline-text">施肥 🌿 使用了稀释的热带植物通用肥</div>
               </div>
             </div>
             <div class="timeline-item">
@@ -1361,7 +1833,7 @@
               <div class="timeline-dot" style="background: var(--misty-blue);"></div>
               <div class="timeline-card">
                 <div class="timeline-date">2024.03.02 09:00</div>
-                <div class="timeline-text">领养 🏠 欢迎回家，桃蛋小丸子</div>
+                <div class="timeline-text">领养 🏠 欢迎回家，龟背竹大叶</div>
               </div>
             </div>
           </div>
@@ -1386,18 +1858,18 @@
         </div>
         <div class="screen-content">
           <div class="screen-title">写成长日记</div>
-          <div class="screen-subtitle">记录今天的肉肉变化 ✏️</div>
+          <div class="screen-subtitle">记录今天的植物变化 ✏️</div>
 
           <div class="form-card">
-            <label class="form-label">选择肉肉</label>
+            <label class="form-label">选择植物</label>
             <div style="display: flex; gap: 10px; margin-bottom: 16px;">
               <div style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #E2F0E5; border-radius: 18px; border: 2px solid var(--green);">
                 <span style="font-size: 20px;">🌵</span>
-                <span style="font-size: 14px; font-weight: 600;">桃蛋小丸子</span>
+                <span style="font-size: 14px; font-weight: 600;">龟背竹大叶</span>
               </div>
               <div style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #F5F0EA; border-radius: 18px;">
                 <span style="font-size: 20px;">🪴</span>
-                <span style="font-size: 14px;">吉娃娃莲</span>
+                <span style="font-size: 14px;">花烛红掌</span>
               </div>
             </div>
 
@@ -1422,7 +1894,7 @@
             </div>
 
             <label class="form-label">今日碎碎念</label>
-            <textarea class="note-area" placeholder="今天肉肉有什么变化？写下来吧..."></textarea>
+            <textarea class="note-area" placeholder="今天植物有什么变化？写下来吧..."></textarea>
           </div>
 
           <button class="btn-primary">保存日记</button>
@@ -1452,7 +1924,7 @@
           <div class="reminder-card">
             <div class="reminder-icon" style="background: #FCE8E0;">💧</div>
             <div class="reminder-info">
-              <h4>桃蛋小丸子 · 浇水</h4>
+              <h4>龟背竹大叶 · 浇水</h4>
               <p>上次浇水：7 天前</p>
             </div>
             <div class="reminder-time">
@@ -1464,7 +1936,7 @@
           <div class="reminder-card">
             <div class="reminder-icon" style="background: #FEF5E0;">🌱</div>
             <div class="reminder-info">
-              <h4>吉娃娃莲 · 施肥</h4>
+              <h4>花烛红掌 · 施肥</h4>
               <p>建议每 30 天一次</p>
             </div>
             <div class="reminder-time">
@@ -1476,7 +1948,7 @@
           <div class="reminder-card">
             <div class="reminder-icon" style="background: #E0F2EB;">☀️</div>
             <div class="reminder-info">
-              <h4>生石花 · 转露养</h4>
+              <h4>彩叶芋 · 转露养</h4>
               <p>适应期结束 · 可搬出</p>
             </div>
             <div class="reminder-time">
@@ -1488,7 +1960,7 @@
           <div class="reminder-card">
             <div class="reminder-icon" style="background: #E8F1F7;">🐛</div>
             <div class="reminder-info">
-              <h4>全体肉肉 · 巡检</h4>
+              <h4>全体植物 · 巡检</h4>
               <p>检查是否有病虫害</p>
             </div>
             <div class="reminder-time">
@@ -1594,48 +2066,48 @@
           <div class="events-title">7月8日 · 今天</div>
           <div class="event-item">
             <div class="event-icon" style="background:#E3F0FA;">💧</div>
-            <div class="event-info"><h4>桃蛋小丸子 · 浇水</h4><p>清晨 7:30 · 100ml</p></div>
+            <div class="event-info"><h4>龟背竹大叶 · 浇水</h4><p>清晨 7:30 · 100ml</p></div>
             <span class="event-tag tag-water">浇水</span>
           </div>
           <div class="event-item">
             <div class="event-icon" style="background:#E2F0E5;">🌱</div>
-            <div class="event-info"><h4>新买 · 熊童子</h4><p>花市购入 · ￥38</p></div>
+            <div class="event-info"><h4>新买 · 琴叶榕</h4><p>花市购入 · ￥38</p></div>
             <span class="event-tag tag-plant">新买</span>
           </div>
           <div class="event-item">
             <div class="event-icon" style="background:#FEF0E0;">🐛</div>
-            <div class="event-info"><h4>吉娃娃莲 · 杀虫</h4><p>发现蚧壳虫 · 已处理</p></div>
+            <div class="event-info"><h4>花烛红掌 · 杀虫</h4><p>发现粉蚧虫 · 已处理</p></div>
             <span class="event-tag tag-pest">杀虫</span>
           </div>
 
           <div class="events-title" style="margin-top: 20px;">7月6日</div>
           <div class="event-item">
             <div class="event-icon" style="background:#E3F0FA;">💧</div>
-            <div class="event-info"><h4>吉娃娃莲 · 浇水</h4><p>傍晚 18:00 · 80ml</p></div>
+            <div class="event-info"><h4>花烛红掌 · 浇水</h4><p>傍晚 18:00 · 80ml</p></div>
             <span class="event-tag tag-water">浇水</span>
           </div>
           <div class="event-item">
             <div class="event-icon" style="background:#E0F2F1;">✂️</div>
-            <div class="event-info"><h4>玉露 · 分苗</h4><p>侧芽分离 · 3株</p></div>
+            <div class="event-info"><h4>空气凤梨 · 分苗</h4><p>侧芽分离 · 3株</p></div>
             <span class="event-tag tag-divide">分苗</span>
           </div>
 
           <div class="events-title" style="margin-top: 20px;">7月3日</div>
           <div class="event-item">
             <div class="event-icon" style="background:#FCE8E0;">🪴</div>
-            <div class="event-info"><h4>玉露 · 换盆</h4><p>从塑料盆换到陶土盆</p></div>
+            <div class="event-info"><h4>空气凤梨 · 换盆</h4><p>从塑料盆换到陶土盆</p></div>
             <span class="event-tag tag-repot">换盆</span>
           </div>
           <div class="event-item">
             <div class="event-icon" style="background:#E3F0FA;">💧</div>
-            <div class="event-info"><h4>桃蛋小丸子 · 浇水</h4><p>早晨 8:00 · 100ml</p></div>
+            <div class="event-info"><h4>龟背竹大叶 · 浇水</h4><p>早晨 8:00 · 100ml</p></div>
             <span class="event-tag tag-water">浇水</span>
           </div>
 
           <div class="events-title" style="margin-top: 20px;">7月1日</div>
           <div class="event-item">
             <div class="event-icon" style="background:#F0EDEA;">💀</div>
-            <div class="event-info"><h4>静夜 · 已死亡</h4><p>黑腐病 · 移至纪念碑</p></div>
+            <div class="event-info"><h4>彩叶草 · 已死亡</h4><p>根腐病 · 移至纪念碑</p></div>
             <span class="event-tag tag-death">死亡</span>
           </div>
         </div>
@@ -1656,7 +2128,7 @@
         <div class="status-bar"><span>9:41</span><span>🔋📶</span></div>
         <div class="screen-content">
           <div class="screen-title">植物纪念碑</div>
-          <div class="screen-subtitle">那些曾经陪伴过我的肉肉 🕯️</div>
+          <div class="screen-subtitle">那些曾经陪伴过我的植物 🕯️</div>
           <div class="memorial-hero">
             <div class="memorial-title">累计纪念</div>
             <div class="memorial-count" id="memCountWarm">4</div>
@@ -1694,7 +2166,7 @@
             <div class="receipt-paper" id="receiptWarm">
               <div class="receipt-stamp" id="receiptStamp">已<br>结清</div>
               <div class="receipt-header">
-                <div class="store-name">多肉植物园</div>
+                <div class="store-name">热带植物园</div>
                 <div class="store-sub">SUCCULENT GARDEN · 自然之美</div>
               </div>
               <hr class="receipt-dots">
@@ -1715,7 +2187,7 @@
               </div>
               <div class="receipt-footer">
                 <span id="receiptFooterLabel">本月</span>共购入 <strong id="receiptCountWarm">0</strong> 盆植物<br>
-                感谢您对肉肉的喜爱 💚
+                感谢您对植物的喜爱 💚
               </div>
               <div class="receipt-barcode">
                 <svg viewBox="0 0 180 40"><rect x="2" y="2" width="2" height="36" fill="#4A4441"/><rect x="6" y="2" width="1" height="36" fill="#4A4441"/><rect x="9" y="2" width="3" height="36" fill="#4A4441"/><rect x="14" y="2" width="1" height="36" fill="#4A4441"/><rect x="17" y="2" width="2" height="36" fill="#4A4441"/><rect x="21" y="2" width="4" height="36" fill="#4A4441"/><rect x="27" y="2" width="1" height="36" fill="#4A4441"/><rect x="30" y="2" width="2" height="36" fill="#4A4441"/><rect x="34" y="2" width="3" height="36" fill="#4A4441"/><rect x="39" y="2" width="1" height="36" fill="#4A4441"/><rect x="42" y="2" width="2" height="36" fill="#4A4441"/><rect x="46" y="2" width="1" height="36" fill="#4A4441"/><rect x="49" y="2" width="4" height="36" fill="#4A4441"/><rect x="55" y="2" width="2" height="36" fill="#4A4441"/><rect x="59" y="2" width="1" height="36" fill="#4A4441"/><rect x="62" y="2" width="3" height="36" fill="#4A4441"/><rect x="67" y="2" width="1" height="36" fill="#4A4441"/><rect x="70" y="2" width="2" height="36" fill="#4A4441"/><rect x="74" y="2" width="3" height="36" fill="#4A4441"/><rect x="79" y="2" width="1" height="36" fill="#4A4441"/><rect x="82" y="2" width="2" height="36" fill="#4A4441"/><rect x="86" y="2" width="1" height="36" fill="#4A4441"/><rect x="89" y="2" width="4" height="36" fill="#4A4441"/><rect x="95" y="2" width="2" height="36" fill="#4A4441"/><rect x="99" y="2" width="1" height="36" fill="#4A4441"/><rect x="102" y="2" width="3" height="36" fill="#4A4441"/><rect x="107" y="2" width="2" height="36" fill="#4A4441"/><rect x="111" y="2" width="1" height="36" fill="#4A4441"/><rect x="114" y="2" width="2" height="36" fill="#4A4441"/><rect x="118" y="2" width="4" height="36" fill="#4A4441"/><rect x="124" y="2" width="1" height="36" fill="#4A4441"/><rect x="127" y="2" width="3" height="36" fill="#4A4441"/><rect x="132" y="2" width="2" height="36" fill="#4A4441"/><rect x="136" y="2" width="1" height="36" fill="#4A4441"/><rect x="139" y="2" width="2" height="36" fill="#4A4441"/><rect x="143" y="2" width="3" height="36" fill="#4A4441"/><rect x="148" y="2" width="1" height="36" fill="#4A4441"/><rect x="151" y="2" width="2" height="36" fill="#4A4441"/><rect x="155" y="2" width="4" height="36" fill="#4A4441"/><rect x="161" y="2" width="1" height="36" fill="#4A4441"/><rect x="164" y="2" width="2" height="36" fill="#4A4441"/><rect x="168" y="2" width="3" height="36" fill="#4A4441"/><rect x="173" y="2" width="1" height="36" fill="#4A4441"/><rect x="176" y="2" width="2" height="36" fill="#4A4441"/></svg>
@@ -1723,7 +2195,7 @@
               <div class="receipt-perforation">
                 <div class="receipt-footer" style="margin-top: 4px;">
                   <span id="receiptSerialNo">小票编号: SG240708-001</span><br>
-                  多肉植物园 · 让每一株都被温柔以待
+                  热带植物园 · 让每一株都被温柔以待
                 </div>
               </div>
             </div>
@@ -1758,9 +2230,8 @@
           <div class="shelf-area" id="shelfAreaWarm"></div>
           <div class="shelf-label-tag" id="shelfLabelWarm">木质三层</div>
           <div class="plant-tray">
-            <div class="tray-label" id="trayLabelWarm">选择植物</div>
+            <div class="tray-label" id="trayLabelWarm">点击植物加入组合</div>
             <div class="tray-plants" id="trayPlantsWarm"></div>
-            <div class="pot-selector" id="potSelectorWarm" style="display:none;"></div>
             <div id="comboTrayWarm" style="display:none;">
               <div class="tray-label">组合预览 · 拖拽到花架</div>
               <div class="combo-preview" id="comboPreviewWarm"></div>
@@ -1777,23 +2248,254 @@
       </div>
     </div>
   </div>
+
+  <!-- 植物标本馆页面 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">植物标本馆</div>
+        <div class="screen-subtitle">拍照识别叶片 · 自动抠图装框</div>
+
+        <div class="scan-btn-row">
+          <div class="scan-btn" onclick="document.getElementById('scanFileInputWarm').click()">
+            📁 上传照片
+          </div>
+          <div class="scan-btn primary" onclick="document.getElementById('scanCameraInputWarm').click()">
+            📷 拍照
+          </div>
+        </div>
+        <input type="file" id="scanFileInputWarm" accept="image/*" onchange="handleScanImage(this, 'warm')" style="display:none;">
+        <input type="file" id="scanCameraInputWarm" accept="image/*" capture="environment" onchange="handleScanImage(this, 'warm')" style="display:none;">
+
+        <div class="scan-processing" id="scanProcessingWarm">
+          正在识别叶片轮廓<span class="dot-pulse">...</span>
+        </div>
+
+        <div class="scan-canvas-wrap" id="scanCanvasWrapWarm">
+          <canvas id="scanCanvasWarm"></canvas>
+        </div>
+
+        <div class="scan-tolerance-bar" id="scanToleranceBarWarm">
+          <label>抠图精度</label>
+          <input type="range" id="scanToleranceWarm" min="10" max="80" value="40" oninput="updateScanTolerance('warm')">
+          <span id="scanToleranceValWarm">40</span>
+        </div>
+
+        <div class="specimen-frame" id="specimenFrameWarm">
+          <div class="frame-pin"></div>
+          <div class="frame-inner">
+            <img id="specimenImgWarm" src="" alt="植物标本">
+          </div>
+          <div class="frame-label" id="specimenLabelWarm">标本 #1 · 7月8日</div>
+        </div>
+
+        <div class="specimen-save-row" id="specimenSaveRowWarm">
+          <div class="scan-btn" onclick="resetScan('warm')">重新拍摄</div>
+          <div class="scan-btn primary" onclick="saveSpecimen('warm')">保存标本</div>
+        </div>
+
+        <div class="specimen-gallery">
+          <div class="specimen-gallery-title">标本收藏</div>
+          <div class="specimen-grid" id="specimenGridWarm">
+            <div class="specimen-empty">还没有标本，拍一张植物照片吧</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">🔬</span><span>标本</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 品种图鉴页面 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">品种图鉴</div>
+        <div class="screen-subtitle">按科属分类 · 了解你的每一盆植物</div>
+
+        <div class="family-tabs" id="familyTabsWarm"></div>
+        <div class="species-list" id="speciesListWarm"></div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">📖</span><span>图鉴</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成长拍立得 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">成长拍立得</div>
+        <div class="screen-subtitle">选择植物 · 按下快门 · 吐出成长记录</div>
+
+        <div class="polaroid-camera">
+          <div class="polaroid-top-bar">
+            <span class="polaroid-brand">POLAROID GROWTH</span>
+            <div class="polaroid-flash"></div>
+          </div>
+          <div class="polaroid-lens-area">
+            <div class="polaroid-lens"></div>
+            <div class="polaroid-viewfinder">
+              <select class="vf-select" id="growthPlantSelectWarm" onchange="onGrowthPlantChange('warm')">
+                <option value="">-- 选择植物 --</option>
+              </select>
+              <div class="vf-hint" id="growthHintWarm">PICK A PLANT</div>
+            </div>
+          </div>
+          <div class="polaroid-shutter-row">
+            <div class="polaroid-shutter" onclick="generateGrowthCollage('warm')" title="按下快门"></div>
+            <span class="polaroid-shutter-label">SHOOT</span>
+            <div class="polaroid-counter" id="growthCounterWarm">00</div>
+          </div>
+          <div class="polaroid-film-strip" id="filmStripWarm">
+            <div class="polaroid-empty">NO FILM</div>
+          </div>
+          <div class="polaroid-slot"></div>
+        </div>
+
+        <div class="polaroid-photo-container" id="growthPhotoContainerWarm">
+          <div class="polaroid-photo">
+            <canvas id="growthCollageWarm"></canvas>
+            <div class="polaroid-photo-caption" id="growthCaptionWarm"></div>
+          </div>
+          <div class="polaroid-photo-actions">
+            <div class="scan-btn" onclick="resetGrowthCollage('warm')">重新拍摄</div>
+            <div class="scan-btn primary" onclick="downloadGrowthCollage('warm')">保存图片</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">📸</span><span>拍立得</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 病虫害图鉴 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">病虫害图鉴</div>
+        <div class="screen-subtitle">常见病害虫害 · 识别与防治方案</div>
+
+        <div class="pest-tabs" id="pestTabsWarm"></div>
+        <div class="pest-list" id="pestListWarm"></div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">🩺</span><span>诊室</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 肥料药品管理 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">肥料药品管理</div>
+        <div class="screen-subtitle">记录购买过的肥料和药品</div>
+
+        <div class="supply-form">
+          <div class="supply-form-row">
+            <input type="text" id="supplyNameWarm" placeholder="名称（如：热带植物通用肥）" style="flex:2">
+            <select id="supplyTypeWarm" style="flex:1">
+              <option value="fertilizer">肥料</option>
+              <option value="pesticide">药品</option>
+              <option value="tool">工具</option>
+            </select>
+          </div>
+          <div class="supply-form-row">
+            <input type="text" id="supplyDateWarm" placeholder="购买日期（如：7月1日）" style="flex:1">
+            <input type="text" id="supplyNoteWarm" placeholder="备注（如：500ml·稀释1000倍）" style="flex:2">
+          </div>
+          <div class="supply-add-btn" onclick="addSupply('warm')">+ 添加记录</div>
+        </div>
+
+        <div class="supply-tabs" id="supplyTabsWarm"></div>
+        <div class="supply-list" id="supplyListWarm"></div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">🧪</span><span>药肥</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- 心愿清单 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">心愿清单</div>
+        <div class="screen-subtitle">收藏心仪植物 · 蹲降价 · 攒心愿</div>
+
+        <div class="wishlist-form">
+          <div class="wishlist-form-row">
+            <input type="text" id="wishNameWarm" placeholder="植物名称（如：白锦龟背竹）" style="flex:2">
+            <input type="file" id="wishPhotoWarm" accept="image/*" class="wishlist-photo-input" onchange="previewWishPhoto('warm')">
+            <div class="wishlist-add-btn" onclick="addWish('warm')">+ 加入心愿</div>
+          </div>
+        </div>
+
+        <div class="wishlist-list" id="wishlistListWarm"></div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">💝</span><span>心愿</span></a>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
     const events = {
-      1: [{type:'death',plant:'静夜',note:'黑腐病'}],
-      3: [{type:'repot',plant:'玉露',note:'换陶土盆'},{type:'water',plant:'桃蛋小丸子',note:'100ml'}],
-      5: [{type:'fertilize',plant:'吉娃娃莲',note:'稀释多肉专用肥'}],
-      6: [{type:'water',plant:'吉娃娃莲',note:'80ml'},{type:'divide',plant:'玉露',note:'侧芽分离·3株'}],
-      8: [{type:'water',plant:'桃蛋小丸子',note:'100ml'},{type:'plant',plant:'熊童子',note:'新购入'},{type:'pest',plant:'吉娃娃莲',note:'蚧壳虫处理'}],
-      10: [{type:'water',plant:'桃蛋小丸子',note:'100ml'}],
-      12: [{type:'enclosed',plant:'熊童子',note:'转为闷养'}],
-      13: [{type:'water',plant:'吉娃娃莲',note:'80ml'},{type:'repot',plant:'熊童子',note:'换大盆'}],
-      15: [{type:'pest',plant:'玉露',note:'预防喷药'}],
-      18: [{type:'outdoor',plant:'生石花',note:'转露养·适应期'}],
-      20: [{type:'water',plant:'桃蛋小丸子',note:'100ml'},{type:'water',plant:'吉娃娃莲',note:'80ml'}],
-      22: [{type:'mount',plant:'碧光环',note:'上板·水苔固定'}],
-      25: [{type:'plant',plant:'生石花',note:'新购入·￥45'},{type:'merge',plant:'桃蛋小丸子',note:'与桃蛋B合盆'}],
-      28: [{type:'water',plant:'桃蛋小丸子',note:'100ml'}],
+      1: [{type:'death',plant:'彩叶草',note:'根腐病'}],
+      3: [{type:'repot',plant:'空气凤梨',note:'换陶土盆'},{type:'water',plant:'龟背竹大叶',note:'100ml'}],
+      5: [{type:'fertilize',plant:'花烛红掌',note:'稀释热带植物通用肥'}],
+      6: [{type:'water',plant:'花烛红掌',note:'80ml'},{type:'divide',plant:'空气凤梨',note:'侧芽分离·3株'}],
+      8: [{type:'water',plant:'龟背竹大叶',note:'100ml'},{type:'plant',plant:'琴叶榕',note:'新购入'},{type:'pest',plant:'花烛红掌',note:'粉蚧虫处理'}],
+      10: [{type:'water',plant:'龟背竹大叶',note:'100ml'}],
+      12: [{type:'enclosed',plant:'琴叶榕',note:'转为闷养'}],
+      13: [{type:'water',plant:'花烛红掌',note:'80ml'},{type:'repot',plant:'琴叶榕',note:'换大盆'}],
+      15: [{type:'pest',plant:'空气凤梨',note:'预防喷药'}],
+      18: [{type:'outdoor',plant:'彩叶芋',note:'转露养·适应期'}],
+      20: [{type:'water',plant:'龟背竹大叶',note:'100ml'},{type:'water',plant:'花烛红掌',note:'80ml'}],
+      22: [{type:'mount',plant:'鹿角蕨',note:'上板·水苔固定'}],
+      25: [{type:'plant',plant:'彩叶芋',note:'新购入·￥45'},{type:'merge',plant:'龟背竹大叶',note:'与龟背竹B合盆'}],
+      28: [{type:'water',plant:'龟背竹大叶',note:'100ml'}],
     };
 
     const typeDot = { water:'dot-water', plant:'dot-plant', repot:'dot-repot', pest:'dot-pest', death:'dot-death', fertilize:'dot-fertilize', divide:'dot-divide', merge:'dot-merge', enclosed:'dot-enclosed', outdoor:'dot-outdoor', mount:'dot-mount' };
@@ -1853,9 +2555,9 @@
 
     // 纪念碑数据
     const memorials = [
-      {emoji:'🌸',name:'静夜',adopted:'2024.02.12',parted:'2024.07.01',cause:'黑腐病',causeType:'death'},
+      {emoji:'🌸',name:'彩叶草',adopted:'2024.02.12',parted:'2024.07.01',cause:'根腐病',causeType:'death'},
       {emoji:'🌿',name:'蓝石莲',adopted:'2023.11.05',parted:'2024.05.20',cause:'浇水过多',causeType:'death'},
-      {emoji:'🍃',name:'冰莓',adopted:'2024.01.18',parted:'2024.04.08',cause:'蚧壳虫',causeType:'pest'},
+      {emoji:'🍃',name:'冰莓',adopted:'2024.01.18',parted:'2024.04.08',cause:'粉蚧虫',causeType:'pest'},
       {emoji:'💐',name:'花月夜',adopted:'2023.09.22',parted:'2024.03.15',cause:'冻伤',causeType:'death'},
     ];
     const memGridW = document.getElementById('memGridWarm');
@@ -1877,8 +2579,8 @@
         orderNo: '订单: SG-20240708-001', date: '日期: 2024/07/08',
         periodLabel: '周期: 当日', footerLabel: '今日', serialNo: '小票编号: SG240708-001',
         items: [
-          {emoji:'🌵',name:'桃蛋',qty:1,price:28},
-          {emoji:'🪴',name:'吉娃娃莲',qty:1,price:35},
+          {emoji:'🌵',name:'龟背竹',qty:1,price:28},
+          {emoji:'🪴',name:'花烛红掌',qty:1,price:35},
         ]
       },
       month: {
@@ -1886,12 +2588,12 @@
         orderNo: '订单: SG-202407-008', date: '日期: 2024/07/08',
         periodLabel: '周期: 7月', footerLabel: '本月', serialNo: '小票编号: SG240708-001',
         items: [
-          {emoji:'🌵',name:'桃蛋',qty:2,price:28},
-          {emoji:'🪴',name:'吉娃娃莲',qty:1,price:35},
-          {emoji:'🌿',name:'熊童子',qty:1,price:38},
-          {emoji:'🎋',name:'生石花',qty:3,price:15},
-          {emoji:'🪷',name:'玉露',qty:1,price:45},
-          {emoji:'🌸',name:'静夜',qty:1,price:18},
+          {emoji:'🌵',name:'龟背竹',qty:2,price:28},
+          {emoji:'🪴',name:'花烛红掌',qty:1,price:35},
+          {emoji:'🌿',name:'琴叶榕',qty:1,price:38},
+          {emoji:'🎋',name:'彩叶芋',qty:3,price:15},
+          {emoji:'🪷',name:'空气凤梨',qty:1,price:45},
+          {emoji:'🌸',name:'彩叶草',qty:1,price:18},
         ]
       },
       quarter: {
@@ -1899,13 +2601,13 @@
         orderNo: '订单: SG-2024Q3-003', date: '日期: 2024/07/01-09/30',
         periodLabel: '周期: 第三季度', footerLabel: '本季', serialNo: '小票编号: SG24Q3-003',
         items: [
-          {emoji:'🌵',name:'桃蛋',qty:3,price:28},
-          {emoji:'🪴',name:'吉娃娃莲',qty:2,price:35},
-          {emoji:'🌿',name:'熊童子',qty:2,price:38},
-          {emoji:'🎋',name:'生石花',qty:5,price:15},
-          {emoji:'🪷',name:'玉露',qty:2,price:45},
-          {emoji:'🌸',name:'静夜',qty:2,price:18},
-          {emoji:'🍃',name:'碧光环',qty:1,price:22},
+          {emoji:'🌵',name:'龟背竹',qty:3,price:28},
+          {emoji:'🪴',name:'花烛红掌',qty:2,price:35},
+          {emoji:'🌿',name:'琴叶榕',qty:2,price:38},
+          {emoji:'🎋',name:'彩叶芋',qty:5,price:15},
+          {emoji:'🪷',name:'空气凤梨',qty:2,price:45},
+          {emoji:'🌸',name:'彩叶草',qty:2,price:18},
+          {emoji:'🍃',name:'鹿角蕨',qty:1,price:22},
           {emoji:'🪨',name:'五十铃玉',qty:1,price:30},
         ]
       },
@@ -1914,13 +2616,13 @@
         orderNo: '订单: SG-2024-001', date: '日期: 2024/01/01-12/31',
         periodLabel: '周期: 2024全年', footerLabel: '本年', serialNo: '小票编号: SG2024-001',
         items: [
-          {emoji:'🌵',name:'桃蛋',qty:5,price:28},
-          {emoji:'🪴',name:'吉娃娃莲',qty:3,price:35},
-          {emoji:'🌿',name:'熊童子',qty:3,price:38},
-          {emoji:'🎋',name:'生石花',qty:8,price:15},
-          {emoji:'🪷',name:'玉露',qty:3,price:45},
-          {emoji:'🌸',name:'静夜',qty:3,price:18},
-          {emoji:'🍃',name:'碧光环',qty:2,price:22},
+          {emoji:'🌵',name:'龟背竹',qty:5,price:28},
+          {emoji:'🪴',name:'花烛红掌',qty:3,price:35},
+          {emoji:'🌿',name:'琴叶榕',qty:3,price:38},
+          {emoji:'🎋',name:'彩叶芋',qty:8,price:15},
+          {emoji:'🪷',name:'空气凤梨',qty:3,price:45},
+          {emoji:'🌸',name:'彩叶草',qty:3,price:18},
+          {emoji:'🍃',name:'鹿角蕨',qty:2,price:22},
           {emoji:'🪨',name:'五十铃玉',qty:2,price:30},
           {emoji:'🌳',name:'黑法师',qty:1,price:55},
           {emoji:'🍇',name:'虹之玉',qty:2,price:25},
@@ -1960,9 +2662,9 @@
 
     // 天气花架
     const plants = [
-      {emoji:'🌵',name:'桃蛋小丸子'},{emoji:'🪴',name:'吉娃娃莲'},{emoji:'🌿',name:'熊童子'},
-      {emoji:'🎋',name:'生石花'},{emoji:'🪷',name:'玉露'},{emoji:'🍃',name:'碧光环'},
-      {emoji:'🌸',name:'长寿花'},{emoji:'🌱',name:'小苍角殿'},
+      {emoji:'🌿',name:'龟背竹大叶'},{emoji:'🌺',name:'花烛红掌'},{emoji:'🪴',name:'琴叶榕'},
+      {emoji:'🍂',name:'彩叶芋'},{emoji:'🌬️',name:'空气凤梨'},{emoji:'🦌',name:'鹿角蕨'},
+      {emoji:'🦋',name:'蝴蝶兰'},{emoji:'🌸',name:'秋海棠'},
     ];
     const weathers = [
       {type:'sunny',icon:'☀️',temp:'32°',desc:'晴朗 · 适合晒太阳'},
@@ -2015,9 +2717,9 @@
 
     // 花架系统
     const allPlants = [
-      {emoji:'🌵',name:'桃蛋'},{emoji:'🪴',name:'吉娃娃莲'},{emoji:'🌿',name:'熊童子'},
-      {emoji:'🎋',name:'生石花'},{emoji:'🪷',name:'玉露'},{emoji:'🍃',name:'碧光环'},
-      {emoji:'🌸',name:'长寿花'},{emoji:'🌱',name:'小苍角殿'},
+      {emoji:'🌵',name:'龟背竹'},{emoji:'🪴',name:'花烛红掌'},{emoji:'🌿',name:'琴叶榕'},
+      {emoji:'🎋',name:'彩叶芋'},{emoji:'🪷',name:'空气凤梨'},{emoji:'🍃',name:'鹿角蕨'},
+      {emoji:'🌸',name:'蝴蝶兰'},{emoji:'🌱',name:'秋海棠'},
     ];
 
     const allPots = [
@@ -2040,7 +2742,6 @@
     let shelfSlots = {};
     let draggedFrom = null;
     let draggedComboData = null;
-    let selectedPlantIdx = null;
     let comboCounter = 0;
     let comboTrayPlants = [];
 
@@ -2072,29 +2773,16 @@
     }
 
     function selectPlant(idx) {
-      selectedPlantIdx = idx;
-      document.getElementById('trayLabelWarm').textContent = '已选：' + allPlants[idx].name + ' · 选择花盆';
+      comboCounter++;
+      comboTrayPlants.push({plantIdx: idx, potIdx: 0, comboId: comboCounter});
+      document.getElementById('trayLabelWarm').textContent = '已添加：' + allPlants[idx].name + '（青山盆）';
       document.querySelectorAll('#trayPlantsWarm .tray-plant').forEach(el => el.classList.remove('selected'));
       const sel = document.querySelector('#trayPlantsWarm .tray-plant[data-plant-idx="'+idx+'"]');
       if (sel) sel.classList.add('selected');
-      document.getElementById('potSelectorWarm').style.display = 'flex';
-      renderPotSelector();
-    }
-
-    function renderPotSelector() {
-      const container = document.getElementById('potSelectorWarm');
-      container.innerHTML = '<span class="pot-selector-label">花盆：</span>' + allPots.map((p, i) =>
-        `<div class="pot-option ${p.cls}" onclick="selectPot(${i})" title="${p.name}"></div>`
-      ).join('');
-    }
-
-    function selectPot(potIdx) {
-      if (selectedPlantIdx === null) return;
-      comboCounter++;
-      comboTrayPlants.push({plantIdx: selectedPlantIdx, potIdx, comboId: comboCounter});
-      selectedPlantIdx = null;
-      document.getElementById('potSelectorWarm').style.display = 'none';
-      document.getElementById('trayLabelWarm').textContent = '选择植物';
+      setTimeout(() => {
+        document.querySelectorAll('#trayPlantsWarm .tray-plant').forEach(el => el.classList.remove('selected'));
+        document.getElementById('trayLabelWarm').textContent = '点击植物加入组合';
+      }, 600);
       renderShelf();
     }
 
@@ -2217,7 +2905,8 @@
           ontouchstart="touchStart(event, 'shelf', ${idx})"
           ontouchmove="touchMove(event)"
           ontouchend="touchEnd(event)">
-          ${inner}<span class="slot-number">${idx+1}</span></div>`;
+          ${inner}<span class="slot-number">${idx+1}</span>
+          <div class="slot-edit-btn" onclick="event.stopPropagation();event.preventDefault();openPotPicker(${idx})" title="换盆">✎</div></div>`;
       } else {
         return `<div class="${cls}" data-slot-index="${idx}"><span class="slot-number">${idx+1}</span></div>`;
       }
@@ -2330,6 +3019,626 @@
 
     initShelves();
     renderShelf();
+
+    // ========== 植物标本馆 ==========
+    const specimenStore = {};
+    let scanOriginalImage = {};
+    let scanCanvasCtx = {};
+
+    function handleScanImage(input, style) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          scanOriginalImage[style] = img;
+          showScanProcessing(style);
+          setTimeout(() => processScanImage(style), 800);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      input.value = '';
+    }
+
+    function showScanProcessing(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      document.getElementById('scanProcessing' + prefix).style.display = 'block';
+      document.getElementById('scanCanvasWrap' + prefix).style.display = 'none';
+      document.getElementById('scanToleranceBar' + prefix).style.display = 'none';
+      document.getElementById('specimenFrame' + prefix).style.display = 'none';
+      document.getElementById('specimenSaveRow' + prefix).style.display = 'none';
+    }
+
+    function processScanImage(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const img = scanOriginalImage[style];
+      if (!img) return;
+
+      const canvas = document.getElementById('scanCanvas' + prefix);
+      const wrap = document.getElementById('scanCanvasWrap' + prefix);
+      const maxW = wrap.clientWidth || 300;
+      const scale = maxW / img.width;
+      canvas.width = maxW;
+      canvas.height = img.height * scale;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      scanCanvasCtx[style] = ctx;
+
+      applyBackgroundRemoval(style);
+
+      document.getElementById('scanProcessing' + prefix).style.display = 'none';
+      document.getElementById('scanCanvasWrap' + prefix).style.display = 'block';
+      document.getElementById('scanToleranceBar' + prefix).style.display = 'flex';
+      document.getElementById('scanToleranceVal' + prefix).textContent =
+        document.getElementById('scanTolerance' + prefix).value;
+
+      updateSpecimenPreview(style);
+    }
+
+    function applyBackgroundRemoval(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const canvas = document.getElementById('scanCanvas' + prefix);
+      const ctx = scanCanvasCtx[style];
+      const tolerance = parseInt(document.getElementById('scanTolerance' + prefix).value);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      const w = canvas.width;
+      const h = canvas.height;
+
+      const samples = [];
+      const corners = [
+        [0,0], [w-1,0], [0,h-1], [w-1,h-1],
+        [Math.floor(w/2), 0], [Math.floor(w/2), h-1],
+        [0, Math.floor(h/2)], [w-1, Math.floor(h/2)]
+      ];
+      for (const [sx, sy] of corners) {
+        const idx = (sy * w + sx) * 4;
+        samples.push([data[idx], data[idx+1], data[idx+2]]);
+      }
+
+      let avgR = 0, avgG = 0, avgB = 0;
+      for (const s of samples) { avgR += s[0]; avgG += s[1]; avgB += s[2]; }
+      avgR = Math.round(avgR / samples.length);
+      avgG = Math.round(avgG / samples.length);
+      avgB = Math.round(avgB / samples.length);
+
+      const threshold = tolerance * tolerance * 3;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const idx = (y * w + x) * 4;
+          const dr = data[idx] - avgR;
+          const dg = data[idx+1] - avgG;
+          const db = data[idx+2] - avgB;
+          const dist = dr * dr + dg * dg + db * db;
+
+          if (dist < threshold) {
+            const edgeDist = Math.min(x, y, w-1-x, h-1-y);
+            const feather = Math.min(1, edgeDist / 15);
+            const alpha = Math.max(0, Math.round(feather * 255));
+            data[idx+3] = alpha;
+          }
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    function updateScanTolerance(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      document.getElementById('scanToleranceVal' + prefix).textContent =
+        document.getElementById('scanTolerance' + prefix).value;
+      const img = scanOriginalImage[style];
+      if (!img) return;
+      const canvas = document.getElementById('scanCanvas' + prefix);
+      const ctx = scanCanvasCtx[style];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      applyBackgroundRemoval(style);
+      updateSpecimenPreview(style);
+    }
+
+    function updateSpecimenPreview(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const canvas = document.getElementById('scanCanvas' + prefix);
+      const frame = document.getElementById('specimenFrame' + prefix);
+      const img = document.getElementById('specimenImg' + prefix);
+      const saveRow = document.getElementById('specimenSaveRow' + prefix);
+
+      img.src = canvas.toDataURL('image/png');
+      frame.style.display = 'block';
+      saveRow.style.display = 'flex';
+
+      const count = (specimenStore[style] || []).length + 1;
+      const now = new Date();
+      document.getElementById('specimenLabel' + prefix).textContent =
+        '标本 #' + count + ' · ' + (now.getMonth()+1) + '月' + now.getDate() + '日';
+    }
+
+    function saveSpecimen(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const canvas = document.getElementById('scanCanvas' + prefix);
+      const dataUrl = canvas.toDataURL('image/png');
+      const now = new Date();
+      if (!specimenStore[style]) specimenStore[style] = [];
+      specimenStore[style].push({
+        dataUrl: dataUrl,
+        date: (now.getMonth()+1) + '月' + now.getDate() + '日',
+        id: Date.now()
+      });
+      resetScan(style);
+      renderSpecimenGallery(style);
+    }
+
+    function resetScan(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      document.getElementById('scanProcessing' + prefix).style.display = 'none';
+      document.getElementById('scanCanvasWrap' + prefix).style.display = 'none';
+      document.getElementById('scanToleranceBar' + prefix).style.display = 'none';
+      document.getElementById('specimenFrame' + prefix).style.display = 'none';
+      document.getElementById('specimenSaveRow' + prefix).style.display = 'none';
+      scanOriginalImage[style] = null;
+    }
+
+    function renderSpecimenGallery(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const grid = document.getElementById('specimenGrid' + prefix);
+      const specimens = specimenStore[style] || [];
+      if (specimens.length === 0) {
+        grid.innerHTML = '<div class="specimen-empty">还没有标本，拍一张植物照片吧</div>';
+      } else {
+        grid.innerHTML = specimens.map((s, i) => `
+          <div class="specimen-card">
+            <img src="${s.dataUrl}" alt="标本${i+1}">
+            <div class="spec-name">标本 #${i+1} · ${s.date}</div>
+            <div class="spec-delete" onclick="deleteSpecimen('${style}', ${i})">✕</div>
+          </div>`).join('');
+      }
+    }
+
+    function deleteSpecimen(style, idx) {
+      if (!specimenStore[style]) return;
+      specimenStore[style].splice(idx, 1);
+      renderSpecimenGallery(style);
+    }
+
+    renderSpecimenGallery('warm');
+
+    // ========== 花架换盆弹窗 ==========
+    let editingSlotIdx = null;
+    function openPotPicker(slotIdx) {
+      editingSlotIdx = slotIdx;
+      const overlay = document.getElementById('potPickerOverlayWarm');
+      const grid = document.getElementById('potPickerGridWarm');
+      const plant = allPlants[shelfSlots[currentShelf][slotIdx].plantIdx];
+      document.getElementById('potPickerTitleWarm').textContent = '换盆 · ' + plant.name;
+      grid.innerHTML = allPots.map((p, i) =>
+        `<div class="picker-option" onclick="changeSlotPot(${i})">
+          <div class="picker-pot ${p.cls}"></div>
+          <span class="picker-name">${p.name}</span>
+        </div>`
+      ).join('');
+      overlay.classList.add('show');
+    }
+    function closePotPicker() {
+      document.getElementById('potPickerOverlayWarm').classList.remove('show');
+      editingSlotIdx = null;
+    }
+    function changeSlotPot(potIdx) {
+      if (editingSlotIdx === null) return;
+      shelfSlots[currentShelf][editingSlotIdx].potIdx = potIdx;
+      closePotPicker();
+      renderShelf();
+    }
+
+    // ========== 品种图鉴 ==========
+    const plantSpecies = [
+      {emoji:'🌿',name:'龟背竹',sci:'Monstera deliciosa',family:'天南星科',origin:'中美洲',water:'5-7天',light:'明亮散射光',leaf:'心形·深裂',desc:'叶片宽大呈心形，成熟后深裂成羽毛状，是热带雨林经典观叶植物。耐阴性强，适合室内养护，空气净化能力出众。'},
+      {emoji:'🌺',name:'花烛红掌',sci:'Anthurium andraeanum',family:'天南星科',origin:'哥伦比亚',water:'5-7天',light:'明亮散射光',leaf:'心形·蜡质光泽',desc:'佛焰苞鲜红亮丽，形似爱心，花期长达2-3个月。喜温暖湿润环境，忌阳光直射，是高档室内观赏花卉。'},
+      {emoji:'🪴',name:'琴叶榕',sci:'Ficus lyrata',family:'桑科',origin:'西非',water:'7-10天',light:'明亮散射光',leaf:'提琴形·革质',desc:'叶片形似小提琴，革质厚实有光泽，是北欧风室内设计的标志性植物。喜光但忌暴晒，定期转盆保持株形匀称。'},
+      {emoji:'🦋',name:'蝴蝶兰',sci:'Phalaenopsis aphrodite',family:'兰科',origin:'东南亚',water:'7-10天',light:'明亮散射光',leaf:'椭圆形·肉质',desc:'花姿优雅如蝴蝶翩翩，花期长达3-6个月。附生兰类，气生根可吸收空气中水分，是热带兰花中最受欢迎的品种。'},
+      {emoji:'🍂',name:'彩叶芋',sci:'Caladium bicolor',family:'天南星科',origin:'南美',water:'5-7天',light:'明亮散射光',leaf:'心形·霓虹色斑',desc:'叶片色彩斑斓，红粉绿白交织如调色盘。喜高温高湿，夏季生长旺盛，冬季休眠需控水。是热带雨林中的彩色精灵。'},
+      {emoji:'🦌',name:'鹿角蕨',sci:'Platycerium bifurcatum',family:'鹿角蕨科',origin:'澳大利亚',water:'5-7天',light:'明亮散射光',leaf:'二型叶·鹿角形',desc:'营养叶盾状包裹根系，孢子叶形似鹿角垂挂。附生蕨类，可上板壁挂栽培，热带雨林中的空中艺术品。'},
+      {emoji:'🌬️',name:'空气凤梨',sci:'Tillandsia ionantha',family:'凤梨科',origin:'中南美洲',water:'2-3天',light:'明亮散射光',leaf:'银灰色·鳞片状',desc:'无需土壤，靠叶片鳞片吸收空气中水分和养分。小巧玲珑，可悬挂或装入玻璃容器。是最省心的热带植物。'},
+      {emoji:'🌸',name:'秋海棠',sci:'Begonia rex',family:'秋海棠科',origin:'亚洲热带',water:'5-7天',light:'明亮散射光',leaf:'不对称·金属光泽',desc:'叶片色彩斑斓，银灰、紫红、翠绿交织，带金属质感。喜温暖湿润，是热带观叶植物中的明星品种。'},
+    ];
+
+    let activeFamily = 'all';
+
+    function getFamilies() {
+      return [...new Set(plantSpecies.map(p => p.family))];
+    }
+
+    function renderFamilyTabs() {
+      const tabs = document.getElementById('familyTabsWarm');
+      const families = getFamilies();
+      let html = `<div class="family-tab ${activeFamily==='all'?'active':''}" onclick="setFamily('all')">全部 <span class="count">${plantSpecies.length}</span></div>`;
+      for (const f of families) {
+        const count = plantSpecies.filter(p => p.family === f).length;
+        html += `<div class="family-tab ${activeFamily===f?'active':''}" onclick="setFamily('${f}')">${f} <span class="count">${count}</span></div>`;
+      }
+      tabs.innerHTML = html;
+    }
+
+    function setFamily(family) {
+      activeFamily = family;
+      renderFamilyTabs();
+      renderSpeciesList();
+    }
+
+    function renderSpeciesList() {
+      const list = document.getElementById('speciesListWarm');
+      const filtered = activeFamily === 'all'
+        ? plantSpecies
+        : plantSpecies.filter(p => p.family === activeFamily);
+      list.innerHTML = filtered.map((p, i) => `
+        <div class="species-card" id="speciesCardWarm${i}" onclick="toggleSpecies('warm', ${i})">
+          <div class="species-card-header">
+            <div class="species-emoji">${p.emoji}</div>
+            <div class="species-info">
+              <div class="species-name">${p.name}</div>
+              <div class="species-sci">${p.sci}</div>
+              <div class="species-tags">
+                <span class="species-tag">${p.family}</span>
+                <span class="species-tag">${p.origin}</span>
+                <span class="species-tag">💧 ${p.water}</span>
+              </div>
+            </div>
+          </div>
+          <div class="species-card-body">
+            <div class="species-detail-row">
+              <span class="label">光照需求</span><span class="value">${p.light}</span>
+            </div>
+            <div class="species-detail-row">
+              <span class="label">浇水频率</span><span class="value">${p.water}</span>
+            </div>
+            <div class="species-detail-row">
+              <span class="label">原产地</span><span class="value">${p.origin}</span>
+            </div>
+            <div class="species-leaf">
+              <span class="leaf-label">叶片特征：</span>${p.leaf}
+            </div>
+            <div class="species-desc">${p.desc}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleSpecies(style, idx) {
+      const card = document.getElementById('speciesCard' + (style==='amer'?'Amer':'Warm') + idx);
+      if (card) card.classList.toggle('expanded');
+    }
+
+    renderFamilyTabs();
+    renderSpeciesList();
+
+    // ========== 成长拼图 ==========
+    const growthPhotoData = {
+      '龟背竹': [
+        {date:'6月1日', color:'#C8E8C8', note:'新入盆·叶片翠绿'},
+        {date:'6月8日', color:'#B8E0B8', note:'首次浇水'},
+        {date:'6月15日', color:'#A8D8A8', note:'新叶开始萌发'},
+        {date:'6月22日', color:'#98D098', note:'叶片开始深裂'},
+        {date:'6月29日', color:'#88C888', note:'生长旺盛'},
+        {date:'7月6日', color:'#78C078', note:'最新状态'},
+      ],
+      '花烛红掌': [
+        {date:'6月3日', color:'#F5E0E0', note:'新入盆'},
+        {date:'6月10日', color:'#F0D0D0', note:'佛焰苞开始显色'},
+        {date:'6月17日', color:'#E8C0C0', note:'施肥后花色更艳'},
+        {date:'6月24日', color:'#E0B0B0', note:'花朵完全展开'},
+        {date:'7月1日', color:'#D8A0A0', note:'状态极佳'},
+      ],
+      '琴叶榕': [
+        {date:'6月5日', color:'#D8E8D8', note:'新购入'},
+        {date:'6月12日', color:'#C8E0D0', note:'新叶萌发'},
+        {date:'6月19日', color:'#B8D8C8', note:'叶片革质光泽'},
+        {date:'6月26日', color:'#A8D0C0', note:'株形挺拔'},
+        {date:'7月3日', color:'#98C8B8', note:'茁壮成长'},
+      ],
+      '彩叶芋': [
+        {date:'6月7日', color:'#F8E0E8', note:'入手·色彩斑斓'},
+        {date:'6月21日', color:'#F0D0E0', note:'新叶展开'},
+        {date:'7月4日', color:'#E8C0D8', note:'霓虹色斑明显'},
+      ],
+      '空气凤梨': [
+        {date:'6月4日', color:'#E0E0E8', note:'新入盆'},
+        {date:'6月11日', color:'#D0D0E0', note:'叶片银灰闪烁'},
+        {date:'6月18日', color:'#C0C0D8', note:'散射光养护'},
+        {date:'6月25日', color:'#B0B0D0', note:'状态轻盈'},
+        {date:'7月2日', color:'#A0A0C8', note:'最佳状态'},
+      ],
+      '鹿角蕨': [
+        {date:'6月6日', color:'#C8E0C8', note:'孢子叶萌发'},
+        {date:'6月13日', color:'#B8D8B8', note:'鹿角形态渐显'},
+        {date:'6月20日', color:'#A8D0A8', note:'营养叶包裹基质'},
+        {date:'6月27日', color:'#98C898', note:'生长旺盛'},
+      ],
+      '蝴蝶兰': [
+        {date:'6月2日', color:'#F0E8F0', note:'花箭抽出'},
+        {date:'6月9日', color:'#E8D8E8', note:'花苞膨大'},
+        {date:'6月16日', color:'#E0C8E0', note:'第一朵花绽放'},
+        {date:'6月23日', color:'#D8B8D8', note:'盛花期'},
+        {date:'6月30日', color:'#D0A8D0', note:'花团锦簇'},
+      ],
+      '秋海棠': [
+        {date:'6月5日', color:'#F8E0E0', note:'新入盆'},
+        {date:'6月12日', color:'#F0D0D0', note:'叶片色彩斑斓'},
+        {date:'6月19日', color:'#E8C0C0', note:'金属光泽明显'},
+        {date:'6月26日', color:'#E0B0B0', note:'银紫交织'},
+      ],
+    };
+
+    function initGrowthPlantSelect(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const select = document.getElementById('growthPlantSelect' + prefix);
+      const plants = Object.keys(growthPhotoData);
+      select.innerHTML = '<option value="">-- 选择植物 --</option>' +
+        plants.map(p => `<option value="${p}">${p}</option>`).join('');
+    }
+
+    function onGrowthPlantChange(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const select = document.getElementById('growthPlantSelect' + prefix);
+      const plant = select.value;
+      const strip = document.getElementById('filmStrip' + prefix);
+      const container = document.getElementById('growthPhotoContainer' + prefix);
+      const counter = document.getElementById('growthCounter' + prefix);
+      const hint = document.getElementById('growthHint' + prefix);
+      container.classList.remove('show');
+      if (!plant) {
+        strip.innerHTML = '<div class="polaroid-empty">NO FILM</div>';
+        counter.textContent = '00'; hint.textContent = 'PICK A PLANT'; return;
+      }
+      const photos = growthPhotoData[plant] || [];
+      counter.textContent = String(photos.length).padStart(2, '0');
+      hint.textContent = plant.toUpperCase();
+      strip.innerHTML = photos.map((p, i) => `
+        <div class="film-frame" style="background:${p.color};" title="${p.date}">
+          ${i+1}<span class="film-num">${p.date}</span>
+        </div>`).join('');
+    }
+
+    function generateGrowthCollage(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const select = document.getElementById('growthPlantSelect' + prefix);
+      const plant = select.value;
+      if (!plant) return;
+      const photos = growthPhotoData[plant] || [];
+      if (photos.length === 0) return;
+      const canvas = document.getElementById('growthCollage' + prefix);
+      const container = document.getElementById('growthPhotoContainer' + prefix);
+      const caption = document.getElementById('growthCaption' + prefix);
+      const photoW = (container.clientWidth || 280) - 28;
+      const polaroidPad = 24, bottomPad = 48;
+      const imgW = photoW - polaroidPad * 2, imgH = Math.floor(imgW * 3 / 4);
+      const labelH = 24;
+      const totalH = polaroidPad + photos.length * (imgH + labelH + 4) + bottomPad;
+      canvas.width = photoW; canvas.height = totalH;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#FFFEF9'; ctx.fillRect(0, 0, photoW, totalH);
+      let y = polaroidPad;
+      for (let i = 0; i < photos.length; i++) {
+        const p = photos[i];
+        ctx.fillStyle = p.color; ctx.fillRect(polaroidPad, y, imgW, imgH);
+        ctx.strokeStyle = '#E0DDD5'; ctx.lineWidth = 1;
+        ctx.strokeRect(polaroidPad, y, imgW, imgH);
+        const cx = polaroidPad + imgW / 2, cy = y + imgH / 2;
+        ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.beginPath();
+        ctx.ellipse(cx, cy, imgW * 0.32, imgH * 0.32, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath();
+        ctx.ellipse(cx - imgW * 0.08, cy - imgH * 0.06, imgW * 0.1, imgH * 0.12, -0.3, 0, Math.PI * 2); ctx.fill();
+        y += imgH + 4;
+        ctx.fillStyle = '#555'; ctx.font = '600 9px "PingFang SC", sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(p.date + ' · ' + p.note, photoW / 2, y + 12);
+        y += labelH + 2;
+      }
+      ctx.fillStyle = '#999'; ctx.font = 'italic 9px "PingFang SC", sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(plant + ' · ' + photos.length + ' days', photoW / 2, totalH - 20);
+      ctx.strokeStyle = '#F0EDE5'; ctx.lineWidth = 1;
+      ctx.strokeRect(1, 1, photoW - 2, totalH - 2);
+      container.classList.add('show');
+      caption.textContent = plant + ' · ' + photos[0].date + ' — ' + photos[photos.length-1].date;
+    }
+
+    function resetGrowthCollage(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      document.getElementById('growthPhotoContainer' + prefix).classList.remove('show');
+    }
+
+    function downloadGrowthCollage(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const canvas = document.getElementById('growthCollage' + prefix);
+      const link = document.createElement('a');
+      link.download = '成长拍立得_' + new Date().toISOString().slice(0,10) + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    initGrowthPlantSelect('warm');
+
+    // ========== 病虫害图鉴 ==========
+    const pestData = [
+      {icon:'🔴',name:'炭疽病',type:'disease',severity:'★★★★',plants:'天南星科·桑科',
+       symptoms:'叶片上出现圆形或不规则褐色斑点，边缘深褐色，中心灰白色。严重时斑点连片，叶片枯焦脱落。高温高湿环境下快速蔓延。',
+       treatment:'1. 立即剪除病叶，远离健康植株\n2. 喷洒75%百菌清800倍液，每7天一次，连续3次\n3. 严重时使用苯醚甲环唑2000倍液\n4. 停止叶面喷水，保持通风干燥',
+       prevention:'保持通风良好，避免叶片积水。浇水时避免淋湿叶片。春秋季每月喷一次多菌灵预防。'},
+      {icon:'🟡',name:'叶斑病',type:'disease',severity:'★★★',plants:'天南星科·兰科',
+       symptoms:'叶片出现水渍状黄褐色小斑点，逐渐扩大成不规则斑块。斑块边缘不明显，后期斑块中央变薄、透明化。',
+       treatment:'1. 隔离病株，剪除感染叶片\n2. 使用代森锰锌600倍液喷洒\n3. 发病初期可用甲基托布津1000倍液\n4. 增加光照时间，减少浇水频率',
+       prevention:'春秋季注意通风，避免闷热潮湿。定期检查叶片背面。新入植物隔离观察2周。'},
+      {icon:'🟤',name:'根腐病',type:'disease',severity:'★★★★★',plants:'所有热带植物',
+       symptoms:'植株基部发黑软化，叶片突然萎蔫脱落。拔出后根系呈褐色或黑色，腐烂发臭。茎基部水渍状软化，轻轻一碰就倒伏。',
+       treatment:'1. 立即脱盆，剪除所有腐烂根系至健康组织\n2. 用高锰酸钾1000倍液浸泡根部15分钟\n3. 阴凉通风处晾根2-3天\n4. 换新土新盆重新上盆，暂不浇水\n5. 一周后沿盆壁少量给水',
+       prevention:'使用透气性好的颗粒土。盆底必须有排水孔。浇水遵循"干透浇透"原则。冬季控水，温度低于10°C停止浇水。'},
+      {icon:'🕷️',name:'红蜘蛛',type:'pest',severity:'★★★',plants:'天南星科·桑科',
+       symptoms:'叶片出现细小黄白色斑点，严重时叶片褪绿变黄。叶背可见细小红色点状虫体，有细丝网。干燥高温季节多发。',
+       treatment:'1. 用清水冲洗叶片正反面，去除虫网\n2. 喷洒阿维菌素1500倍液，重点喷叶背\n3. 严重时配合哒螨灵2000倍液交替使用\n4. 增加环境湿度抑制繁殖',
+       prevention:'保持养护环境湿度在50%以上。定期用湿布擦拭叶片。夏季高温时适当遮阴降温。每月检查叶片背面。'},
+      {icon:'🐛',name:'蓟马',type:'pest',severity:'★★★',plants:'天南星科·秋海棠科',
+       symptoms:'叶片出现银白色细小条纹或斑点，新叶扭曲变形。花苞受害后无法正常开放。微小黑色虫体在叶片上快速爬行。',
+       treatment:'1. 悬挂蓝色粘虫板诱杀成虫\n2. 喷洒吡虫啉2000倍液\n3. 严重时使用乙基多杀菌素3000倍液\n4. 剪除严重受害部位',
+       prevention:'定期检查嫩叶和花苞。保持通风良好。避免过度密植。春夏季节悬挂蓝色粘虫板。'},
+      {icon:'🪲',name:'介壳虫',type:'pest',severity:'★★★★',plants:'天南星科·兰科',
+       symptoms:'叶片和茎干上出现白色棉絮状或褐色小圆点附着物。虫体分泌蜜露引发煤污病。植株生长停滞，叶片发黄脱落。',
+       treatment:'1. 用棉签蘸75%酒精点涂虫体\n2. 喷洒矿物油乳剂100倍液\n3. 使用噻虫嗪2000倍液灌根\n4. 严重时配合人工刮除，每5天检查一次',
+       prevention:'新入植物仔细检查茎叶缝隙。定期清理枯叶。保持通风光照充足。春季用吡虫啉预防性灌根。'},
+    ];
+
+    let activePestFilter = 'all';
+
+    function renderPestTabs(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const tabs = document.getElementById('pestTabs' + prefix);
+      const total = pestData.length;
+      const diseaseCount = pestData.filter(p => p.type === 'disease').length;
+      const pestCount = pestData.filter(p => p.type === 'pest').length;
+      tabs.innerHTML =
+        `<div class="pest-tab ${activePestFilter==='all'?'active':''}" onclick="setPestFilter('${style}','all')">全部 <span class="count">${total}</span></div>` +
+        `<div class="pest-tab ${activePestFilter==='disease'?'active':''}" onclick="setPestFilter('${style}','disease')">病害 <span class="count">${diseaseCount}</span></div>` +
+        `<div class="pest-tab ${activePestFilter==='pest'?'active':''}" onclick="setPestFilter('${style}','pest')">虫害 <span class="count">${pestCount}</span></div>`;
+    }
+
+    function setPestFilter(style, filter) {
+      activePestFilter = filter;
+      renderPestTabs(style);
+      renderPestList(style);
+    }
+
+    function renderPestList(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const list = document.getElementById('pestList' + prefix);
+      const filtered = activePestFilter === 'all'
+        ? pestData : pestData.filter(p => p.type === activePestFilter);
+      const typeLabel = (t) => t === 'disease' ? '病害' : '虫害';
+      list.innerHTML = filtered.map((p, i) => `
+        <div class="pest-card" id="pestCard${prefix}${i}" onclick="togglePestCard('${style}',${i})">
+          <div class="pest-card-header">
+            <div class="pest-icon">${p.icon}</div>
+            <div class="pest-info">
+              <div class="pest-name">${p.name}</div>
+              <span class="pest-type-tag ${p.type}">${typeLabel(p.type)}</span>
+              <div class="pest-severity">危害等级 ${p.severity} · ${p.plants}</div>
+            </div>
+          </div>
+          <div class="pest-card-body">
+            <div class="pest-symptoms">
+              <span class="symptom-label">症状识别：</span>${p.symptoms}
+            </div>
+            <div class="pest-treatment">
+              <span class="treat-label">治疗方案：</span>${p.treatment.replace(/\n/g, '<br>')}
+            </div>
+            <div class="pest-prevention">
+              <span class="prev-label">预防措施：</span>${p.prevention}
+            </div>
+            <div class="pest-plants">
+              <span class="plant-label">易感植物：</span>${p.plants}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function togglePestCard(style, idx) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const card = document.getElementById('pestCard' + prefix + idx);
+      if (card) card.classList.toggle('expanded');
+    }
+
+    renderPestTabs('warm');
+    renderPestList('warm');
+    renderSupplyList('warm');
+
+    // ========== 心愿清单 ==========
+    const wishStore = { amer: [], warm: [] };
+    const wishPendingPhoto = { amer: null, warm: null };
+
+    function previewWishPhoto(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const file = document.getElementById('wishPhoto' + prefix).files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) { wishPendingPhoto[style] = e.target.result; };
+      reader.readAsDataURL(file);
+    }
+
+    function addWish(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const name = document.getElementById('wishName' + prefix).value.trim();
+      if (!name) return;
+      wishStore[style].push({
+        id: Date.now(), name, photo: wishPendingPhoto[style] || '', owned: false
+      });
+      document.getElementById('wishName' + prefix).value = '';
+      document.getElementById('wishPhoto' + prefix).value = '';
+      wishPendingPhoto[style] = null;
+      renderWishlist(style);
+    }
+
+    function renderWishlist(style) {
+      const prefix = style === 'amer' ? 'Amer' : 'Warm';
+      const list = document.getElementById('wishlistList' + prefix);
+      const items = wishStore[style] || [];
+      if (items.length === 0) {
+        list.innerHTML = '<div class="wishlist-empty">还没有心愿，快把心仪的植物加入清单吧</div>';
+        return;
+      }
+      list.innerHTML = items.map(item => `
+        <div class="wishlist-card ${item.owned ? 'owned' : ''}">
+          <div class="wishlist-photo" onclick="document.getElementById('wishPhotoEdit${style}${item.id}').click()">
+            ${item.photo ? '<img src="'+item.photo+'">' : '<span>+</span>'}
+            <input type="file" accept="image/*" id="wishPhotoEdit${style}${item.id}" class="wishlist-photo-input" onchange="editWishPhoto('${style}',${item.id})">
+          </div>
+          <div class="wishlist-info">
+            <div class="wishlist-title">${item.name}</div>
+          </div>
+          <div class="wishlist-check" onclick="event.stopPropagation();toggleWishOwned('${style}',${item.id})">✓</div>
+          <div class="wishlist-delete" onclick="event.stopPropagation();deleteWish('${style}',${item.id})">✕</div>
+        </div>
+      `).join('');
+    }
+
+    function editWishPhoto(style, id) {
+      const file = document.getElementById('wishPhotoEdit' + style + id).files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const item = wishStore[style].find(i => i.id === id);
+        if (item) { item.photo = e.target.result; renderWishlist(style); }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function toggleWishOwned(style, id) {
+      const item = wishStore[style].find(i => i.id === id);
+      if (item) { item.owned = !item.owned; renderWishlist(style); }
+    }
+
+    function deleteWish(style, id) {
+      wishStore[style] = wishStore[style].filter(i => i.id !== id);
+      renderWishlist(style);
+    }
+
+    // 预置示例
+    wishStore['warm'] = [
+      {id:1,name:'白锦龟背竹',photo:'',owned:false},
+      {id:2,name:'洒金蔓绿绒',photo:'',owned:false},
+      {id:3,name:'帝王花烛',photo:'',owned:false},
+      {id:4,name:'斑叶橙柄蔓绿绒',photo:'',owned:false},
+      {id:5,name:'荧光蔓绿绒',photo:'',owned:false},
+    ];
+    renderWishlist('warm');
   </script>
+
+  <!-- 换盆弹窗 -->
+  <div class="pot-picker-overlay" id="potPickerOverlayWarm" onclick="closePotPicker()">
+    <div class="pot-picker-popup" onclick="event.stopPropagation()">
+      <div class="picker-title" id="potPickerTitleWarm">换盆</div>
+      <div class="picker-grid" id="potPickerGridWarm"></div>
+      <div class="pot-picker-cancel" onclick="closePotPicker()">取消</div>
+    </div>
+  </div>
 </body>
 </html>
