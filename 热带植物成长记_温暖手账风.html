@@ -1329,58 +1329,59 @@
 }
 .species-leaf .leaf-label { color: var(--green); font-weight: 600; }
 
-/* 拍立得相机 */
 .polaroid-camera {
-  background: linear-gradient(180deg, #F5F0E8 0%, #EDE5D8 40%, #E0D5C5 100%);
-  border-radius: 20px; padding: 16px; margin-bottom: 0; position: relative;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  background: linear-gradient(180deg, #FFFEF9 0%, #F5F0E8 40%, #EDE5D8 100%);
+  border-radius: 16px; padding: 16px; margin-bottom: 0; position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08); overflow: hidden;
+  border: 1px solid #E8DDD2;
 }
 .polaroid-camera::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, #C4A882, #D4B892, #C4A882);
+  background: linear-gradient(90deg, #D4C5A0, #E8D8B8, #D4C5A0);
 }
 .polaroid-top-bar {
   display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
 }
 .polaroid-brand {
-  font-size: 9px; font-weight: 600; color: #8B7355; letter-spacing: 1px;
+  font-size: 9px; font-weight: 700; color: #8A7A6A; letter-spacing: 2px;
+  text-transform: uppercase;
 }
 .polaroid-flash {
-  width: 20px; height: 12px; background: linear-gradient(180deg, #D4C4A8, #C4B498);
-  border-radius: 3px; border: 1px solid #B8A888;
+  width: 18px; height: 10px; background: #D4C5A0; border-radius: 3px;
 }
 .polaroid-lens-area {
   display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
 }
 .polaroid-lens {
-  width: 50px; height: 50px; border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #3A4A3A, #1A2A1A 60%, #0A1A0A 100%);
-  border: 3px solid #C4A882; flex-shrink: 0; position: relative;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #F5EDE0, #E0D5C0 60%, #C8B898 100%);
+  border: 2px solid #D4C5B2; flex-shrink: 0; position: relative;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.06);
 }
 .polaroid-lens::after {
-  content: ""; position: absolute; top: 12px; left: 12px; width: 10px; height: 6px;
-  background: rgba(255,255,255,0.15); border-radius: 50%; transform: rotate(-20deg);
+  content: ""; position: absolute; top: 10px; left: 10px; width: 10px; height: 6px;
+  background: rgba(255,255,255,0.5); border-radius: 50%; transform: rotate(-20deg);
 }
 .polaroid-viewfinder {
-  flex: 1; background: #FFFEF9; border-radius: 10px; padding: 8px;
-  border: 1px solid #D8CEC0; min-height: 44px;
+  flex: 1; background: #FFFEF9; border-radius: 6px; padding: 8px;
+  border: 1px solid #E8DDD2;
 }
-.polaroid-viewfinder .vf-select {
-  width: 100%; padding: 4px 6px; background: #FFFEF9; border: 1px solid #D8CEC0;
-  color: #3D5A3C; font-size: 10px; font-weight: 500; border-radius: 8px;
+.polaroid-viewfinder select {
+  width: 100%; padding: 4px 6px; background: #FFFEF9; border: 1px solid #E0D5C0;
+  color: #5A4A3A; font-size: 9px; border-radius: 4px; font-family: inherit;
 }
 .polaroid-viewfinder .vf-hint {
-  font-size: 8px; color: #8B7355; margin-top: 4px; opacity: 0.7;
+  font-size: 7px; color: #B0A090; margin-top: 4px;
+  font-weight: 500; letter-spacing: 1px;
 }
 .polaroid-shutter-row {
   display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
 }
 .polaroid-shutter {
   width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, #E8A0A0, #C08080);
-  border: 3px solid #D8CEC0; cursor: pointer; flex-shrink: 0; position: relative;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.1s;
+  background: linear-gradient(135deg, #C0392B, #8B1A1A);
+  border: 2px solid #D4C5B2; cursor: pointer; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: all 0.1s;
 }
 .polaroid-shutter:active { transform: scale(0.92); }
 .polaroid-shutter::after {
@@ -1388,55 +1389,59 @@
   border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
 }
 .polaroid-shutter-label {
-  font-size: 10px; font-weight: 500; color: #8B7355;
+  font-size: 9px; font-weight: 600; color: #8A7A6A;
+  text-transform: uppercase; letter-spacing: 1px;
 }
 .polaroid-counter {
-  margin-left: auto; font-size: 9px; font-weight: 600; color: #3D5A3C;
-  background: #FFFEF9; padding: 3px 10px; border-radius: 8px; border: 1px solid #D8CEC0;
+  margin-left: auto; font-size: 9px; font-weight: 700; color: #6A8E6A;
+  background: #E2F0E5; padding: 3px 10px; border-radius: 20px;
+  letter-spacing: 1px;
+}
+.polaroid-film-strip { display: flex; gap: 6px; padding: 6px 0; overflow-x: auto; }
+.polaroid-film-strip::-webkit-scrollbar { height: 2px; }
+.polaroid-film-strip::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 2px; }
+.polaroid-empty {
+  font-size: 8px; color: #C0B0A0; letter-spacing: 2px;
+  padding: 12px 0; text-align: center; width: 100%;
+}
+.film-frame {
+  flex-shrink: 0; width: 56px; cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.film-frame:hover { transform: scale(1.08); }
+.film-mini-polaroid {
+  background: #fff; border-radius: 3px; padding: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.film-mini-photo { height: 36px; border-radius: 2px; }
+.film-mini-label {
+  font-size: 7px; font-weight: 600; color: #888; text-align: center;
+  padding: 3px 0 0; letter-spacing: 0.5px;
 }
 .polaroid-slot {
-  background: #D8CEC0; border-radius: 3px; height: 6px; margin-bottom: 2px;
-  border: 1px solid #C8BEA0;
+  background: #EDE5D8; border-radius: 3px; height: 4px; margin-bottom: 4px;
 }
 .polaroid-photo-container {
-  display: none; position: relative; margin-top: 8px;
+  display: none; margin-top: 14px; text-align: center;
 }
-.polaroid-photo-container.show { display: block; }
+.polaroid-photo-container.show { display: block; animation: polaroidSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes polaroidSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .polaroid-photo {
-  background: #FFFEF9; padding: 14px 14px 40px 14px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1); position: relative;
-  animation: polaroidEject 0.6s ease-out; transform-origin: top center;
-  border-radius: 4px;
+  display: inline-block; background: #FFFEF9; padding: 14px 14px 40px;
+  border-radius: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  position: relative;
 }
-@keyframes polaroidEject {
-  0% { transform: translateY(-20px); opacity: 0; }
-  40% { transform: translateY(2px); opacity: 1; }
-  100% { transform: translateY(0); opacity: 1; }
-}
-.polaroid-photo canvas { display: block; width: 100%; height: auto; }
+.polaroid-photo canvas { display: block; border-radius: 2px; }
 .polaroid-photo-caption {
-  text-align: center; font-size: 9px; color: #8B7355; margin-top: 8px;
+  position: absolute; bottom: 12px; left: 0; right: 0;
+  font-size: 10px; font-weight: 600; color: #8A7A6A; text-align: center;
+  letter-spacing: 0.5px;
 }
 .polaroid-photo-actions {
-  display: flex; gap: 6px; margin-top: 8px; justify-content: center;
-}
-.polaroid-photo-actions .scan-btn { font-size: 9px; padding: 6px 12px; flex: none; }
-.polaroid-film-strip {
-  display: flex; gap: 4px; margin-bottom: 8px; overflow-x: auto; padding: 2px 0;
-  -webkit-overflow-scrolling: touch;
-}
-.polaroid-film-strip .film-frame {
-  flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px;
-  border: 1px solid #D8CEC0; display: flex; align-items: center;
-  justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer;
-  transition: all 0.15s; position: relative; color: #8B7355;
-}
-.polaroid-film-strip .film-frame:hover { border-color: var(--green); }
-.polaroid-film-strip .film-frame .film-num {
-  position: absolute; bottom: 1px; right: 3px; font-size: 6px; color: #8B7355;
-}
-.polaroid-empty {
-  text-align: center; padding: 12px; color: #8B7355; font-size: 10px;
+  display: flex; gap: 8px; justify-content: center; margin-top: 14px;
 }
 
 /* 病虫害图鉴 */
@@ -3397,8 +3402,12 @@
       hint.textContent = plant.toUpperCase();
       strip.innerHTML = photos.map((p, i) => `
         <div class="film-frame" style="background:${p.color};" title="${p.date}">
-          ${i+1}<span class="film-num">${p.date}</span>
-        </div>`).join('');
+          <div class="film-mini-polaroid">
+            <div class="film-mini-photo" style="background:${p.color};"></div>
+            <div class="film-mini-label">#${i+1}</div>
+          </div>
+        </div>
+      `).join('');
     }
 
     function generateGrowthCollage(style) {
@@ -3408,39 +3417,173 @@
       if (!plant) return;
       const photos = growthPhotoData[plant] || [];
       if (photos.length === 0) return;
+
       const canvas = document.getElementById('growthCollage' + prefix);
       const container = document.getElementById('growthPhotoContainer' + prefix);
       const caption = document.getElementById('growthCaption' + prefix);
-      const photoW = (container.clientWidth || 280) - 28;
-      const polaroidPad = 24, bottomPad = 48;
-      const imgW = photoW - polaroidPad * 2, imgH = Math.floor(imgW * 3 / 4);
-      const labelH = 24;
-      const totalH = polaroidPad + photos.length * (imgH + labelH + 4) + bottomPad;
-      canvas.width = photoW; canvas.height = totalH;
+      const canvasW = 280;
+      const padX = 16;
+      const cardW = canvasW - padX * 2;
+      const cardPadding = 10;
+      const photoH = Math.floor(cardW * 0.65);
+      const bottomStripH = 28;
+      const cardH = photoH + bottomStripH + cardPadding * 2;
+      const cardGap = 14;
+      const topPad = 20;
+      const bottomPad = 32;
+      const totalH = topPad + photos.length * (cardH + cardGap) - cardGap + bottomPad;
+
+      canvas.width = canvasW * 2;
+      canvas.height = totalH * 2;
+      canvas.style.width = canvasW + 'px';
+      canvas.style.height = totalH + 'px';
       const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#FFFEF9'; ctx.fillRect(0, 0, photoW, totalH);
-      let y = polaroidPad;
+      ctx.scale(2, 2);
+
+      // 背景
+      ctx.fillStyle = '#f8f6f0';
+      ctx.fillRect(0, 0, canvasW, totalH);
+
+      // 装饰水印
+      ctx.fillStyle = 'rgba(0,0,0,0.015)';
+      ctx.font = 'italic 42px "Georgia", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('GROWTH', canvasW / 2, totalH / 2 + 10);
+
+      let y = topPad;
+
       for (let i = 0; i < photos.length; i++) {
         const p = photos[i];
-        ctx.fillStyle = p.color; ctx.fillRect(polaroidPad, y, imgW, imgH);
-        ctx.strokeStyle = '#E0DDD5'; ctx.lineWidth = 1;
-        ctx.strokeRect(polaroidPad, y, imgW, imgH);
-        const cx = polaroidPad + imgW / 2, cy = y + imgH / 2;
-        ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.beginPath();
-        ctx.ellipse(cx, cy, imgW * 0.32, imgH * 0.32, 0, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath();
-        ctx.ellipse(cx - imgW * 0.08, cy - imgH * 0.06, imgW * 0.1, imgH * 0.12, -0.3, 0, Math.PI * 2); ctx.fill();
-        y += imgH + 4;
-        ctx.fillStyle = '#555'; ctx.font = '600 9px "PingFang SC", sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText(p.date + ' · ' + p.note, photoW / 2, y + 12);
-        y += labelH + 2;
+        const cx = padX;
+        const cy = y;
+        const rotate = (Math.random() - 0.5) * 2.5;
+
+        ctx.save();
+        ctx.translate(cx + cardW / 2, cy + cardH / 2);
+        ctx.rotate(rotate * Math.PI / 180);
+        ctx.translate(-(cx + cardW / 2), -(cy + cardH / 2));
+
+        // 卡片阴影
+        ctx.shadowColor = 'rgba(0,0,0,0.12)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 3;
+
+        // 白色卡片背景
+        ctx.fillStyle = '#ffffff';
+        roundRect(ctx, cx, cy, cardW, cardH, 6);
+        ctx.fill();
+
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
+        // 卡片边框
+        ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+        ctx.lineWidth = 0.5;
+        roundRect(ctx, cx, cy, cardW, cardH, 6);
+        ctx.stroke();
+
+        // 照片区域 - 渐变背景
+        const photoX = cx + cardPadding;
+        const photoY = cy + cardPadding;
+        const photoW = cardW - cardPadding * 2;
+        const grad = ctx.createLinearGradient(photoX, photoY, photoX + photoW, photoY + photoH);
+        const baseColor = p.color;
+        grad.addColorStop(0, lightenColor(baseColor, 20));
+        grad.addColorStop(0.5, baseColor);
+        grad.addColorStop(1, darkenColor(baseColor, 10));
+        ctx.fillStyle = grad;
+        roundRect(ctx, photoX, photoY, photoW, photoH, 3);
+        ctx.fill();
+
+        // 照片区域纹理
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        for (let tx = photoX; tx < photoX + photoW; tx += 8) {
+          ctx.fillRect(tx, photoY, 1, photoH);
+        }
+
+        // 植物 emoji
+        const plantEmoji = getPlantEmoji(plant);
+        ctx.fillStyle = 'rgba(0,0,0,0.12)';
+        ctx.font = '36px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(plantEmoji, photoX + photoW / 2, photoY + photoH / 2 + 12);
+
+        // 高光
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.beginPath();
+        ctx.ellipse(photoX + photoW * 0.3, photoY + photoH * 0.3, photoW * 0.2, photoH * 0.2, -0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 底部分割线
+        ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(cx + cardPadding, cy + cardPadding + photoH + 4);
+        ctx.lineTo(cx + cardW - cardPadding, cy + cardPadding + photoH + 4);
+        ctx.stroke();
+
+        // 底部文字
+        const textY = cy + cardPadding + photoH + 18;
+        ctx.fillStyle = '#333';
+        ctx.font = '600 10px "PingFang SC", -apple-system, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('#' + (i + 1) + '  ' + p.date, cx + cardPadding + 4, textY);
+
+        ctx.fillStyle = '#888';
+        ctx.font = '8px "PingFang SC", -apple-system, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(plant, cx + cardW - cardPadding - 4, textY);
+
+        ctx.restore();
+        y += cardH + cardGap;
       }
-      ctx.fillStyle = '#999'; ctx.font = 'italic 9px "PingFang SC", sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText(plant + ' · ' + photos.length + ' days', photoW / 2, totalH - 20);
-      ctx.strokeStyle = '#F0EDE5'; ctx.lineWidth = 1;
-      ctx.strokeRect(1, 1, photoW - 2, totalH - 2);
+
+      // 底部装饰
+      ctx.fillStyle = '#bbb';
+      ctx.font = 'italic 9px "Georgia", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(plant + '  ·  ' + photos.length + ' moments captured', canvasW / 2, totalH - 8);
+
       container.classList.add('show');
       caption.textContent = plant + ' · ' + photos[0].date + ' — ' + photos[photos.length-1].date;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function lightenColor(hex, percent) {
+      const num = parseInt(hex.replace('#', ''), 16);
+      const r = Math.min(255, (num >> 16) + Math.floor(255 * percent / 100));
+      const g = Math.min(255, ((num >> 8) & 0x00FF) + Math.floor(255 * percent / 100));
+      const b = Math.min(255, (num & 0x0000FF) + Math.floor(255 * percent / 100));
+      return '#' + (0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    function darkenColor(hex, percent) {
+      const num = parseInt(hex.replace('#', ''), 16);
+      const r = Math.max(0, (num >> 16) - Math.floor(255 * percent / 100));
+      const g = Math.max(0, ((num >> 8) & 0x00FF) - Math.floor(255 * percent / 100));
+      const b = Math.max(0, (num & 0x0000FF) - Math.floor(255 * percent / 100));
+      return '#' + (0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    function getPlantEmoji(plant) {
+      const map = { '龟背竹':'🍃', '花烛红掌':'🌺', '琴叶榕':'🌿', '彩叶芋':'🎨', '空气凤梨':'🌬️', '鹿角蕨':'🦌', '蝴蝶兰':'🦋', '秋海棠':'🌸' };
+      return map[plant] || '🌱';
     }
 
     function resetGrowthCollage(style) {
