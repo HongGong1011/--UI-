@@ -2054,6 +2054,35 @@
   color: var(--paper-white);
   border-color: var(--ink-black);
 }
+
+/* ========== 页面切换系统 ========== */
+.phone { display: none; }
+.phone.active { display: block; }
+.back-nav {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; font-size: 10px; font-weight: 900;
+  font-family: 'Courier New', monospace; color: var(--ink-dim);
+  cursor: pointer; border: 1px solid var(--ink-dim);
+  margin-bottom: 10px; transition: all 0.15s;
+}
+.back-nav:hover { color: var(--ink-black); border-color: var(--ink-black); }
+.profile-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 0 4px;
+}
+.profile-grid-item {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 16px 8px; background: var(--paper-white);
+  border: 2px solid var(--ink-black); cursor: pointer;
+  transition: all 0.15s; font-family: 'Courier New', monospace;
+  font-size: 9px; font-weight: 900; color: var(--ink-black);
+  text-align: center; letter-spacing: 1px;
+}
+.profile-grid-item:hover { background: var(--ink-black); color: var(--paper-white); }
+.profile-grid-item .pg-icon { font-size: 26px; }
+.reminder-card.done { opacity: 0.45; }
+.reminder-card.done .reminder-info h4 { text-decoration: line-through; }
+.reminder-check { cursor: pointer; font-size: 18px; user-select: none; }
+.plant-card { cursor: pointer; }
   </style>
 </head>
 <body>
@@ -2965,8 +2994,45 @@
         <a href="#" class="nav-item active"><span class="nav-icon">📸</span><span>合照</span></a>
       </div>
     </div>
-  </div>
 </div>
+</div>
+
+  <!-- 我的页面 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="home-header">
+          <div>
+            <div class="greeting">早安，小园丁</div>
+            <div class="screen-title">我的工具箱</div>
+          </div>
+          <div class="stamp-badge">🌿 Plant Lover</div>
+        </div>
+        <div class="profile-grid">
+          <div class="profile-grid-item" onclick="switchPage('memorial')"><span class="pg-icon">🕯️</span>纪念碑</div>
+          <div class="profile-grid-item" onclick="switchPage('receipt')"><span class="pg-icon">🧾</span>账单小票</div>
+          <div class="profile-grid-item" onclick="switchPage('shelf')"><span class="pg-icon">🪴</span>花架摆放</div>
+          <div class="profile-grid-item" onclick="switchPage('herbarium')"><span class="pg-icon">🔬</span>植物标本</div>
+          <div class="profile-grid-item" onclick="switchPage('species-guide')"><span class="pg-icon">📖</span>品种图鉴</div>
+          <div class="profile-grid-item" onclick="switchPage('polaroid')"><span class="pg-icon">📸</span>成长拍立得</div>
+          <div class="profile-grid-item" onclick="switchPage('pest-guide')"><span class="pg-icon">🩺</span>病虫害诊室</div>
+          <div class="profile-grid-item" onclick="switchPage('supply')"><span class="pg-icon">🧪</span>药肥管理</div>
+          <div class="profile-grid-item" onclick="switchPage('wishlist')"><span class="pg-icon">💝</span>心愿清单</div>
+          <div class="profile-grid-item" onclick="switchPage('group-photo')"><span class="pg-icon">📸</span>植物大合照</div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">👤</span><span>我的</span></a>
+      </div>
+    </div>
+  </div>
+
 <script>
     const events = {
       1: [{type:'death',plant:'彩叶草',note:'根腐病'}],
@@ -4338,6 +4404,218 @@
     }
 
     renderGroupPhoto('year');
+
+    // ========== 页面切换系统 ==========
+    const pageNames = ['home','detail','add-record','reminders','calendar','event-list',
+      'memorial','receipt','shelf','herbarium','species-guide','polaroid',
+      'pest-guide','supply','wishlist','group-photo','profile'];
+    const allPhones = document.querySelectorAll('.phone');
+    let currentPage = 'home';
+    const navMap = { home:0, calendar:1, 'add-record':2, reminders:3, profile:4 };
+
+    function initPageSystem() {
+      allPhones.forEach((phone, i) => {
+        phone.setAttribute('data-page', pageNames[i]);
+        phone.classList.remove('active');
+      });
+      document.querySelector('[data-page="home"]').classList.add('active');
+      rewriteAllNavs();
+      highlightNav('home');
+      // 首页植物卡片加点击事件
+      document.querySelectorAll('.plant-card').forEach((card, i) => {
+        card.onclick = function() { switchPage('detail'); };
+      });
+      // 首页返回按钮
+      const backLinks = document.querySelectorAll('.screen-subtitle');
+      backLinks.forEach(el => {
+        if (el.textContent.includes('返回花园')) {
+          el.style.cursor = 'pointer';
+          el.onclick = function() { switchPage('home'); };
+        }
+      });
+      // 提醒页勾选
+      document.querySelectorAll('.reminder-card').forEach(card => {
+        const check = document.createElement('span');
+        check.className = 'reminder-check';
+        check.textContent = '☐';
+        check.onclick = function(e) {
+          e.stopPropagation();
+          card.classList.toggle('done');
+          check.textContent = card.classList.contains('done') ? '☑' : '☐';
+        };
+        card.appendChild(check);
+      });
+      // 添加记录表单
+      initAddRecordForm();
+      // 首页植物详情
+      document.querySelectorAll('.plant-card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.setAttribute('title', '点击查看详情');
+      });
+    }
+
+    function rewriteAllNavs() {
+      document.querySelectorAll('.bottom-nav').forEach(nav => {
+        nav.innerHTML = `
+          <a href="#" class="nav-item" onclick="switchPage('home');return false;"><span class="nav-icon">🏠</span><span>花园</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('calendar');return false;"><span class="nav-icon">📅</span><span>月历</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('add-record');return false;"><span class="nav-add">＋</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('reminders');return false;"><span class="nav-icon">🔔</span><span>提醒</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('profile');return false;"><span class="nav-icon">👤</span><span>我的</span></a>
+        `;
+      });
+    }
+
+    function switchPage(pageName) {
+      document.querySelectorAll('.phone').forEach(p => p.classList.remove('active'));
+      const target = document.querySelector(`[data-page="${pageName}"]`);
+      if (!target) return;
+      target.classList.add('active');
+      currentPage = pageName;
+      highlightNav(pageName);
+      if (pageName === 'calendar') { renderCalendar(); selectDay(selected); }
+      if (pageName === 'home') initHomeWeather();
+      if (pageName === 'memorial') renderMemorials();
+      if (pageName === 'receipt') renderReceipt('month');
+      if (pageName === 'shelf') { initShelves(); renderShelf(); }
+      if (pageName === 'herbarium') renderSpecimenGallery('amer');
+      if (pageName === 'species-guide') { renderFamilyTabs(); renderSpeciesList(); }
+      if (pageName === 'polaroid') initGrowthPlantSelect('amer');
+      if (pageName === 'pest-guide') { renderPestTabs('amer'); renderPestList('amer'); }
+      if (pageName === 'supply') renderSupplyList('amer');
+      if (pageName === 'wishlist') renderWishlist('amer');
+      if (pageName === 'group-photo') renderGroupPhoto('year');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function highlightNav(pageName) {
+      const idx = navMap[pageName];
+      document.querySelectorAll('.bottom-nav').forEach(nav => {
+        const items = nav.querySelectorAll('.nav-item');
+        items.forEach((item, i) => item.classList.toggle('active', i === idx));
+      });
+    }
+
+    // ========== 首页天气初始化 ==========
+    function initHomeWeather() {
+      const plants = [{emoji:'🌿',name:'龟背竹大叶'},{emoji:'🌺',name:'花烛红掌'},{emoji:'🪴',name:'琴叶榕'},
+        {emoji:'🍂',name:'彩叶芋'},{emoji:'🌬️',name:'空气凤梨'},{emoji:'🦌',name:'鹿角蕨'},
+        {emoji:'🌸',name:'秋海棠'},{emoji:'🌱',name:'绿萝'}];
+      const weathers = [
+        {type:'sunny',icon:'☀️',temp:'32°',desc:'晴朗 · 适合晒太阳',bg:'linear-gradient(180deg, #FEF5E0, #F8E8C8, #FDFAF4)'},
+        {type:'rainy',icon:'🌧️',temp:'22°',desc:'雨天 · 记得关窗',bg:'linear-gradient(180deg, #A8B5C0, #BCC5CD, #E0DDD5)'},
+        {type:'cloudy',icon:'⛅',temp:'26°',desc:'多云 · 温和舒适',bg:'linear-gradient(180deg, #D8D5CC, #E0DDD5, #F4EDE0)'},
+      ];
+      const p = plants[Math.floor(Math.random()*plants.length)];
+      const w = weathers[Math.floor(Math.random()*weathers.length)];
+      const hero = document.getElementById('weatherHeroAmer');
+      const bg = document.getElementById('weatherBgAmer');
+      const info = document.getElementById('weatherInfoAmer');
+      const pot = document.getElementById('standPotAmer');
+      const tag = document.getElementById('plantTagAmer');
+      if (hero && bg) { bg.style.background = w.bg; }
+      if (info) { info.innerHTML = `<div class="weather-temp">${w.icon} ${w.temp}</div><div class="weather-desc">${w.desc}</div>`; }
+      if (pot) { pot.textContent = p.emoji; }
+      if (tag) { tag.textContent = p.name; }
+      // 更新问候语
+      const h = new Date().getHours();
+      const greeting = h < 12 ? '早安，小园丁' : h < 18 ? '下午好，小园丁' : '晚安，小园丁';
+      document.querySelectorAll('.greeting').forEach(el => { el.textContent = greeting; });
+      // 更新今日浇水数量
+      const today = new Date().getDate();
+      const todayEvents = events[today] || [];
+      const waterCount = todayEvents.filter(e => e.type === 'water').length;
+      const headline = document.querySelector('.headline-banner h2');
+      if (headline && waterCount > 0) {
+        headline.innerHTML = `今日 ${waterCount} 盆植物<br>等待浇水`;
+      }
+    }
+
+    // ========== 添加记录表单 ==========
+    function initAddRecordForm() {
+      const form = document.querySelector('[data-page="add-record"]');
+      if (!form) return;
+      const plantOpts = form.querySelectorAll('.plant-option');
+      const eventChips = form.querySelectorAll('.event-chip');
+      let selectedPlant = '龟背竹大叶';
+      let selectedEvent = 'water';
+
+      plantOpts.forEach(opt => {
+        opt.onclick = function() {
+          plantOpts.forEach(o => o.classList.remove('active'));
+          opt.classList.add('active');
+          const nameSpan = opt.querySelector('span:last-child');
+          selectedPlant = nameSpan ? nameSpan.textContent.trim() : opt.textContent.trim();
+        };
+      });
+      eventChips.forEach(chip => {
+        chip.onclick = function() {
+          eventChips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          const emojiMap = { '💧':'water','🌱':'fertilize','🐛':'pest','🪴':'repot',
+            '✂️':'divide','🧩':'merge','🏠':'enclosed','☀️':'outdoor','🪵':'mount' };
+          const text = chip.textContent.trim();
+          for (const [emoji, type] of Object.entries(emojiMap)) {
+            if (text.includes(emoji)) { selectedEvent = type; break; }
+          }
+        };
+      });
+
+      // 保存按钮
+      const saveBtn = form.querySelector('.save-btn');
+      if (!saveBtn) {
+        const btn = document.createElement('div');
+        btn.className = 'save-btn';
+        btn.textContent = '保存记录';
+        btn.style.cssText = 'margin-top:14px;padding:12px;text-align:center;background:var(--ink-black);color:var(--paper-white);font-family:"Courier New",monospace;font-size:12px;font-weight:900;cursor:pointer;letter-spacing:2px;border:2px solid var(--ink-black);';
+        btn.onclick = function() {
+          const today = new Date().getDate();
+          const note = form.querySelector('textarea') ? form.querySelector('textarea').value : '';
+          if (!events[today]) events[today] = [];
+          events[today].push({ type: selectedEvent, plant: selectedPlant, note: note || '手动记录' });
+          // 反馈
+          btn.textContent = '✓ 已保存';
+          btn.style.background = '#4a7c59';
+          setTimeout(() => {
+            btn.textContent = '保存记录';
+            btn.style.background = 'var(--ink-black)';
+          }, 1500);
+          // 刷新月历
+          if (document.querySelector('[data-page="calendar"].active')) {
+            renderCalendar();
+            selectDay(today);
+          }
+        };
+        form.querySelector('.screen-content').appendChild(btn);
+      }
+    }
+
+    // ========== 纪念碑渲染 ==========
+    function renderMemorials() {
+      const grid = document.getElementById('memGridAmer');
+      const count = document.getElementById('memCountAmer');
+      if (!grid) return;
+      const memorials = [
+        {emoji:'🍂',name:'彩叶草',adopted:'2023.11',parted:'2024.01',cause:'根腐病',causeType:'death'},
+        {emoji:'🌸',name:'蓝石莲',adopted:'2023.06',parted:'2024.03',cause:'黑腐病',causeType:'death'},
+        {emoji:'🌿',name:'冰莓',adopted:'2024.01',parted:'2024.04',cause:'介壳虫',causeType:'pest'},
+        {emoji:'🌺',name:'花月夜',adopted:'2023.09',parted:'2024.05',cause:'徒长后化水',causeType:'death'},
+      ];
+      grid.innerHTML = memorials.map(m => `<div class="memorial-card">
+        <div class="memorial-emoji">${m.emoji}</div>
+        <div class="memorial-info">
+          <div class="memorial-name">${m.name}</div>
+          <div class="memorial-dates">${m.adopted} → ${m.parted}</div>
+          <div class="memorial-cause">${m.cause}</div>
+        </div>
+      </div>`).join('');
+      if (count) count.textContent = memorials.length;
+    }
+
+    // ========== 初始化 ==========
+    initPageSystem();
+    initHomeWeather();
+    renderMemorials();
   </script>
 
   <!-- 换盆弹窗 -->
