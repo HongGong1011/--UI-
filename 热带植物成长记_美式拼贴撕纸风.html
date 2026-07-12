@@ -1938,6 +1938,122 @@
 }
 .wishlist-card:hover .wishlist-delete { opacity: 1; }
 .wishlist-empty { text-align: center; padding: 20px; color: var(--ink-dim); font-size: 10px; font-family: 'Courier New', monospace; font-style: italic; }
+
+/* ========== 植物大合照 ========== */
+.group-photo-frame {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  background: #1a1a1a;
+  border-radius: 28px;
+  padding: 20px 16px 24px;
+  border: 3px solid #2a2a2a;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.group-photo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  min-height: 280px;
+  padding: 8px 4px;
+}
+.group-photo-item {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  position: relative;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.15);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05);
+  cursor: default;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.group-photo-item:hover {
+  transform: scale(1.15) !important;
+  z-index: 10;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+.group-photo-item .leaf-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+.group-photo-item .leaf-emoji {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+.group-photo-label {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #ccc;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+}
+.group-photo-label small {
+  display: block;
+  font-size: 8px;
+  color: #888;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+.group-photo-frame .corner-mark {
+  position: absolute;
+  color: rgba(255,255,255,0.12);
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+}
+.group-photo-frame .corner-mark.tl { top: 8px; left: 12px; }
+.group-photo-frame .corner-mark.tr { top: 8px; right: 12px; }
+.group-photo-frame .corner-mark.bl { bottom: 8px; left: 12px; }
+.group-photo-frame .corner-mark.br { bottom: 8px; right: 12px; }
+.group-photo-title-section {
+  text-align: center;
+  margin-bottom: 14px;
+}
+.group-photo-title-section .stamp-badge {
+  display: inline-block;
+  margin-bottom: 6px;
+}
+.period-selector {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.period-btn {
+  padding: 6px 16px;
+  font-size: 10px;
+  font-weight: 900;
+  font-family: 'Courier New', monospace;
+  background: var(--paper-white);
+  color: var(--ink-dim);
+  border: 2px solid var(--ink-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 1px;
+}
+.period-btn:hover {
+  color: var(--ink-black);
+  border-color: var(--ink-black);
+}
+.period-btn.active {
+  background: var(--ink-black);
+  color: var(--paper-white);
+  border-color: var(--ink-black);
+}
   </style>
 </head>
 <body>
@@ -2806,6 +2922,47 @@
         <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
         <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
         <a href="#" class="nav-item active"><span class="nav-icon">💝</span><span>心愿</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 植物大合照 -->
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar"><span>09:41</span><span>7月8日 · 周三</span></div>
+      <div class="screen-content">
+        <div class="screen-title">植物大合照</div>
+        <div class="screen-subtitle">每一片叶子都值得被记住</div>
+
+        <div class="group-photo-title-section">
+          <div class="stamp-badge" id="groupPhotoStamp">🌿 2024年度</div>
+        </div>
+
+        <div class="period-selector">
+          <button class="period-btn active" onclick="switchGroupPeriod('month')" id="periodMonth">7月</button>
+          <button class="period-btn" onclick="switchGroupPeriod('quarter')" id="periodQuarter">第3季度</button>
+          <button class="period-btn" onclick="switchGroupPeriod('year')" id="periodYear">2024年度</button>
+        </div>
+
+        <div class="group-photo-frame">
+          <div class="corner-mark tl">FAMILY</div>
+          <div class="corner-mark tr">2024</div>
+          <div class="corner-mark bl">PLANT</div>
+          <div class="corner-mark br">COLLECTION</div>
+          <div class="group-photo-grid" id="groupPhotoGrid"></div>
+          <div class="group-photo-label">
+            热带植物家族
+            <small id="groupPhotoCount">8 位成员</small>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
+        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">📸</span><span>合照</span></a>
       </div>
     </div>
   </div>
@@ -4116,6 +4273,71 @@
       {id:5,name:'荧光蔓绿绒',photo:'',owned:false},
     ];
     renderWishlist('amer');
+
+    // ========== 植物大合照 ==========
+    const groupPhotoData = {
+      month: [
+        {emoji:'🌿',name:'龟背竹',color:'#4a7c59'},
+        {emoji:'🌺',name:'花烛红掌',color:'#8b3a3a'},
+        {emoji:'🪴',name:'琴叶榕',color:'#5a7a4a'},
+        {emoji:'🍂',name:'彩叶芋',color:'#c47a5a'},
+        {emoji:'🌬️',name:'空气凤梨',color:'#7a8a7a'},
+      ],
+      quarter: [
+        {emoji:'🌿',name:'龟背竹',color:'#4a7c59'},
+        {emoji:'🌺',name:'花烛红掌',color:'#8b3a3a'},
+        {emoji:'🪴',name:'琴叶榕',color:'#5a7a4a'},
+        {emoji:'🍂',name:'彩叶芋',color:'#c47a5a'},
+        {emoji:'🌬️',name:'空气凤梨',color:'#7a8a7a'},
+        {emoji:'🦌',name:'鹿角蕨',color:'#6a7a5a'},
+        {emoji:'🦋',name:'蝴蝶兰',color:'#8a5a7a'},
+        {emoji:'🌸',name:'秋海棠',color:'#9a6a5a'},
+      ],
+      year: [
+        {emoji:'🌿',name:'龟背竹',color:'#4a7c59'},
+        {emoji:'🌺',name:'花烛红掌',color:'#8b3a3a'},
+        {emoji:'🪴',name:'琴叶榕',color:'#5a7a4a'},
+        {emoji:'🍂',name:'彩叶芋',color:'#c47a5a'},
+        {emoji:'🌬️',name:'空气凤梨',color:'#7a8a7a'},
+        {emoji:'🦌',name:'鹿角蕨',color:'#6a7a5a'},
+        {emoji:'🦋',name:'蝴蝶兰',color:'#8a5a7a'},
+        {emoji:'🌸',name:'秋海棠',color:'#9a6a5a'},
+        {emoji:'🌱',name:'绿萝',color:'#3a7a3a'},
+        {emoji:'🎋',name:'富贵竹',color:'#4a6a3a'},
+        {emoji:'🍃',name:'龟背竹小叶',color:'#5a8a4a'},
+        {emoji:'💐',name:'铁线蕨',color:'#6a6a4a'},
+      ]
+    };
+    const stampLabels = { month: '🌱 7月 · 月度合照', quarter: '🌿 Q3 · 季度合照', year: '🌳 2024年度合照' };
+    const frameLabels = { month: '2024.07', quarter: '2024.Q3', year: '2024' };
+
+    function renderGroupPhoto(period) {
+      const plants = groupPhotoData[period];
+      const photoGrid = document.getElementById('groupPhotoGrid');
+      const rotations = plants.map(() => (Math.random() - 0.5) * 22);
+      const scales = plants.map(() => 0.9 + Math.random() * 0.2);
+      const orders = plants.map(() => Math.floor(Math.random() * 20));
+      photoGrid.innerHTML = plants.map((p, i) => {
+        const rot = rotations[i];
+        const sc = scales[i];
+        const z = orders[i];
+        return `<div class="group-photo-item" style="transform: rotate(${rot.toFixed(1)}deg) scale(${sc.toFixed(2)}); z-index: ${z};" title="${p.name}">
+          <div class="leaf-bg" style="background: radial-gradient(circle at 40% 35%, ${p.color}, ${p.color}dd 60%, ${p.color}66);"></div>
+          <span class="leaf-emoji">${p.emoji}</span>
+        </div>`;
+      }).join('');
+      document.getElementById('groupPhotoCount').textContent = plants.length + ' 位成员';
+      document.getElementById('groupPhotoStamp').textContent = stampLabels[period];
+      document.querySelector('.group-photo-frame .corner-mark.tr').textContent = frameLabels[period];
+    }
+
+    function switchGroupPeriod(period) {
+      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('period' + period.charAt(0).toUpperCase() + period.slice(1)).classList.add('active');
+      renderGroupPhoto(period);
+    }
+
+    renderGroupPhoto('year');
   </script>
 
   <!-- 换盆弹窗 -->
