@@ -26,7 +26,8 @@
     .summary ul { list-style: none; display: grid; gap: 10px; }
     .summary li { padding-left: 22px; position: relative; color: #4A554A; font-size: 15px; line-height: 1.6; }
     .summary li::before { content: "🌱"; position: absolute; left: 0; top: 1px; }
-    .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .style-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+    @media (max-width: 960px) { .style-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 720px) { .style-grid { grid-template-columns: 1fr; } }
     .style-card {
       background: #FFFFFF; border-radius: 28px; padding: 28px;
@@ -82,6 +83,19 @@
         </div>
         <div class="page-list">首页 · 详情/时间轴 · 添加记录 · 养护提醒 · 月历视图 · 事件列表 · 小票生成 · 纪念碑 · 花架摆放 · 标本馆 · 品种图鉴 · 成长拼图 · 病虫害图鉴 · 药肥管理 · 心愿清单</div>
         <a class="btn-open" href="./热带植物成长记_美式拼贴撕纸风.html" target="_blank">查看原型 →</a>
+      </div>
+
+      <div class="style-card" style="background: #f5f5f7; color: #1d1d1f; border-color: rgba(0,0,0,0.08);">
+        <h3 style="color: #1d1d1f;">03 · Apple Vision Pro 风格</h3>
+        <div class="tagline" style="color: rgba(0,0,0,0.5);">玻璃质感 · 渐变光影 · 微交互动画 · 清新亮色 · 空间深度 · 精致细节</div>
+        <div class="style-meta">
+          <span style="background: rgba(0,0,0,0.04); color: rgba(0,0,0,0.6);">毛玻璃</span>
+          <span style="background: rgba(0,0,0,0.04); color: rgba(0,0,0,0.6);">清新亮色</span>
+          <span style="background: rgba(0,0,0,0.04); color: rgba(0,0,0,0.6);">SF 字体</span>
+          <span style="background: rgba(0,0,0,0.04); color: rgba(0,0,0,0.6);">空间感</span>
+        </div>
+        <div class="page-list" style="color: rgba(0,0,0,0.35);">首页 · 详情/时间轴 · 添加记录 · 养护提醒 · 月历视图 · 事件列表 · 小票生成 · 纪念碑 · 花架摆放 · 标本馆 · 品种图鉴 · 成长拼图 · 病虫害图鉴 · 药肥管理 · 心愿清单 · 植物大合照</div>
+        <a class="btn-open" href="./热带植物成长记_VisionPro风格.html" target="_blank" style="background: #0071e3; box-shadow: 0 4px 14px rgba(0,113,227,0.3);">查看原型 →</a>
       </div>
     </div>
 
