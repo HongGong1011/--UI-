@@ -2141,6 +2141,118 @@
     .more-menu-label { font-size: 13px; font-weight: 900; color: var(--ink); font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 1px; }
     .more-menu-desc { font-size: 10px; color: var(--ink-dim); }
     .more-menu-arrow { font-size: 18px; color: var(--ink-dim); }
+
+    /* My Plants Mode Tabs */
+    .my-plants-mode-tabs {
+      display: flex; gap: 4px; margin-bottom: 12px;
+      background: var(--kraft-light); border-radius: 10px;
+      padding: 3px;
+    }
+    .mode-tab {
+      flex: 1; text-align: center; padding: 7px 4px;
+      font-size: 10px; font-weight: 500; cursor: pointer;
+      border-radius: 6px; color: var(--ink-dim);
+      transition: all 0.25s ease;
+    }
+    .mode-tab:hover { color: var(--ink); }
+    .mode-tab.active {
+      background: #ffffff; color: var(--navy);
+      box-shadow: 0 1px 3px rgba(30,27,24,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+    }
+
+    /* Shelf Mode */
+    .shelf-mode-grid {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .shelf-row {
+      position: relative; padding-bottom: 10px;
+    }
+    .shelf-row::after {
+      content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.02));
+      border-radius: 2px;
+    }
+    .shelf-plants {
+      display: flex; gap: 10px; justify-content: space-around; align-items: flex-end;
+    }
+    .shelf-plant-card {
+      width: 68px; display: flex; flex-direction: column; align-items: center;
+      cursor: pointer; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .shelf-plant-card:hover { transform: translateY(-4px); }
+    .shelf-plant-badge {
+      width: 56px; height: 56px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-size: 28px;
+      border: 2px solid rgba(30,27,24,0.08); background: var(--paper);
+      box-shadow: 0 1px 2px rgba(30,27,24,0.06);
+      margin-bottom: 4px; position: relative;
+    }
+    .shelf-plant-badge .water-dot {
+      position: absolute; bottom: 2px; right: 2px; width: 10px; height: 10px;
+      border-radius: 50%; background: var(--olive); border: 1px solid #fff;
+    }
+    .shelf-plant-name {
+      font-size: 9px; font-weight: 600; color: var(--ink); text-align: center;
+    }
+    .shelf-row-label {
+      font-size: 8px; font-weight: 600; color: rgba(107,94,83,0.5);
+      letter-spacing: 1px; text-transform: uppercase; padding: 0 4px; margin-bottom: 6px;
+    }
+
+    /* Custom Mode */
+    .custom-mode-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .custom-plant-card {
+      background: var(--paper); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(30,27,24,0.08); border-radius: 10px;
+      padding: 10px; cursor: pointer; transition: all 0.25s ease;
+      box-shadow: 0 1px 2px rgba(30,27,24,0.06); position: relative; overflow: hidden;
+    }
+    .custom-plant-card:hover { box-shadow: 0 4px 12px rgba(30,27,24,0.1); border-color: rgba(30,27,24,0.15); transform: translateY(-2px); }
+    .custom-plant-card .custom-emoji {
+      font-size: 32px; text-align: center; margin-bottom: 6px;
+    }
+    .custom-plant-card .custom-name {
+      font-size: 11px; font-weight: 600; color: var(--ink); text-align: center;
+    }
+    .custom-plant-card .custom-meta {
+      font-size: 8px; color: rgba(107,94,83,0.5); text-align: center; margin-top: 2px;
+    }
+    .custom-plant-card .custom-health {
+      position: absolute; top: 8px; right: 8px; width: 8px; height: 8px;
+      border-radius: 50%; background: var(--olive);
+    }
+
+    /* Species Mode */
+    .species-group {
+      margin-bottom: 14px;
+    }
+    .species-group-header {
+      font-size: 11px; font-weight: 600; color: var(--ink-dim);
+      padding: 6px 10px; background: var(--kraft-light); border-radius: 6px;
+      margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+    }
+    .species-group-header .group-count {
+      font-size: 9px; color: rgba(107,94,83,0.5); margin-left: auto;
+    }
+    .species-group-plant {
+      display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+      background: var(--paper); border: 1px solid rgba(30,27,24,0.08);
+      border-radius: 6px; margin-bottom: 4px; cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .species-group-plant:hover { background: rgba(27,54,93,0.06); border-color: var(--navy); }
+    .species-group-plant .sg-emoji {
+      font-size: 20px; width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--kraft-light); flex-shrink: 0;
+    }
+    .species-group-plant .sg-info { flex: 1; }
+    .species-group-plant .sg-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+    .species-group-plant .sg-variety { font-size: 9px; color: rgba(107,94,83,0.5); font-style: italic; }
+    .species-group-plant .sg-arrow { font-size: 14px; color: rgba(107,94,83,0.5); }
   </style>
 </head>
 <body>
@@ -3061,7 +3173,12 @@
         <div class="status-bar"><span>09:41</span><span>我的植物</span></div>
         <div class="screen-content">
           <div class="screen-title">我的植物</div>
-          <div class="screen-subtitle">共 8 株 · 幸福小花园</div>
+          <div class="screen-subtitle" id="myPlantsCount">共 8 株 · 幸福小花园</div>
+          <div class="my-plants-mode-tabs">
+            <div class="mode-tab active" onclick="switchMyPlantsMode('shelf')">🪴 花架模式</div>
+            <div class="mode-tab" onclick="switchMyPlantsMode('custom')">📋 自定义</div>
+            <div class="mode-tab" onclick="switchMyPlantsMode('species')">🌿 品种</div>
+          </div>
           <div id="myPlantsList"></div>
         </div>
         <div class="bottom-nav">
@@ -4857,33 +4974,90 @@
       if (count) count.textContent = memorials.length;
     }
 
+    let myPlantsMode = 'shelf';
+    const plantsData = [
+      { name:'龟背竹', emoji:'🍃', variety:'Monstera deliciosa', water:'3天', light:'散射光', color:'#5B8C5A', days:120, family:'天南星科', type:'观叶' },
+      { name:'花烛红掌', emoji:'🌺', variety:'Anthurium andraeanum', water:'2天', light:'明亮光', color:'#E85D75', days:95, family:'天南星科', type:'观花' },
+      { name:'琴叶榕', emoji:'🌿', variety:'Ficus lyrata', water:'5天', light:'明亮光', color:'#4A8C6F', days:200, family:'桑科', type:'观叶' },
+      { name:'彩叶芋', emoji:'🎨', variety:'Caladium bicolor', water:'2天', light:'散射光', color:'#C77DFF', days:60, family:'天南星科', type:'观叶' },
+      { name:'空气凤梨', emoji:'🌬️', variety:'Tillandsia', water:'1天', light:'散射光', color:'#7EC8E3', days:180, family:'凤梨科', type:'观叶' },
+      { name:'鹿角蕨', emoji:'🦌', variety:'Platycerium', water:'3天', light:'散射光', color:'#6B8C5A', days:150, family:'水龙骨科', type:'蕨类' },
+      { name:'蝴蝶兰', emoji:'🦋', variety:'Phalaenopsis', water:'7天', light:'散射光', color:'#F2A7C3', days:300, family:'兰科', type:'观花' },
+      { name:'秋海棠', emoji:'🌸', variety:'Begonia', water:'2天', light:'散射光', color:'#FF6B8A', days:80, family:'秋海棠科', type:'观花' },
+    ];
+
+    function switchMyPlantsMode(mode) {
+      myPlantsMode = mode;
+      document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.mode-tab').forEach((t, i) => {
+        const modes = ['shelf', 'custom', 'species'];
+        if (modes[i] === mode) t.classList.add('active');
+      });
+      renderMyPlants();
+    }
+
     function renderMyPlants() {
       const container = document.getElementById('myPlantsList');
-      const plants = [
-        { name:'龟背竹', emoji:'🍃', variety:'Monstera deliciosa', water:'3天', light:'散射光', color:'#5B8C5A', days:120 },
-        { name:'花烛红掌', emoji:'🌺', variety:'Anthurium andraeanum', water:'2天', light:'明亮光', color:'#E85D75', days:95 },
-        { name:'琴叶榕', emoji:'🌿', variety:'Ficus lyrata', water:'5天', light:'明亮光', color:'#4A8C6F', days:200 },
-        { name:'彩叶芋', emoji:'🎨', variety:'Caladium bicolor', water:'2天', light:'散射光', color:'#C77DFF', days:60 },
-        { name:'空气凤梨', emoji:'🌬️', variety:'Tillandsia', water:'1天', light:'散射光', color:'#7EC8E3', days:180 },
-        { name:'鹿角蕨', emoji:'🦌', variety:'Platycerium', water:'3天', light:'散射光', color:'#6B8C5A', days:150 },
-        { name:'蝴蝶兰', emoji:'🦋', variety:'Phalaenopsis', water:'7天', light:'散射光', color:'#F2A7C3', days:300 },
-        { name:'秋海棠', emoji:'🌸', variety:'Begonia', water:'2天', light:'散射光', color:'#FF6B8A', days:80 },
-      ];
-      container.innerHTML = plants.map(p => `
-        <div class="my-plant-card" style="cursor:pointer;" onclick="switchPage('detail')">
-          <div class="my-plant-icon" style="background:${p.color}20;">${p.emoji}</div>
-          <div class="my-plant-info">
-            <div class="my-plant-name">${p.name}</div>
-            <div class="my-plant-variety">${p.variety}</div>
-            <div class="my-plant-meta">
-              <span>💧 ${p.water}</span>
-              <span>☀️ ${p.light}</span>
-              <span>📅 ${p.days}天</span>
+      const countEl = document.getElementById('myPlantsCount');
+      const plants = plantsData;
+      countEl.textContent = '共 ' + plants.length + ' 株 · 幸福小花园';
+
+      if (myPlantsMode === 'shelf') {
+        const rows = [
+          plants.slice(0, 4),
+          plants.slice(4, 8),
+        ];
+        const labels = ['上层花架', '下层花架'];
+        container.innerHTML = '<div class="shelf-mode-grid">' + rows.map((row, ri) => `
+          <div class="shelf-row">
+            <div class="shelf-row-label">${labels[ri]}</div>
+            <div class="shelf-plants">
+              ${row.map(p => `
+                <div class="shelf-plant-card" onclick="switchPage('detail')">
+                  <div class="shelf-plant-badge" style="background:${p.color}15; border-color:${p.color}40;">
+                    ${p.emoji}
+                    <div class="water-dot"></div>
+                  </div>
+                  <div class="shelf-plant-name">${p.name}</div>
+                </div>
+              `).join('')}
             </div>
           </div>
-          <div class="my-plant-arrow">›</div>
-        </div>
-      `).join('');
+        `).join('') + '</div>';
+      } else if (myPlantsMode === 'custom') {
+        container.innerHTML = '<div class="custom-mode-grid">' + plants.map(p => `
+          <div class="custom-plant-card" onclick="switchPage('detail')">
+            <div class="custom-health" style="background:${p.color};"></div>
+            <div class="custom-emoji">${p.emoji}</div>
+            <div class="custom-name">${p.name}</div>
+            <div class="custom-meta">${p.variety}</div>
+          </div>
+        `).join('') + '</div>';
+      } else if (myPlantsMode === 'species') {
+        const groups = {};
+        plants.forEach(p => {
+          if (!groups[p.family]) groups[p.family] = [];
+          groups[p.family].push(p);
+        });
+        container.innerHTML = Object.entries(groups).map(([family, ps]) => `
+          <div class="species-group">
+            <div class="species-group-header">
+              🌿 ${family}
+              <span class="group-count">${ps.length}株</span>
+            </div>
+            ${ps.map(p => `
+              <div class="species-group-plant" onclick="switchPage('detail')">
+                <div class="sg-emoji" style="background:${p.color}15;">${p.emoji}</div>
+                <div class="sg-info">
+                  <div class="sg-name">${p.name}</div>
+                  <div class="sg-variety">${p.variety} · ${p.type}</div>
+                </div>
+                <div class="sg-arrow">›</div>
+              </div>
+            `).join('')}
+          </div>
+        `).join('');
+      }
     }
 
     function renderMoreMenu() {
