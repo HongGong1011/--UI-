@@ -1618,6 +1618,47 @@
 }
 .wishlist-card:hover .wishlist-delete { opacity: 1; }
 .wishlist-empty { text-align: center; padding: 20px; color: var(--ink-light); font-size: 12px; }
+
+    /* My Plants Page */
+    .my-plant-card {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--paper); 
+      border: 1px solid rgba(0,0,0,0.06); border-radius: 12px;
+      padding: 12px 14px; margin-bottom: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+    .my-plant-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: rgba(0,0,0,0.12); transform: translateX(2px); }
+    .my-plant-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0;
+    }
+    .my-plant-info { flex: 1; }
+    .my-plant-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .my-plant-variety { font-size: 10px; color: var(--ink-light); font-style: italic; margin-bottom: 4px; }
+    .my-plant-meta { display: flex; gap: 8px; font-size: 9px; color: var(--ink-light); }
+    .my-plant-arrow { font-size: 18px; color: var(--ink-light); }
+
+    /* More Menu Page */
+    .more-menu-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--paper);
+      border: 1px solid rgba(0,0,0,0.06); border-radius: 12px;
+      padding: 12px 14px; margin-bottom: 8px; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+    .more-menu-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: rgba(0,0,0,0.12); transform: translateX(2px); }
+    .more-menu-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0; background: var(--bg);
+    }
+    .more-menu-info { flex: 1; }
+    .more-menu-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .more-menu-desc { font-size: 10px; color: var(--ink-light); }
+    .more-menu-arrow { font-size: 18px; color: var(--ink-light); }
   </style>
 </head>
 <body>
@@ -1717,12 +1758,12 @@
           </div>
         </div>
         <div class="bottom-nav">
-          <a href="#" class="nav-item active"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>日历</span></a>
-          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-        </div>
+  <a href="#" class="nav-item active"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
       </div>
     </div>
 
@@ -1844,12 +1885,12 @@
           </div>
         </div>
         <div class="bottom-nav">
-          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>日历</span></a>
-          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-        </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
       </div>
     </div>
 
@@ -1905,12 +1946,12 @@
           <button class="btn-primary">保存日记</button>
         </div>
         <div class="bottom-nav">
-          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>日历</span></a>
-          <a href="#" class="nav-item active"><span class="nav-add">＋</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-        </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
       </div>
     </div>
 
@@ -1991,12 +2032,12 @@
           </div>
         </div>
         <div class="bottom-nav">
-          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>日历</span></a>
-          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-          <a href="#" class="nav-item active"><span class="nav-icon">🔔</span><span>提醒</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-        </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
       </div>
     </div>
 
@@ -2050,12 +2091,12 @@
           <div id="eventsList"></div>
         </div>
         <div class="bottom-nav">
-          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item active"><span class="nav-icon">📅</span><span>月历</span></a>
-          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-        </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
       </div>
     </div>
 
@@ -2117,12 +2158,12 @@
           </div>
         </div>
         <div class="bottom-nav">
-          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item active"><span class="nav-icon">📅</span><span>月历</span></a>
-          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-        </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
       </div>
     </div>
 
@@ -2142,12 +2183,12 @@
           <div class="memorial-grid" id="memGridWarm"></div>
         </div>
         <div class="bottom-nav">
-          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-          <a href="#" class="nav-item active"><span class="nav-icon">🕯️</span><span>纪念碑</span></a>
-        </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
       </div>
     </div>
 
@@ -2207,12 +2248,12 @@
           </div>
         </div>
         <div class="bottom-nav">
-          <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-          <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-          <a href="#" class="nav-item active"><span class="nav-icon">🧾</span><span>小票</span></a>
-        </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
       </div>
   </div>
 
@@ -2245,12 +2286,12 @@
         </div>
       </div>
       <div class="bottom-nav">
-        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-        <a href="#" class="nav-item active"><span class="nav-icon">🪴</span><span>花架</span></a>
-      </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
     </div>
   </div>
 
@@ -2309,12 +2350,12 @@
         </div>
       </div>
       <div class="bottom-nav">
-        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-        <a href="#" class="nav-item active"><span class="nav-icon">🔬</span><span>标本</span></a>
-      </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
     </div>
   </div>
 
@@ -2331,12 +2372,12 @@
         <div class="species-list" id="speciesListWarm"></div>
       </div>
       <div class="bottom-nav">
-        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-        <a href="#" class="nav-item active"><span class="nav-icon">📖</span><span>图鉴</span></a>
-      </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
     </div>
   </div>
 
@@ -2386,12 +2427,12 @@
         </div>
       </div>
       <div class="bottom-nav">
-        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-        <a href="#" class="nav-item active"><span class="nav-icon">📸</span><span>拍立得</span></a>
-      </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
     </div>
   </div>
 
@@ -2408,12 +2449,12 @@
         <div class="pest-list" id="pestListWarm"></div>
       </div>
       <div class="bottom-nav">
-        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-        <a href="#" class="nav-item active"><span class="nav-icon">🩺</span><span>诊室</span></a>
-      </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
     </div>
   </div>
 
@@ -2446,12 +2487,12 @@
         <div class="supply-list" id="supplyListWarm"></div>
       </div>
       <div class="bottom-nav">
-        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-        <a href="#" class="nav-item active"><span class="nav-icon">🧪</span><span>药肥</span></a>
-      </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
     </div>
   </div>
 </div>
@@ -2476,12 +2517,12 @@
         <div class="wishlist-list" id="wishlistListWarm"></div>
       </div>
       <div class="bottom-nav">
-        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>月历</span></a>
-        <a href="#" class="nav-item"><span class="nav-add">＋</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">🔔</span><span>提醒</span></a>
-        <a href="#" class="nav-item active"><span class="nav-icon">💝</span><span>心愿</span></a>
-      </div>
+  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
+  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
+</div>
     </div>
   </div>
 </div>
@@ -3773,6 +3814,66 @@
       {id:5,name:'荧光蔓绿绒',photo:'',owned:false},
     ];
     renderWishlist('warm');
+    function renderMyPlantsWarm() {
+      const container = document.getElementById('myPlantsListWarm');
+      if (!container) return;
+      const plants = [
+        { name:'龟背竹', emoji:'🍃', variety:'Monstera deliciosa', water:'3天', light:'散射光', color:'#5B8C5A', days:120 },
+        { name:'花烛红掌', emoji:'🌺', variety:'Anthurium andraeanum', water:'2天', light:'明亮光', color:'#E85D75', days:95 },
+        { name:'琴叶榕', emoji:'🌿', variety:'Ficus lyrata', water:'5天', light:'明亮光', color:'#4A8C6F', days:200 },
+        { name:'彩叶芋', emoji:'🎨', variety:'Caladium bicolor', water:'2天', light:'散射光', color:'#C77DFF', days:60 },
+        { name:'空气凤梨', emoji:'🌬️', variety:'Tillandsia', water:'1天', light:'散射光', color:'#7EC8E3', days:180 },
+        { name:'鹿角蕨', emoji:'🦌', variety:'Platycerium', water:'3天', light:'散射光', color:'#6B8C5A', days:150 },
+        { name:'蝴蝶兰', emoji:'🦋', variety:'Phalaenopsis', water:'7天', light:'散射光', color:'#F2A7C3', days:300 },
+        { name:'秋海棠', emoji:'🌸', variety:'Begonia', water:'2天', light:'散射光', color:'#FF6B8A', days:80 },
+      ];
+      container.innerHTML = plants.map(p => `
+        <div class="my-plant-card">
+          <div class="my-plant-icon" style="background:${p.color}20;">${p.emoji}</div>
+          <div class="my-plant-info">
+            <div class="my-plant-name">${p.name}</div>
+            <div class="my-plant-variety">${p.variety}</div>
+            <div class="my-plant-meta">
+              <span>💧 ${p.water}</span>
+              <span>☀️ ${p.light}</span>
+              <span>📅 ${p.days}天</span>
+            </div>
+          </div>
+          <div class="my-plant-arrow">›</div>
+        </div>
+      `).join('');
+    }
+
+    function renderMoreMenuWarm() {
+      const container = document.getElementById('moreMenuListWarm');
+      if (!container) return;
+      const items = [
+        { icon:'📅', label:'养护月历', desc:'查看每月养护记录' },
+        { icon:'🔔', label:'养护提醒', desc:'浇水施肥杀虫提醒' },
+        { icon:'📋', label:'养护小票', desc:'月季年养护账单' },
+        { icon:'🔬', label:'标本馆', desc:'叶片标本抠图收藏' },
+        { icon:'📖', label:'品种图鉴', desc:'热带植物品种百科' },
+        { icon:'📸', label:'成长拍立得', desc:'生成成长拼贴画' },
+        { icon:'🐛', label:'病虫害图鉴', desc:'常见病虫害防治' },
+        { icon:'💊', label:'药肥管理', desc:'肥料农药库存管理' },
+        { icon:'💝', label:'心愿清单', desc:'想养的植物清单' },
+        { icon:'📷', label:'植物大合照', desc:'月季年植物合照' },
+      ];
+      container.innerHTML = items.map(item => `
+        <div class="more-menu-item">
+          <div class="more-menu-icon">${item.icon}</div>
+          <div class="more-menu-info">
+            <div class="more-menu-label">${item.label}</div>
+            <div class="more-menu-desc">${item.desc}</div>
+          </div>
+          <div class="more-menu-arrow">›</div>
+        </div>
+      `).join('');
+    }
+
+    // Initialize new pages
+    renderMyPlantsWarm();
+    renderMoreMenuWarm();
   </script>
 
   <!-- 换盆弹窗 -->
