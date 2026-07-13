@@ -1935,6 +1935,20 @@
     .species-group-plant .sg-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
     .species-group-plant .sg-variety { font-size: 9px; color: var(--text-tertiary); font-style: italic; }
     .species-group-plant .sg-arrow { font-size: 14px; color: var(--text-tertiary); }
+    /* Plant Photos */
+    .shelf-plant-photo {
+      width: 56px; height: 56px; border-radius: 50%;
+      object-fit: cover; display: block;
+    }
+    .custom-plant-photo {
+      width: 76px; height: 76px; border-radius: 16px;
+      object-fit: cover; display: block; margin: 0 auto 6px;
+      box-shadow: var(--shadow-sm);
+    }
+    .sg-photo {
+      width: 32px; height: 32px; border-radius: 50%;
+      object-fit: cover; flex-shrink: 0;
+    }
   </style>
 <body>
   <div class="prototype-header">
@@ -4706,6 +4720,14 @@
       { name:'鹿角蕨', emoji:'🦌', variety:'Platycerium', water:'3天', light:'散射光', color:'#6B8C5A', days:150, family:'水龙骨科', type:'蕨类' },
       { name:'蝴蝶兰', emoji:'🦋', variety:'Phalaenopsis', water:'7天', light:'散射光', color:'#F2A7C3', days:300, family:'兰科', type:'观花' },
       { name:'秋海棠', emoji:'🌸', variety:'Begonia', water:'2天', light:'散射光', color:'#FF6B8A', days:80, family:'秋海棠科', type:'观花' },
+      { name:'绿萝', emoji:'🌱', photo:'plant-photos/pothos.jpg', variety:'Epipremnum aureum', water:'3天', light:'散射光', color:'#4CAF50', days:90, family:'天南星科', type:'观叶' },
+      { name:'白掌', emoji:'🤍', photo:'plant-photos/peace-lily.jpg', variety:'Spathiphyllum', water:'2天', light:'散射光', color:'#E8F5E9', days:110, family:'天南星科', type:'观花' },
+      { name:'橡皮树', emoji:'🪴', photo:'plant-photos/rubber-plant.jpg', variety:'Ficus elastica', water:'5天', light:'明亮光', color:'#2E5C3E', days:250, family:'桑科', type:'观叶' },
+      { name:'孔雀竹芋', emoji:'🦚', photo:'plant-photos/calathea.jpg', variety:'Calathea makoyana', water:'2天', light:'散射光', color:'#7B9E6D', days:75, family:'竹芋科', type:'观叶' },
+      { name:'鸟巢蕨', emoji:'🪹', photo:'plant-photos/birds-nest-fern.jpg', variety:'Asplenium nidus', water:'3天', light:'散射光', color:'#558B2F', days:130, family:'铁角蕨科', type:'蕨类' },
+      { name:'金钱树', emoji:'💰', photo:'plant-photos/zz-plant.jpg', variety:'Zamioculcas zamiifolia', water:'10天', light:'散射光', color:'#33691E', days:180, family:'天南星科', type:'观叶' },
+      { name:'虎尾兰', emoji:'🐯', photo:'plant-photos/snake-plant.jpg', variety:'Sansevieria trifasciata', water:'7天', light:'散射光', color:'#8BC34A', days:200, family:'天门冬科', type:'观叶' },
+      { name:'龙血树', emoji:'🐉', photo:'plant-photos/dragon-tree.jpg', variety:'Dracaena marginata', water:'7天', light:'明亮光', color:'#C62828', days:300, family:'天门冬科', type:'观叶' },
     ];
 
     function switchMyPlantsMode(mode) {
@@ -4725,19 +4747,17 @@
       countEl.textContent = '共 ' + plants.length + ' 株 · 幸福小花园';
 
       if (myPlantsMode === 'shelf') {
-        const rows = [
-          plants.slice(0, 4),
-          plants.slice(4, 8),
-        ];
-        const labels = ['上层花架', '下层花架'];
+        const rows = [];
+        for (let i = 0; i < plants.length; i += 4) rows.push(plants.slice(i, i + 4));
+        const labels = ['上层花架', '中层花架', '下层花架', '底层花架'];
         container.innerHTML = '<div class="shelf-mode-grid">' + rows.map((row, ri) => `
           <div class="shelf-row">
-            <div class="shelf-row-label">${labels[ri]}</div>
+            <div class="shelf-row-label">${labels[ri] || '第'+(ri+1)+'层'}</div>
             <div class="shelf-plants">
               ${row.map(p => `
                 <div class="shelf-plant-card" onclick="switchPage('detail')">
                   <div class="shelf-plant-badge" style="background:${p.color}15; border-color:${p.color}40;">
-                    ${p.emoji}
+                    ${p.photo ? '<img src="'+p.photo+'" class="shelf-plant-photo" />' : p.emoji}
                     <div class="water-dot"></div>
                   </div>
                   <div class="shelf-plant-name">${p.name}</div>
@@ -4750,7 +4770,7 @@
         container.innerHTML = '<div class="custom-mode-grid">' + plants.map(p => `
           <div class="custom-plant-card" onclick="switchPage('detail')">
             <div class="custom-health" style="background:${p.color};"></div>
-            <div class="custom-emoji">${p.emoji}</div>
+            ${p.photo ? '<img src="'+p.photo+'" class="custom-plant-photo" />' : '<div class="custom-emoji">'+p.emoji+'</div>'}
             <div class="custom-name">${p.name}</div>
             <div class="custom-meta">${p.variety}</div>
           </div>
@@ -4769,7 +4789,7 @@
             </div>
             ${ps.map(p => `
               <div class="species-group-plant" onclick="switchPage('detail')">
-                <div class="sg-emoji" style="background:${p.color}15;">${p.emoji}</div>
+                ${p.photo ? '<img src="'+p.photo+'" class="sg-photo" />' : '<div class="sg-emoji" style="background:'+p.color+'15;">'+p.emoji+'</div>'}
                 <div class="sg-info">
                   <div class="sg-name">${p.name}</div>
                   <div class="sg-variety">${p.variety} · ${p.type}</div>
