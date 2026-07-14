@@ -1785,6 +1785,12 @@
       width: 32px; height: 32px; border-radius: 50%;
       object-fit: cover; flex-shrink: 0;
     }
+    .my-plants-section-header {
+      font-size: 12px; font-weight: 700; color: rgba(74,68,65,0.5);
+      padding: 12px 4px 8px; margin-top: 16px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 <body>
@@ -2667,13 +2673,14 @@
             <div class="mode-tab" onclick="switchMyPlantsMode('species')">🌿 品种</div>
           </div>
           <div id="myPlantsListWarm"></div>
+          <div class="my-plants-section-header">更多功能</div>
+          <div id="moreMenuInPlantsWarm"></div>
         </div>
         <div class="bottom-nav">
           <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
           <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
           <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
           <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
         </div>
       </div>
     </div>
@@ -4054,29 +4061,56 @@
 
     function renderMoreMenuWarm() {
       const container = document.getElementById('moreMenuListWarm');
-      if (!container) return;
-      const items = [
-        { icon:'📅', label:'养护月历', desc:'查看每月养护记录' },
-        { icon:'🔔', label:'养护提醒', desc:'浇水施肥杀虫提醒' },
-        { icon:'📋', label:'养护小票', desc:'月季年养护账单' },
-        { icon:'🔬', label:'标本馆', desc:'叶片标本抠图收藏' },
-        { icon:'📖', label:'品种图鉴', desc:'热带植物品种百科' },
-        { icon:'📸', label:'成长拍立得', desc:'生成成长拼贴画' },
-        { icon:'🐛', label:'病虫害图鉴', desc:'常见病虫害防治' },
-        { icon:'💊', label:'药肥管理', desc:'肥料农药库存管理' },
-        { icon:'💝', label:'心愿清单', desc:'想养的植物清单' },
-        { icon:'📷', label:'植物大合照', desc:'月季年植物合照' },
-      ];
-      container.innerHTML = items.map(item => `
-        <div class="more-menu-item">
-          <div class="more-menu-icon">${item.icon}</div>
-          <div class="more-menu-info">
-            <div class="more-menu-label">${item.label}</div>
-            <div class="more-menu-desc">${item.desc}</div>
+      if (container) {
+        const items = [
+          { icon:'📅', label:'养护月历', desc:'查看每月养护记录' },
+          { icon:'🔔', label:'养护提醒', desc:'浇水施肥杀虫提醒' },
+          { icon:'📋', label:'养护小票', desc:'月季年养护账单' },
+          { icon:'🔬', label:'标本馆', desc:'叶片标本抠图收藏' },
+          { icon:'📖', label:'品种图鉴', desc:'热带植物品种百科' },
+          { icon:'📸', label:'成长拍立得', desc:'生成成长拼贴画' },
+          { icon:'🐛', label:'病虫害图鉴', desc:'常见病虫害防治' },
+          { icon:'💊', label:'药肥管理', desc:'肥料农药库存管理' },
+          { icon:'💝', label:'心愿清单', desc:'想养的植物清单' },
+          { icon:'📷', label:'植物大合照', desc:'月季年植物合照' },
+        ];
+        container.innerHTML = items.map(item => `
+          <div class="more-menu-item">
+            <div class="more-menu-icon">${item.icon}</div>
+            <div class="more-menu-info">
+              <div class="more-menu-label">${item.label}</div>
+              <div class="more-menu-desc">${item.desc}</div>
+            </div>
+            <div class="more-menu-arrow">›</div>
           </div>
-          <div class="more-menu-arrow">›</div>
-        </div>
-      `).join('');
+        `).join('');
+      }
+      // Also render into my plants page
+      const plantsContainer = document.getElementById('moreMenuInPlantsWarm');
+      if (plantsContainer) {
+        const items = [
+          { icon:'📅', label:'养护月历', desc:'查看每月养护记录' },
+          { icon:'🔔', label:'养护提醒', desc:'浇水施肥杀虫提醒' },
+          { icon:'📋', label:'养护小票', desc:'月季年养护账单' },
+          { icon:'🔬', label:'标本馆', desc:'叶片标本抠图收藏' },
+          { icon:'📖', label:'品种图鉴', desc:'热带植物品种百科' },
+          { icon:'📸', label:'成长拍立得', desc:'生成成长拼贴画' },
+          { icon:'🐛', label:'病虫害图鉴', desc:'常见病虫害防治' },
+          { icon:'💊', label:'药肥管理', desc:'肥料农药库存管理' },
+          { icon:'💝', label:'心愿清单', desc:'想养的植物清单' },
+          { icon:'📷', label:'植物大合照', desc:'月季年植物合照' },
+        ];
+        plantsContainer.innerHTML = items.map(item => `
+          <div class="more-menu-item">
+            <div class="more-menu-icon">${item.icon}</div>
+            <div class="more-menu-info">
+              <div class="more-menu-label">${item.label}</div>
+              <div class="more-menu-desc">${item.desc}</div>
+            </div>
+            <div class="more-menu-arrow">›</div>
+          </div>
+        `).join('');
+      }
     }
 
     // Initialize new pages

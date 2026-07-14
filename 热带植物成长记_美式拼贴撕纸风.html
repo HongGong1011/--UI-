@@ -2267,6 +2267,12 @@
       width: 32px; height: 32px; border-radius: 50%;
       object-fit: cover; flex-shrink: 0;
     }
+    .my-plants-section-header {
+      font-size: 12px; font-weight: 700; color: var(--ink-light);
+      padding: 12px 4px 8px; margin-top: 16px;
+      border-top: 1px dashed var(--kraft);
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 <body>
@@ -3194,36 +3200,20 @@
             <div class="mode-tab" onclick="switchMyPlantsMode('species')">🌿 品种</div>
           </div>
           <div id="myPlantsList"></div>
+          <div class="my-plants-section-header">更多功能</div>
+          <div id="moreMenuInPlants"></div>
         </div>
         <div class="bottom-nav">
           <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
           <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
           <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
           <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
         </div>
       </div>
     </div>
 
-    <!-- 更多 -->
-    <div class="phone">
-      <div class="phone-screen">
-        <div class="notch"></div>
-        <div class="status-bar"><span>09:41</span><span>更多</span></div>
-        <div class="screen-content">
-          <div class="screen-title">更多</div>
-          <div class="screen-subtitle">探索更多功能</div>
-          <div id="moreMenuList"></div>
-        </div>
-        <div class="bottom-nav">
-          <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-          <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
-        </div>
-      </div>
-    </div>
+    <!-- 更多（已合并到我的植物） -->
+    <div class="phone" style="display:none;"></div>
 
 <!-- 我的页面 -->
   <div class="phone">
@@ -4739,7 +4729,7 @@
       'pest-guide','supply','wishlist','group-photo','profile','my-plants','more'];
     const allPhones = document.querySelectorAll('.phone');
     let currentPage = 'home';
-    const navMap = { home:0, 'my-plants':1, 'add-record':2, profile:3, more:4 };
+    const navMap = { home:0, 'my-plants':1, 'add-record':2, profile:3 };
 
     function initPageSystem() {
       allPhones.forEach((phone, i) => {
@@ -4789,7 +4779,6 @@
           <a href="#" class="nav-item" onclick="switchPage('my-plants');return false;"><span class="nav-icon">🌱</span><span>我的植物</span></a>
           <a href="#" class="nav-item" onclick="switchPage('add-record');return false;"><span class="nav-icon">✏️</span><span>记录</span></a>
           <a href="#" class="nav-item" onclick="switchPage('profile');return false;"><span class="nav-icon">👤</span><span>我的</span></a>
-          <a href="#" class="nav-item" onclick="switchPage('more');return false;"><span class="nav-icon">⋯</span><span>更多</span></a>
         `;
       });
     }
@@ -4814,8 +4803,8 @@
       if (pageName === 'wishlist') renderWishlist('amer');
       if (pageName === 'group-photo') renderGroupPhoto('year');
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (pageName === 'my-plants') renderMyPlants();
-      if (pageName === 'more') renderMoreMenu();
+      if (pageName === 'my-plants') { renderMyPlants(); renderMoreMenuInPlants(); }
+      if (pageName === 'more') return; // merged into my-plants
     }
 
     function highlightNav(pageName) {
@@ -5082,6 +5071,36 @@
 
     function renderMoreMenu() {
       const container = document.getElementById('moreMenuList');
+      if (!container) return;
+      const items = [
+        { icon:'📅', label:'养护月历', page:'calendar', desc:'查看每月养护记录' },
+        { icon:'🔔', label:'养护提醒', page:'reminders', desc:'浇水施肥杀虫提醒' },
+        { icon:'🪦', label:'纪念碑', page:'memorial', desc:'纪念逝去的植物' },
+        { icon:'📋', label:'养护小票', page:'receipt', desc:'月季年养护账单' },
+        { icon:'🪴', label:'花架摆放', page:'shelf', desc:'拖拽布置你的花架' },
+        { icon:'🔬', label:'标本馆', page:'herbarium', desc:'叶片标本抠图收藏' },
+        { icon:'📖', label:'品种图鉴', page:'species-guide', desc:'热带植物品种百科' },
+        { icon:'📸', label:'成长拍立得', page:'polaroid', desc:'生成成长拼贴画' },
+        { icon:'🐛', label:'病虫害图鉴', page:'pest-guide', desc:'常见病虫害防治' },
+        { icon:'💊', label:'药肥管理', page:'supply', desc:'肥料农药库存管理' },
+        { icon:'💝', label:'心愿清单', page:'wishlist', desc:'想养的植物清单' },
+        { icon:'📷', label:'植物大合照', page:'group-photo', desc:'月季年植物合照' },
+      ];
+      container.innerHTML = items.map(item => `
+        <div class="more-menu-item" onclick="switchPage('${item.page}')">
+          <div class="more-menu-icon">${item.icon}</div>
+          <div class="more-menu-info">
+            <div class="more-menu-label">${item.label}</div>
+            <div class="more-menu-desc">${item.desc}</div>
+          </div>
+          <div class="more-menu-arrow">›</div>
+        </div>
+      `).join('');
+    }
+
+    function renderMoreMenuInPlants() {
+      const container = document.getElementById('moreMenuInPlants');
+      if (!container) return;
       const items = [
         { icon:'📅', label:'养护月历', page:'calendar', desc:'查看每月养护记录' },
         { icon:'🔔', label:'养护提醒', page:'reminders', desc:'浇水施肥杀虫提醒' },
