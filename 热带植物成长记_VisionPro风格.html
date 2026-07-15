@@ -1703,37 +1703,67 @@
       background: var(--glass);
     }
 
-    /* Profile Grid */
-    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 0 4px; }
-    .profile-grid-item {
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      padding: 18px 8px;
+    /* Profile Section */
+    .profile-section {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 20px 16px 16px; margin: 0 0 14px;
+      background: var(--glass-card); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xs);
+    }
+    .profile-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--accent-bg); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 32px; margin-bottom: 8px;
+      border: 2px solid var(--border); box-shadow: var(--shadow-xs);
+    }
+    .profile-name {
+      font-size: 16px; font-weight: 700; color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .profile-bio {
+      font-size: 11px; color: var(--text-tertiary); margin-bottom: 14px;
+    }
+    .profile-stats {
+      display: flex; width: 100%; justify-content: space-around;
+      border-top: 1px solid var(--border); padding-top: 12px;
+    }
+    .profile-stat {
+      text-align: center; flex: 1;
+    }
+    .profile-stat-val {
+      font-size: 20px; font-weight: 700; color: var(--text-primary);
+    }
+    .profile-stat-lbl {
+      font-size: 10px; color: var(--text-tertiary); font-weight: 500;
+    }
+    .profile-settings {
+      padding: 0 4px; margin-bottom: 12px;
+    }
+    .settings-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; margin-bottom: 6px;
       background: var(--glass-card); backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border); border-radius: var(--radius-md);
       cursor: pointer; transition: all var(--transition-smooth);
-      font-size: 10px; font-weight: 500; color: var(--text-primary);
-      text-align: center; letter-spacing: 0.5px;
       box-shadow: var(--shadow-xs);
-      position: relative; overflow: hidden;
     }
-    .profile-grid-item::before {
-      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--mint));
-      opacity: 0; transition: opacity var(--transition-smooth);
-    }
-    .profile-grid-item:hover {
+    .settings-item:hover {
       background: var(--accent-bg); border-color: var(--accent);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
+      transform: translateX(4px);
     }
-    .profile-grid-item:hover::before { opacity: 1; }
-    .profile-grid-item .pg-icon {
-      font-size: 28px;
-      transition: transform var(--transition-spring);
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.04));
+    .settings-icon {
+      font-size: 20px; width: 28px; text-align: center;
     }
-    .profile-grid-item:hover .pg-icon { transform: scale(1.15); }
+    .settings-label {
+      flex: 1; font-size: 13px; font-weight: 500; color: var(--text-primary);
+    }
+    .settings-arrow {
+      font-size: 18px; color: var(--text-tertiary); font-weight: 300;
+    }
 
     /* Pot Picker */
     .pot-picker-overlay {
@@ -2936,30 +2966,59 @@
         <div class="home-header">
           <div>
             <div class="greeting">早安，小园丁</div>
-            <div class="screen-title">我的工具箱</div>
+            <div class="screen-title">我的</div>
           </div>
           <div class="stamp-badge">🌿 Plant Lover</div>
         </div>
-        <div class="profile-grid">
-          <div class="profile-grid-item" onclick="switchPage('memorial')"><span class="pg-icon">🕯️</span>纪念碑</div>
-          <div class="profile-grid-item" onclick="switchPage('receipt')"><span class="pg-icon">🧾</span>账单小票</div>
-          <div class="profile-grid-item" onclick="switchPage('shelf')"><span class="pg-icon">🪴</span>花架摆放</div>
-          <div class="profile-grid-item" onclick="switchPage('herbarium')"><span class="pg-icon">🔬</span>植物标本</div>
-          <div class="profile-grid-item" onclick="switchPage('species-guide')"><span class="pg-icon">📖</span>品种图鉴</div>
-          <div class="profile-grid-item" onclick="switchPage('polaroid')"><span class="pg-icon">📸</span>成长拍立得</div>
-          <div class="profile-grid-item" onclick="switchPage('pest-guide')"><span class="pg-icon">🩺</span>病虫害诊室</div>
-          <div class="profile-grid-item" onclick="switchPage('supply')"><span class="pg-icon">🧪</span>药肥管理</div>
-          <div class="profile-grid-item" onclick="switchPage('wishlist')"><span class="pg-icon">💝</span>心愿清单</div>
-          <div class="profile-grid-item" onclick="switchPage('group-photo')"><span class="pg-icon">📸</span>植物大合照</div>
+        <div class="profile-section">
+          <div class="profile-avatar">🧑‍🌾</div>
+          <div class="profile-name">小园丁</div>
+          <div class="profile-bio">热爱热植的阳台园丁</div>
+          <div class="profile-stats" id="profileStats">
+            <div class="profile-stat">
+              <div class="profile-stat-val" id="profileCareDays">300</div>
+              <div class="profile-stat-lbl">养护天数</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-val" id="profilePlantCount">16</div>
+              <div class="profile-stat-lbl">植物总数</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-val" id="profileRecordCount">24</div>
+              <div class="profile-stat-lbl">记录总数</div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-settings">
+          <div class="settings-item" onclick="alert('通知管理')">
+            <span class="settings-icon">🔔</span>
+            <span class="settings-label">通知管理</span>
+            <span class="settings-arrow">›</span>
+          </div>
+          <div class="settings-item" onclick="alert('外观切换')">
+            <span class="settings-icon">🎨</span>
+            <span class="settings-label">外观切换</span>
+            <span class="settings-arrow">›</span>
+          </div>
+          <div class="settings-item" onclick="alert('数据管理')">
+            <span class="settings-icon">📦</span>
+            <span class="settings-label">数据管理</span>
+            <span class="settings-arrow">›</span>
+          </div>
+          <div class="settings-item" onclick="alert('关于')">
+            <span class="settings-icon">ℹ️</span>
+            <span class="settings-label">关于</span>
+            <span class="settings-arrow">›</span>
+          </div>
         </div>
       </div>
       <div class="bottom-nav">
-  <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>今日</span></a>
-  <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>我的植物</span></a>
-  <a href="#" class="nav-item"><span class="nav-icon">✏️</span><span>记录</span></a>
-  <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>我的</span></a>
-  <a href="#" class="nav-item"><span class="nav-icon">⋯</span><span>更多</span></a>
-</div>
+        <a href="#" class="nav-item"><span class="nav-icon">🏠</span><span>花园</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🌱</span><span>植物</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">📅</span><span>养护</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔍</span><span>发现</span></a>
+        <a href="#" class="nav-item active"><span class="nav-icon">👤</span><span>我的</span></a>
+      </div>
     </div>
   </div>
 
@@ -4451,7 +4510,13 @@
       'pest-guide','supply','wishlist','group-photo','profile','my-plants','more'];
     const allPhones = document.querySelectorAll('.phone');
     let currentPage = 'home';
-    const navMap = { home:0, 'my-plants':1, 'add-record':2, profile:3 };
+    const navMap = {
+      home:0, polaroid:0, 'group-photo':0,
+      'my-plants':1, detail:1, shelf:1, wishlist:1,
+      calendar:2, 'add-record':2, reminders:2, receipt:2, 'event-list':2,
+      'species-guide':3, 'pest-guide':3, herbarium:3, supply:3, memorial:3,
+      profile:4
+    };
 
     function initPageSystem() {
       allPhones.forEach((phone, i) => {
@@ -4497,9 +4562,10 @@
     function rewriteAllNavs() {
       document.querySelectorAll('.bottom-nav').forEach(nav => {
         nav.innerHTML = `
-          <a href="#" class="nav-item" onclick="switchPage('home');return false;"><span class="nav-icon">📋</span><span>今日</span></a>
-          <a href="#" class="nav-item" onclick="switchPage('my-plants');return false;"><span class="nav-icon">🌱</span><span>我的植物</span></a>
-          <a href="#" class="nav-item" onclick="switchPage('add-record');return false;"><span class="nav-icon">✏️</span><span>记录</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('home');return false;"><span class="nav-icon">🏠</span><span>花园</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('my-plants');return false;"><span class="nav-icon">🌱</span><span>植物</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('calendar');return false;"><span class="nav-icon">📅</span><span>养护</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('species-guide');return false;"><span class="nav-icon">🔍</span><span>发现</span></a>
           <a href="#" class="nav-item" onclick="switchPage('profile');return false;"><span class="nav-icon">👤</span><span>我的</span></a>
         `;
       });
@@ -4527,6 +4593,18 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (pageName === 'my-plants') { renderMyPlants(); renderMoreMenuInPlants(); }
       if (pageName === 'more') return; // merged into my-plants
+      if (pageName === 'profile') {
+        const maxDays = Math.max(...plantsData.map(p => p.days));
+        const plantCount = plantsData.length;
+        let recordCount = 0;
+        Object.values(events).forEach(arr => { recordCount += arr.length; });
+        const daysEl = document.getElementById('profileCareDays');
+        const plantsEl = document.getElementById('profilePlantCount');
+        const recsEl = document.getElementById('profileRecordCount');
+        if (daysEl) daysEl.textContent = maxDays;
+        if (plantsEl) plantsEl.textContent = plantCount;
+        if (recsEl) recsEl.textContent = recordCount;
+      }
     }
 
     function highlightNav(pageName) {
