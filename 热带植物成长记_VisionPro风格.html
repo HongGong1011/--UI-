@@ -4511,11 +4511,11 @@
     const allPhones = document.querySelectorAll('.phone');
     let currentPage = 'home';
     const navMap = {
-      home:0, polaroid:0, 'group-photo':0,
-      'my-plants':1, detail:1, shelf:1, wishlist:1,
-      calendar:2, 'add-record':2, reminders:2, receipt:2, 'event-list':2,
-      'species-guide':3, 'pest-guide':3, herbarium:3, supply:3, memorial:3,
-      profile:4
+      home:0, polaroid:0, 'group-photo':0, wishlist:0,
+      'my-plants':1, detail:1, shelf:1,
+      'add-record':2, 'add-plant':2,
+      calendar:3, reminders:3, receipt:3, 'event-list':3,
+      'species-guide':4, 'pest-guide':4, herbarium:4, supply:4, memorial:4, profile:4
     };
 
     function initPageSystem() {
@@ -4563,10 +4563,10 @@
       document.querySelectorAll('.bottom-nav').forEach(nav => {
         nav.innerHTML = `
           <a href="#" class="nav-item" onclick="switchPage('home');return false;"><span class="nav-icon">🏠</span><span>花园</span></a>
-          <a href="#" class="nav-item" onclick="switchPage('my-plants');return false;"><span class="nav-icon">🌱</span><span>植物</span></a>
-          <a href="#" class="nav-item" onclick="switchPage('calendar');return false;"><span class="nav-icon">📅</span><span>养护</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('my-plants');return false;"><span class="nav-icon">🌱</span><span>我的植物</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('add-record');return false;"><span class="nav-icon">✏️</span><span>记录</span></a>
+          <a href="#" class="nav-item" onclick="switchPage('calendar');return false;"><span class="nav-icon">📅</span><span>养护日历</span></a>
           <a href="#" class="nav-item" onclick="switchPage('species-guide');return false;"><span class="nav-icon">🔍</span><span>发现</span></a>
-          <a href="#" class="nav-item" onclick="switchPage('profile');return false;"><span class="nav-icon">👤</span><span>我的</span></a>
         `;
       });
     }
